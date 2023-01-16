@@ -1,10 +1,11 @@
 import React from 'react';
+import { UniverseComponent } from './components/universe';
 
 function App() {
 	return (
-		<div className="App">
-			Hello There
-		</div>
+		<>
+			<UniverseComponent />
+		</>
 	);
 }
 
