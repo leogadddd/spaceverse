@@ -1,10 +1,12 @@
 import React from 'react';
+import { NavigationBar } from './components/navigationBar';
 import { UniverseComponent } from './components/universe';
 
-function App() {
+const App = () => {
 	return (
 		<>
 			<UniverseComponent />
+			<NavigationBar />
 		</>
 	);
 }

@@ -49,7 +49,7 @@ const UniversePlayer = () => {
 	return (
 		<div className="absolute w-screen h-screen pb-0 lg:pb-[56.25%] video-background z-0">
 			<YouTube
-				videoId="aSk-D86aOtc"
+				videoId="wGdodz6ck7g"
 				opts={opts}
 				className={'video-background'}
 				id={'Youtube-Video-Background'}

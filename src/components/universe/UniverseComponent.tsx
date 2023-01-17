@@ -12,7 +12,7 @@ export const UniverseComponent = () => {
 			<UniverseLoadingScreen />
 			<UniversePlayer />
 		</>
-	, document.getElementById('universe') as Element);
+	, document.getElementById('universe') as Element)
 }
 
 export default UniverseComponent; 
