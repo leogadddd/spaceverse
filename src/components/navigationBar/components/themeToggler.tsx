@@ -12,7 +12,7 @@ export const ThemeToggler = () => {
 
 	return (
 		<button
-			className="dark:bg-sv-black bg-sv-white h-full px-[0.8em] corners flex justify-center items-center gap-2"
+			className="shadow-lg dark:bg-sv-black bg-sv-white h-full px-[0.8em] pointer-events-auto corners flex justify-center items-center gap-2"
 			onClick={toggleTheme}
 			aria-label="Toggle theme"
 		>

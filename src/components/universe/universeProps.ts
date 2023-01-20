@@ -6,5 +6,5 @@ export type UniverseType = {
 }
 
 export interface UniverseProps {
-	isLoading?: boolean;
+	isLoading?: boolean | null;
 }

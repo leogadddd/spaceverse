@@ -8,8 +8,8 @@ const UniverseLoadingScreen : FC<UniverseProps> = (props) => {
 	if (!isLoading) return null
 
 	return (
-		<div className='absolute left-0 right-0 top-0 bottom-0 z-10 flex justify-center items-center flex-col bg-sv-white'>
-			<h1 className='text-4xl font-bold'>Your Universe</h1>
+		<div className='absolute left-0 right-0 top-0 bottom-0 z-10 flex justify-center items-center flex-col bg-sv-black dark:bg-sv-white transition-colors'>
+			<h1 className='text-4xl font-bold text-sv-white dark:text-sv-black'>Your Universe</h1>
 			<IsLoadingAnimation />
 		</div>
 	)
@@ -33,7 +33,7 @@ const IsLoadingAnimation = () => {
 	})
 
 	return (
-		<h1 className='text-lg'>is loading{animation[frame]}</h1>
+		<h1 className='text-lg text-sv-white dark:text-sv-black'>is loading{animation[frame]}</h1>
 	)
 }
 

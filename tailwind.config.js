@@ -10,6 +10,7 @@ module.exports = {
 			colors: {
 				"sv-white": "#F5F5F5",
 				"sv-black": "#0e1111",
+				"sv-buymeacoffee": "#bd5fff",
 			},
 			fontFamily: {
 				'koulen': ["Koulen", "sans-serif"],

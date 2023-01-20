@@ -1,1 +1,1 @@
-export * from './navigationBar';
+export * from './navigationBarComponent';

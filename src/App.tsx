@@ -1,12 +1,13 @@
-import React from 'react';
-import { NavigationBar } from './components/navigationBar';
+import { NavigationBarComponent } from './components/navigationBar';
 import { UniverseComponent } from './components/universe';
+import { WidgetsComponent } from './components/widgets';
 
 const App = () => {
 	return (
 		<>
 			<UniverseComponent />
-			<NavigationBar />
+			<NavigationBarComponent />
+			<WidgetsComponent />
 		</>
 	);
 }

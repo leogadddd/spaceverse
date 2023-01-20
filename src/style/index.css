@@ -7,23 +7,26 @@
 
 @layer base {
 	.corners {
-        @apply rounded-md;
-    }
+		@apply rounded-md;
+	}
 }
 
 * {
 	box-sizing: border-box;
 	font-family: 'Poppins', sans-serif;
 	-webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
-#root, #universe, #universeLoader {
+#root,
+#universe,
+#universeLoader,
+#widgetsInterface {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -33,13 +36,23 @@
 	overflow: hidden;
 }
 
-@media (min-aspect-ratio: 16/9){
-    .video-background { height: 300%; top: -100%; }
+@media (min-aspect-ratio: 16/9) {
+	.video-background {
+		height: 300%;
+		top: -100%;
+	}
 }
-@media (max-aspect-ratio: 16/9)  {
-    .video-background { width: 300%; left: -100%; }
+
+@media (max-aspect-ratio: 16/9) {
+	.video-background {
+		width: 300%;
+		left: -100%;
+	}
 }
 
 @media all and (display-mode: fullscreen) {
-    .video-background { height: 100%; top: 0; }
+	.video-background {
+		height: 100%;
+		top: 0;
+	}
 }

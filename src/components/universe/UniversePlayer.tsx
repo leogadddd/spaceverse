@@ -1,8 +1,15 @@
-import React, { useState } from "react";
-import { createPortal } from "react-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "@reduxjs/toolkit"
 import YouTube, { YouTubeProps } from "react-youtube"
+import { creators } from "../../lib";
+import { UniverseState } from "../../util/interfaces/state/universeState";
 
 const UniversePlayer = () => {
+
+	const dispatch = useDispatch()
+	const { setUniverseLoading } = bindActionCreators(creators, dispatch)
+	const universeState: UniverseState = useSelector((state: any) => state.universe)
 
 	const [volume, setVolume] = useState(0)
 	const [target, setTarget] = useState<any>(null)
@@ -18,7 +25,8 @@ const UniversePlayer = () => {
 			rel: 0,
 			modestBrand: 1,
 			fs: 0,
-			origin: window.location.origin
+			origin: window.location.origin,
+			playlist: universeState.sourceUrlValue
 		}
 	}
 
@@ -31,7 +39,6 @@ const UniversePlayer = () => {
 			case -1:
 				console.log("video is unstarted")
 				e.target.playVideo()
-				
 				break
 			case 0:
 				console.log("paused")
@@ -39,12 +46,28 @@ const UniversePlayer = () => {
 			case 1:
 				console.log("playing")
 				e.target.setVolume(volume)
+				setUniverseLoading(false)
 				break
 			case 2:
 				console.log('video is playing')
 				break
 		}
 	}
+	
+	// reset target when sourceUrlValue changes
+
+	// volume controls
+	useEffect(() => {
+		if(!target) return
+
+		if(universeState.volume === 0 || universeState.isMuted) {
+			target.mute()
+		} else {
+			target.unMute()
+		}
+
+		setVolume(universeState.volume)
+	}, [target, universeState.volume, universeState.isMuted])
 
 	return (
 		<div className="absolute w-screen h-screen pb-0 lg:pb-[56.25%] video-background z-0">
