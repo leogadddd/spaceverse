@@ -16,26 +16,26 @@ import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
 
-  apiKey: process.env.apiKey,
+  apiKey: process.env.REACT_APP_apiKey,
 
-  authDomain: process.env.authDomain,
+  authDomain: process.env.REACT_APP_authDomain,
 
-  projectId: process.env.projectId,
+  projectId: process.env.REACT_APP_projectId,
 
-  storageBucket: process.env.storageBucket,
+  storageBucket: process.env.REACT_APP_storageBucket,
 
-  messagingSenderId: process.env.messagingSenderId,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
 
-  appId: process.env.appId,
+  appId: process.env.REACT_APP_appId,
 
-  measurementId: process.env.measurementId
+  measurementId: process.env.REACT_APP_measurementId
 
 };
-
 
 // Initialize Firebase
 
 const app = initializeApp(firebaseConfig);
+
 
 export const analytics = getAnalytics(app);
 export const db = getFirestore(app);

@@ -8,7 +8,7 @@ export const BuyMeCoffee = () => {
 				rel="noreferrer"
 				href="https://www.buymeacoffee.com/spaceverse"
 			>
-				<img className="w-[8.5rem] h-auto" src="bmc-new-logo.png" alt="" />
+				<img className="w-[8.5rem] h-auto" src="bmc-new-logo-dark.png" alt="" />
 				{/* <h1 className="font-poppins">Buy me coffee</h1> */}
 			</a>
 		</div>

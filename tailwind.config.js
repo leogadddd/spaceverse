@@ -9,8 +9,21 @@ module.exports = {
 		extend: {
 			colors: {
 				"sv-white": "#F5F5F5",
-				"sv-black": "#0e1111",
+				"sv-light": "#e2eafe",
+				"sv-dark": "#0e1111",
+				"sv-black": "#1E1E1E",
 				"sv-buymeacoffee": "#bd5fff",
+				"sv-light90": "#e2eafee6",
+				"sv-dark90": "#0e1111e6",
+				"sv-light75": "#e2eafebf",
+				"sv-dark75": "#0e1111bf",
+				"sv-light50": "#e2eafe80",
+				"sv-dark50": "#0e111180",
+				"sv-light35": "#e2eafe59",
+				"sv-dark35": "#1E1E1E59",
+				"sv-light10": "#e2eafe1A",
+				"sv-dark10": "#1E1E1E1A",
+				
 			},
 			fontFamily: {
 				'koulen': ["Koulen", "sans-serif"],

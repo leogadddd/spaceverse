@@ -1,5 +1,5 @@
 import { UniverseActionTypes } from "../../../util/enums";
-import { UniverseState } from "../../../util/interfaces/state/universeState";
+import { UniverseState } from "../../../util/interfaces";
 import { universeAction } from "../actions";
 
 const initialState : UniverseState = {
@@ -7,13 +7,15 @@ const initialState : UniverseState = {
 	id: null,
 	title: null,
 	sourceType: null,
-	sourceUrl: null,
+	sourceLink: null,
 	sourceUrlValue: null,
 	volume: 0,
 	contributer: null,
+	category: null,
 	isLoading: true,
 	isMuted: false,
 	isFavorite: null,
+	startTime: 10,
 }
 
 export const universeReducer = (state = initialState, action: universeAction) => {
@@ -42,6 +44,11 @@ export const universeReducer = (state = initialState, action: universeAction) =>
 			return {
 				...state,
 				isFavorite: action.value
+			}
+		case UniverseActionTypes.SET_CATEGORY:
+			return {
+				...state,
+				category: action.payload
 			}
 		default:
 			return state;

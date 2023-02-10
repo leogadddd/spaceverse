@@ -12,6 +12,15 @@ export const setUniverse = (universe: TUniverse) => {
 	}
 }
 
+export const setUniverseCategory = (category: TUniverse["category"]) => {
+	return (dispatch: Dispatch<universeAction>) => {
+		dispatch({
+			type: UniverseActionTypes.SET_CATEGORY,
+			payload: category,
+		});
+	}
+}
+
 export const setUniverseVolume = (volume: number) => {
 	return (dispatch: Dispatch<universeAction>) => {
 		dispatch({

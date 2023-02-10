@@ -6,6 +6,11 @@ interface universeActionSetUniverse {
 	payload: TUniverse;
 }
 
+interface universeActionSetCategory {
+	type: UniverseActionTypes.SET_CATEGORY;
+	payload: TUniverse["category"];
+}
+
 interface universeActionSetVolume {
 	type: UniverseActionTypes.SET_VOLUME;
 	value: number;
@@ -16,4 +21,4 @@ interface universeActionSetBoolean {
 	value: boolean;
 }
 
-export type universeAction = universeActionSetUniverse | universeActionSetVolume | universeActionSetBoolean;
+export type universeAction = universeActionSetUniverse | universeActionSetCategory | universeActionSetVolume | universeActionSetBoolean;

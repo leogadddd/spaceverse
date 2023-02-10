@@ -11,7 +11,6 @@ const UniversePlayer = () => {
 	const { setUniverseLoading } = bindActionCreators(creators, dispatch)
 	const universeState: UniverseState = useSelector((state: any) => state.universe)
 
-	const [volume, setVolume] = useState(0)
 	const [target, setTarget] = useState<any>(null)
 
 	const opts = {
@@ -25,59 +24,86 @@ const UniversePlayer = () => {
 			rel: 0,
 			modestBrand: 1,
 			fs: 0,
-			origin: window.location.origin,
 			playlist: universeState.sourceUrlValue
 		}
 	}
 
+	const onPlay: YouTubeProps["onPlay"] = (e) => {
+		setUniverseLoading(false)
+	}
+
+	const onReady: YouTubeProps["onReady"] = (e) => {
+		setTarget(e.target)
+		e.target.playVideo()
+		if (universeState.startTime != null && universeState.startTime > 0)
+			e.target.seekTo(universeState.startTime)
+		e.target.setVolume(universeState.volume)
+	}
+
 	const onError: YouTubeProps["onError"] = (e) => {
-		console.error(e)
+		// console.error(e)
 	}
 
 	const onStateChange: YouTubeProps["onStateChange"] = (e) => {
-		switch (e.data) {
-			case -1:
-				console.log("video is unstarted")
-				e.target.playVideo()
-				break
-			case 0:
-				console.log("paused")
-				break
-			case 1:
-				console.log("playing")
-				e.target.setVolume(volume)
-				setUniverseLoading(false)
-				break
-			case 2:
-				console.log('video is playing')
-				break
+		if (e.data === 1) {
+			// console.log('playing')
+			setUniverseLoading(false)
+		}
+
+		if (e.data === 0) {
+			// console.log('paused')
+		}
+
+		if (e.data === -1) {
+			// console.log('video is unstarted')
+			e.target.playVideo()
+		}
+
+		if (e.data === 2) {
+			// console.log('video is playing')
 		}
 	}
-	
+
 	// reset target when sourceUrlValue changes
+	useEffect(() => {
+		target?.destroy()
+		setTarget(null)
+		setUniverseLoading(true)
+	}, [universeState.id])
 
 	// volume controls
 	useEffect(() => {
-		if(!target) return
+		if (!target) return
 
-		if(universeState.volume === 0 || universeState.isMuted) {
-			target.mute()
-		} else {
-			target.unMute()
+		try {
+			if (universeState.isMuted) {
+				target.setVolume(0)
+			} else {
+				target.setVolume(universeState.volume)
+			}
+		} catch (error) {
+			// this is a known issue with the YouTube API
+			// volume can't be set because target is null
+			// console.error("Error setting volume", error)
 		}
 
-		setVolume(universeState.volume)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [target, universeState.volume, universeState.isMuted])
+
+	if(!universeState.sourceUrlValue) return null
 
 	return (
 		<div className="absolute w-screen h-screen pb-0 lg:pb-[56.25%] video-background z-0">
 			<YouTube
-				videoId="wGdodz6ck7g"
+				key={universeState.sourceUrlValue}
+				videoId={universeState.sourceUrlValue}
 				opts={opts}
 				className={'video-background'}
 				id={'Youtube-Video-Background'}
 				iframeClassName={"pointer-events-none absolute top-0 left-0 bottom-0 right-0 z-0"}
-				onReady={e => setTarget(e.target)}
+				onPlay={onPlay}
+				onReady={onReady}
 				onStateChange={onStateChange}
 				onError={onError}
 			/>

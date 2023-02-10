@@ -1,17 +1,49 @@
-import React, { useState, useEffect, FC } from 'react'
-import { UniverseProps } from './universeProps'
+import React, { useState, useEffect } from 'react'
+import { motion as m, AnimatePresence } from 'framer-motion'
+import { universeLoadingContainerVariants } from '../../util/constant'
+import { UniverseState } from '../../util/interfaces/state/universeState'
+import { useSelector } from 'react-redux'
 
-const UniverseLoadingScreen : FC<UniverseProps> = (props) => {
+const UniverseLoadingScreen = () => {
 
-	const { isLoading } = props
+	const universeState: UniverseState = useSelector((state: any) => state.universe)
 
-	if (!isLoading) return null
+	const [isUniverseLoading, _setIsUniverseLoading] = useState(universeState.isLoading)
+
+	useEffect(() => {
+		_setIsUniverseLoading(universeState.isLoading)
+
+	}, [universeState.isLoading])
 
 	return (
-		<div className='absolute left-0 right-0 top-0 bottom-0 z-10 flex justify-center items-center flex-col bg-sv-black dark:bg-sv-white transition-colors'>
-			<h1 className='text-4xl font-bold text-sv-white dark:text-sv-black'>Your Universe</h1>
-			<IsLoadingAnimation />
-		</div>
+		<AnimatePresence mode="wait">
+			{
+				isUniverseLoading &&
+				<m.div
+					// id="universe-loading-screen"
+					key="universe-loading-screen"
+					variants={universeLoadingContainerVariants}
+					initial="animate"
+					animate={isUniverseLoading ? "animate" : "initial"}
+					exit="initial"
+					className="flex justify-center items-center flex-col absolute left-0 right-0 top-0 bottom-0 z-0 dark:bg-sv-white bg-sv-dark"
+				>
+					<m.div
+						variants={universeLoadingContainerVariants}
+						initial="initial"
+						animate={isUniverseLoading ? "animate" : "initial"}
+						exit="initial"
+						className="flex justify-center items-center flex-col"
+					>
+						<h1 className="text-4xl font-bold text-sv-white dark:text-sv-black">
+							Your Universe
+						</h1>
+						<IsLoadingAnimation />
+					</m.div>
+					
+				</m.div>
+			}
+		</AnimatePresence>
 	)
 }
 

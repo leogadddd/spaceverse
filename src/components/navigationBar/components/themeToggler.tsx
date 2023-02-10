@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { ThemeContext } from "../../../util/context/themeContext";
 import { RiMoonFill } from "react-icons/ri";
 import { RiSunFill } from "react-icons/ri";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const ThemeToggler = () => {
 	const { theme, setTheme } = useContext(ThemeContext);
@@ -12,24 +13,42 @@ export const ThemeToggler = () => {
 
 	return (
 		<button
-			className="shadow-lg dark:bg-sv-black bg-sv-white h-full px-[0.8em] pointer-events-auto corners flex justify-center items-center gap-2"
+			className="shadow-lg dark:bg-sv-dark bg-sv-light h-full px-[0.8em] pointer-events-auto corners flex justify-center items-center gap-2 overflow-hidden"
 			onClick={toggleTheme}
 			aria-label="Toggle theme"
 		>
-			{theme === "light" ? <MoonIcon /> : <SunIcon />}
+			<AnimatePresence mode="wait">
+				{theme === "dark" ? <SunIcon /> : <MoonIcon />}
+			</AnimatePresence>
 		</button>
 	);
 };
 
 const MoonIcon = () => {
 	return (
-		<RiMoonFill className="dark:text-sv-white text-sv-black" />
+		<motion.div
+			key={"moon"}
+			id="moon"
+			initial={{ y: 20 }}
+			animate={{ y: 0 }}
+			exit={{ y: -20 }}
+		>
+			<RiMoonFill className="dark:text-sv-white text-sv-black" />
+		</motion.div>
 	);
 };
 
 const SunIcon = () => {
 	return (
-		<RiSunFill className="dark:text-sv-white text-sv-black" />
+		<motion.div
+			key={"sun"}
+			id="sun"
+			initial={{ y:-20 }}
+			animate={{ y: 0 }}
+			exit={{ y: 20 }}
+		>
+			<RiSunFill className="dark:text-sv-white text-sv-black" />
+		</motion.div>
 	);
 };
 
