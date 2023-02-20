@@ -11,11 +11,19 @@ const initialState : UniverseState = {
 	sourceUrlValue: null,
 	volume: 0,
 	contributer: null,
-	category: null,
 	isLoading: true,
 	isMuted: false,
 	isFavorite: null,
-	startTime: 10,
+	startTime: 0,
+	endTime: null,
+	manager: {
+		categories: [],
+		universes: [],
+		pickedCategory: null,
+		pickedUniverse: null,
+		categoryIndex: 0,
+		universeIndex: 0,
+	}
 }
 
 export const universeReducer = (state = initialState, action: universeAction) => {
@@ -49,6 +57,41 @@ export const universeReducer = (state = initialState, action: universeAction) =>
 			return {
 				...state,
 				category: action.payload
+			}
+		case UniverseActionTypes.SET_CATEGORIES:
+			return {
+				...state,
+				manager: {
+					...state.manager,
+					categories: action.payload
+				}
+			}
+		case UniverseActionTypes.SET_UNIVERSES:
+			return {
+				...state,
+				manager: {
+					...state.manager,
+					universes: action.payload
+				}
+			}
+		case UniverseActionTypes.SET_PICKED_CATEGORY:
+			return {
+				...state,
+				manager: {
+					...state.manager,
+					categoryIndex: action.value,
+					pickedCategory: state.manager.categories[action.value],
+					universes: state.manager.categories[action.value].universes
+				}
+			}
+		case UniverseActionTypes.SET_PICKED_UNIVERSE:
+			return {
+				...state,
+				manager: {
+					...state.manager,
+					universeIndex: action.value,
+					pickedUniverse: state.manager.universes[action.value]
+				}
 			}
 		default:
 			return state;

@@ -6,13 +6,15 @@ export type TUniverse = {
 	sourceLink: string;
 	sourceUrlValue: string;
 	contributer: TUniverseContributer | null;
-	category: TUniverseCategory | null;
+	startTime: number;
+	endTime: number;
 }
 
 export type TUniverseCategory = {
-	id: string;
-	docId: string;
-	title: string;
+	id: number;
+	docId: string | null;
+	title: string | null;
+	universes: number[];
 }
 
 

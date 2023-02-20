@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "@reduxjs/toolkit"
 import YouTube, { YouTubeProps } from "react-youtube"
-import { creators } from "../../lib";
+import { creators, store } from "../../lib";
 import { UniverseState } from "../../util/interfaces/state/universeState";
+import { generateKey } from "../../util/idGenerators";
 
 const UniversePlayer = () => {
 
@@ -11,7 +12,10 @@ const UniversePlayer = () => {
 	const { setUniverseLoading } = bindActionCreators(creators, dispatch)
 	const universeState: UniverseState = useSelector((state: any) => state.universe)
 
+	const [isPlaying, setIsPlaying] = useState<boolean>(false)
 	const [target, setTarget] = useState<any>(null)
+	const [timer, setTimer] = useState<any>(null)
+	const [key, setKey] = useState<string>("")
 
 	const opts = {
 		height: "100%",
@@ -22,7 +26,7 @@ const UniversePlayer = () => {
 			controls: 0,
 			loop: 1,
 			rel: 0,
-			modestBrand: 1,
+			modestBrand: 0,
 			fs: 0,
 			playlist: universeState.sourceUrlValue
 		}
@@ -47,7 +51,11 @@ const UniversePlayer = () => {
 	const onStateChange: YouTubeProps["onStateChange"] = (e) => {
 		if (e.data === 1) {
 			// console.log('playing')
+			if (!isPlaying && universeState.startTime != null && universeState.startTime > 0)
+				e.target.seekTo(universeState.startTime)
+
 			setUniverseLoading(false)
+			setIsPlaying(true)
 		}
 
 		if (e.data === 0) {
@@ -57,12 +65,24 @@ const UniversePlayer = () => {
 		if (e.data === -1) {
 			// console.log('video is unstarted')
 			e.target.playVideo()
+
 		}
 
 		if (e.data === 2) {
 			// console.log('video is playing')
+
 		}
 	}
+
+	const onEnd: YouTubeProps["onEnd"] = (e) => {
+		// console.log('video has ended')
+		setIsPlaying(false)
+	}
+
+
+	useEffect(() => {
+		setKey(`universe-${generateKey()}`)
+	}, [])
 
 	// reset target when sourceUrlValue changes
 	useEffect(() => {
@@ -91,10 +111,30 @@ const UniversePlayer = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [target, universeState.volume, universeState.isMuted])
 
-	if(!universeState.sourceUrlValue) return null
+	// make sure video is playing when the sourceUrlValue changes
+	// this is a workaround for a bug in the bug that i can't figure out
+	useEffect(() => {
+		if (!universeState.isLoading) return
+
+		const tout = setTimeout(() => {
+			const universeState: UniverseState = store.getState().universe
+
+			if (!universeState.isLoading) return
+
+			console.log("UniversePlayer: timeout reached, resetting player")
+
+			setKey(`universe-${generateKey()}`)
+		}, 3000)
+
+		return () => {
+			clearTimeout(tout)
+		}
+	}, [universeState.isLoading, universeState.sourceUrlValue])
+
+	if (!universeState.sourceUrlValue) return null
 
 	return (
-		<div className="absolute w-screen h-screen pb-0 lg:pb-[56.25%] video-background z-0">
+		<div key={key} className="absolute w-screen h-screen pb-0 lg:pb-[56.25%] video-background z-0">
 			<YouTube
 				key={universeState.sourceUrlValue}
 				videoId={universeState.sourceUrlValue}
@@ -104,6 +144,7 @@ const UniversePlayer = () => {
 				iframeClassName={"pointer-events-none absolute top-0 left-0 bottom-0 right-0 z-0"}
 				onPlay={onPlay}
 				onReady={onReady}
+				onEnd={onEnd}
 				onStateChange={onStateChange}
 				onError={onError}
 			/>

@@ -12,6 +12,10 @@ export interface TimerAdderItemProps {
 	value: number
 }
 
+export interface TimerSettingsProps {
+	closeSettings?: () => void
+}
+
 export interface TimerProps {
 	timerState: pomodoroTimerStates
 	timerMinutes: string
@@ -39,4 +43,10 @@ export interface ShortBreakIndicatorItemProps {
 
 export interface PomodoroSettingsButtonProps {
 	onClick: () => void
+}
+
+export interface PomodoroSettingsNumberInputProps {
+	title: string
+	value: number
+	onChange: (value: number) => void
 }

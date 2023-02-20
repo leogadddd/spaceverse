@@ -13,21 +13,37 @@ import DividerComponent from '../divider';
 import { CgLayoutGridSmall } from 'react-icons/cg';
 import { useDispatch, useSelector } from 'react-redux';
 import { SettingsFieldState } from '../../util/interfaces';
+import { subscribersSettingsFields } from '../../util/enums/subscribersName';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import { creators } from '../../lib';
-import { subscribersSettingsFields } from '../../util/enums/subscribersName';
+import { Widget as WidgetState } from '../../util/interfaces/state/widgetsState';
 
 export const Widget: FC<WidgetsContainerProps> = (props) => {
 
-	const { title, statusText, minWidth, maxWidth, defaultPosition, settings, children } = props
+	const { title, statusText, minWidth, maxWidth, defaultPosition, alwaysOpen, settings, children } = props
+	
+	const widgetId = formatString4Class(title) + '-widget'
 
 	const dispatch = useDispatch()
+	const {
+		subscribeWidget,
+		unsubscribeWidget,
+		updateOrder,
+		updatePosition,
+		setActiveWidget,
+		setMinimizedWidget,
+	} = bindActionCreators(creators, dispatch)
+
 	const settingsFieldState: SettingsFieldState | undefined = useSelector((state: any) => {
 		const settingsField = state.settings.settingsFields as SettingsFieldState[]
 		return settingsField.find((field) => field.name === subscribersSettingsFields.widgets.fancyMinimizer.name)
 	})
 
-	const widgetId = formatString4Class(title) + '-widget'
+	const widgetState: WidgetState | undefined = useSelector((state: any) => {
+		const widgets = state.widgets.widgets as WidgetState[]
+		return widgets.find((widget) => widget.id === widgetId)
+	})
+	
 	const self = useRef<HTMLDivElement>(null)
 
 	const [isMinimized, setIsMinimized] = useState(false)
@@ -53,7 +69,7 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 		})
 	}
 
-	const updatePosition = (e: any, data: { x: number; y: number }) => {
+	const updateWidgetPosition = (e: any, data: { x: number; y: number }) => {
 		if (!self.current) return
 		let { x, y } = data
 		const {
@@ -77,11 +93,12 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 	}
 
 	const handleDrag = useCallback((e: any, data: { x: number; y: number }) => {
-		updatePosition(e, data)
+		updateWidgetPosition(e, data)
 	}, [])
 
-	const handleStop = useCallback((e: any, data: { x: number; y: number }) => {
-
+	const handleDragStop = useCallback((e: any, data: { x: number; y: number }) => {
+		updateWidgetPosition(e, data)
+		updatePosition(widgetId, data)
 	}, [])
 
 	const handleMinimize = () => {
@@ -100,21 +117,38 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 
 	const onAnimationUpdate = () => {
 		updateWindow()
-		updatePosition(null, position)
+		updateWidgetPosition(null, position)
+	}
+
+	const onFocus = () => {
+		updateOrder(widgetId)
 	}
 
 	useEffect(() => {
+		subscribeWidget({
+			id: widgetId,
+			name: title,
+			isMinimized: isMinimized,
+			position: position,
+			isActive: false
+		})
+
+		return () => {
+			unsubscribeWidget(widgetId)
+		}
+	}, [])
+
+	useEffect(() => {
 		updateWindow()
-		updatePosition(null, position)
+		updateWidgetPosition(null, position)
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [self, isMinimized, isSettingsOpen, width, height])
+	}, [isMinimized, isSettingsOpen, width, height])
 
 	return (
 		<Draggable
 			position={position}
-			onDrag={handleDrag}
-			onStop={handleStop}
+			onStop={handleDragStop}
 			bounds={{
 				left: 0,
 				top: 0,
@@ -126,11 +160,14 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 			<div
 				key={widgetId}
 				ref={self}
+				id={widgetId}
+				onMouseDownCapture={onFocus}
 				className={`absolute shadow-lg bg-sv-light dark:bg-sv-dark pointer-events-auto corners overflow-hidden`}
 				style={{
 					minWidth: minWidth,
 					width: minWidth,
 					maxWidth: maxWidth,
+					zIndex: widgetState?.order,
 				}}
 			>
 				<WidgetBar
@@ -148,6 +185,7 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 					isSettingsOpen={isSettingsOpen}
 					settings={settings}
 					onAnimationUpdate={onAnimationUpdate}
+					isAlwaysOpen={alwaysOpen ? alwaysOpen : false}
 				>
 					{children}
 				</ContentComponent>
@@ -168,7 +206,7 @@ const WidgetSettings: FC<WidgetSettingsProps> = (props) => {
 				initial="initial"
 				animate="animate"
 				exit="initial"
-				onUpdate={onAnimationUpdate}
+				onUpdate={onAnimationUpdate ? onAnimationUpdate : undefined}
 			>
 				{settings}
 			</motion.div>
@@ -184,9 +222,35 @@ const WidgetSettings: FC<WidgetSettingsProps> = (props) => {
 
 const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 
-	const { children, settings, widgetId, isMinimized, isSettingsOpen, isFancyMinimized, onAnimationUpdate } = props
+	const { children, settings, widgetId, isMinimized, isSettingsOpen, isFancyMinimized, isAlwaysOpen, onAnimationUpdate } = props
 
 	if (isFancyMinimized) {
+
+		if (isAlwaysOpen) {
+			return (
+				<>
+					<motion.div
+						key={widgetId + '-content'}
+						initial={false}
+						animate={{
+							height: isMinimized ? 0 : 'auto',
+						}}
+						transition={{
+							duration: 0.2,
+							ease: 'easeInOut',
+						}}
+						onUpdate={onAnimationUpdate}
+					>
+						<DividerComponent />
+						{children}
+					</motion.div>
+					<AnimatePresence initial={false} mode="wait">
+						{isSettingsOpen && <WidgetSettings onAnimationUpdate={onAnimationUpdate} widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} />}
+					</AnimatePresence>
+				</>
+			)
+		}
+
 		return (
 			<>
 				<AnimatePresence initial={false} mode="wait">
@@ -214,13 +278,27 @@ const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 		)
 	}
 
+	if (isAlwaysOpen) {
+		return (
+			<>
+				<div style={{
+					height: isMinimized ? '0px' : 'auto',
+				}}>
+					<DividerComponent />
+					{children}
+				</div>
+				{isSettingsOpen && <WidgetSettings widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} />}
+			</>
+		)
+	}
+
 	return (
 		<>
 			{!isMinimized &&
 				<div>
 					<DividerComponent />
 					<div>
-						{props.children}
+						{children}
 					</div>
 				</div>
 			}

@@ -69,7 +69,6 @@ export const widgetOpenSettingsButton = {
 
 export const widgetContentVariants = {
 	initial: {
-		opacity: 0,
 		height: 0,
 		transition: {
 			duration: 0.2,
@@ -77,7 +76,6 @@ export const widgetContentVariants = {
 		}
 	},
 	animate: {
-		opacity: 1,
 		height: "auto",
 		transition: {
 			duration: 0.2,

@@ -1,5 +1,5 @@
 import { UniverseActionTypes } from "../../../util/enums";
-import { TUniverse } from "../../../util/types";
+import { TUniverse, TUniverseCategory } from "../../../util/types";
 
 interface universeActionSetUniverse {
 	type: UniverseActionTypes.SET_UNIVERSE;
@@ -8,7 +8,7 @@ interface universeActionSetUniverse {
 
 interface universeActionSetCategory {
 	type: UniverseActionTypes.SET_CATEGORY;
-	payload: TUniverse["category"];
+	payload: TUniverseCategory;
 }
 
 interface universeActionSetVolume {
@@ -21,4 +21,25 @@ interface universeActionSetBoolean {
 	value: boolean;
 }
 
-export type universeAction = universeActionSetUniverse | universeActionSetCategory | universeActionSetVolume | universeActionSetBoolean;
+interface universeActionSetCategories {
+	type: UniverseActionTypes.SET_CATEGORIES;
+	payload: TUniverseCategory[];
+}
+
+interface universeActionSetUniverses {
+	type: UniverseActionTypes.SET_UNIVERSES;
+	payload: TUniverse[];
+}
+
+interface universeActionSetPickedCategory {
+	type: UniverseActionTypes.SET_PICKED_CATEGORY;
+	value: number;
+}
+
+interface universeActionSetPickedUniverse {
+	type: UniverseActionTypes.SET_PICKED_UNIVERSE;
+	value: number;
+}
+
+
+export type universeAction = universeActionSetUniverse | universeActionSetCategory | universeActionSetVolume | universeActionSetBoolean | universeActionSetCategories | universeActionSetUniverses | universeActionSetPickedCategory | universeActionSetPickedUniverse;

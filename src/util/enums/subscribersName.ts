@@ -2,8 +2,8 @@ export const subscribersSettingsFields = {
 	widgets: {
 		fancyMinimizer: {
 			name: 'fancyMinimizer',
-			label: 'Fancy Minimizer',
-			tooltip: 'Makes minimizing widgets ✨FANCIER✨',
+			label: 'Fancy Minimizer (BETA)',
+			tooltip: 'Makes minimizing widgets ✨FANCIER✨. (Laggy on some computers)',
 		}
 	},
 	features: {

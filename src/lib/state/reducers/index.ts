@@ -3,12 +3,14 @@ import universeReducer from "./universeReducer";
 import windowMenuReducer from "./windowMenuReducer";
 import settingsReducer from "./settingsReducer";
 import pomodoroReducer from "./pomodoroReducer";
+import widgetsReducer from "./widgetsReducer";
 
 export const reducers = combineReducers({
 	universe: universeReducer,
 	windowMenu: windowMenuReducer,
 	settings: settingsReducer,
-	pomodoro: pomodoroReducer
+	pomodoro: pomodoroReducer,
+	widgets: widgetsReducer
 });
 
 export default reducers;

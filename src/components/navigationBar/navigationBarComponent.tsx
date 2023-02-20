@@ -71,7 +71,7 @@ const NavigationLayout: FC<NavigationBarLayoutProps> = (props) => {
 	const barLocation = locationStyle[location] || locationStyle[NavigationLocation.Default]
 
 	return (
-		<div className={`absolute ${barLocation} z-30 flex flex-row justify-between m-2 h-[40px] pointer-events-none`}>
+		<div className={`absolute ${barLocation} z-[1000] flex flex-row justify-between m-2 h-[40px] pointer-events-none`}>
 			{children}
 		</div>
 	)

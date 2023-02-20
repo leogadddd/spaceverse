@@ -1,3 +1,5 @@
+import { TUniverse, TUniverseCategory } from "../../types";
+
 export interface UniverseState {
 	docId: string | null;
 	id: string | null;
@@ -7,11 +9,19 @@ export interface UniverseState {
 	sourceUrlValue: string | null;
 	volume: number | 0;
 	contributer: string | null; // TODO: Change to User
-	category: UniverseCategoryState | string | null;
 	isLoading: boolean | null;
 	isMuted: boolean | null;
 	isFavorite: boolean | null;
 	startTime: number | null;
+	endTime: number | null;
+	manager: {
+		categories: TUniverseCategory[];
+		universes: TUniverse[];
+		pickedCategory: TUniverseCategory | null;
+		pickedUniverse: TUniverse | null;
+		categoryIndex: number;
+		universeIndex: number;
+	}
 }
 
 export interface UniverseCategoryState {

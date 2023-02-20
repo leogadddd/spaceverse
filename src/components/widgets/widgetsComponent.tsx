@@ -1,11 +1,12 @@
 import { bindActionCreators } from "@reduxjs/toolkit"
-import { useEffect } from "react"
+import { createContext, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { useDispatch } from "react-redux"
 import { creators } from "../../lib"
 import { settingsFieldType } from "../../util/enums"
 import { subscribersSettingsFields } from "../../util/enums/subscribersName"
-import { Pomodoro, UniverseControlsDynamic, WorldClock } from "./gizmos"
+import { Pomodoro, SpotifyPlaylistPlayer, UniverseControlsDynamic, WorldClock } from "./gizmos"
+import { BrownNoiseGenerator } from "./gizmos/BrownNoiseGenerator"
 
 export const WidgetsComponent = () => {
 
@@ -31,6 +32,8 @@ export const WidgetsComponent = () => {
 			<WorldClock />
 			<UniverseControlsDynamic />
 			<Pomodoro />
+			<SpotifyPlaylistPlayer />
+			<BrownNoiseGenerator />
 		</>
 		, document.getElementById("widgetsInterface") as Element)
 }

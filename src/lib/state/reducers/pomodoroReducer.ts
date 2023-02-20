@@ -65,7 +65,8 @@ export const pomodoroReducer = (state = initialState, action: pomodoroAction) =>
 				...state,
 				pomodoro: state.pomodoroDefaultDuration * 60,
 				shortBreak: state.shortBreakDefaultDuration * 60,
-				longBreak: state.longBreakDefaultDuration * 60
+				longBreak: state.longBreakDefaultDuration * 60,
+				shortBreaks: 0,
 			}
 		case PomodoroActionTypes.TIMER_START:
 			return {

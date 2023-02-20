@@ -24,6 +24,9 @@ module.exports = {
 				"sv-light10": "#e2eafe1A",
 				"sv-dark10": "#1E1E1E1A",
 				
+				"spcms-dark": "#171c1c",
+				"spcms-darkup": "#202727",
+				"spcms-darkupup": "#293131",
 			},
 			fontFamily: {
 				'koulen': ["Koulen", "sans-serif"],

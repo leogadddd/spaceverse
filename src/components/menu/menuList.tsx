@@ -112,7 +112,7 @@ const MenuListLayout: FC<PropsWithChildren> = (props) => {
 	const locationStyle = [
 		'bottom-0 pb-[56px] top-0 left-0 right-0 justify-end', //48px
 		'top-0 pt-[56px] bottom-0 left-0 right-0 justify-start',
-		'top-0 pt-[56px] bottom-0 left-0 right-0 justify-start',
+		'bottom-0 pb-[56px] top-0 left-0 right-0 justify-end',
 	]
 
 	const barLocation = locationStyle[location]

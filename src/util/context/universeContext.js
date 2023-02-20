@@ -1,22 +1,25 @@
 import React from 'react'
 
-const initialUniverseContext = {
-	universeCurrent: 0,
-	universeVolume: 0,
-	universeMute: false,
+const initialState = {
+	universeCurrentCategortIndex: 0,
+	universeCurrentCategory: null,
+	universeCurrentUniverseIndex: 0,
+	universeCurrentUniverse: null,
+	universeCurrentVolume: 0,
+	universeIsMuted: false,
 }
-const localStorageName = 'universeContext';
 
+const localStorageName = 'universeContext';
 
 const getInitialUniverse = () => {
 	if (typeof window !== 'undefined' && window.localStorage) {
-		const storedPrefs = window.localStorage.getItem('universeContext');
+		const storedPrefs = window.localStorage.getItem(localStorageName);
 		if (typeof storedPrefs === 'string') {
 			return JSON.parse(storedPrefs);
 		}
 
-		window.localStorage.setItem(localStorageName, JSON.stringify(initialUniverseContext));
-		return initialUniverseContext;
+		window.localStorage.setItem(localStorageName, JSON.stringify(initialState));
+		return initialState;
 		
 	}
 }

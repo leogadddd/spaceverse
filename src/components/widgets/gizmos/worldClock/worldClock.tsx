@@ -62,7 +62,7 @@ export const WorldClock = () => {
 		<Widget
 			title="Clock"
 			minWidth={200}
-			statusText={`${time?.hours}:${time?.minutes} ${time?.ampm}`}
+			statusText={`${is24Hour ? time?.hours24 : time?.hours}:${time?.minutes} ${time?.ampm}`}
 			defaultPosition={{ x: 10, y: 20 }}
 		>
 			<div className='pt-4 pb-4 flex flex-row justify-center items-center'>

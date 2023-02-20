@@ -1,4 +1,4 @@
-import { Account, SettingsMenu, WhatsNew } from "./menuItems"
+import { Account, DevTools, SettingsMenu, WhatsNew } from "./menuItems"
 
 
 
@@ -9,6 +9,9 @@ export const MenuComponent = () => {
 			<Account />
 			<SettingsMenu />
 			<WhatsNew />
+			{
+				process.env.NODE_ENV === "development" && <DevTools />
+			}
 		</>
 	)
 }

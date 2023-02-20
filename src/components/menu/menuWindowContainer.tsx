@@ -53,7 +53,7 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: .35 }}
 							exit={{ opacity: 0 }}
-							className="absolute inset-0 z-40 bg-black opacity-25 pointer-events-auto"
+							className="absolute inset-0 bg-black opacity-25 pointer-events-auto"
 						>
 						</motion.div>
 						<motion.div
@@ -61,7 +61,7 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 							animate={{ opacity: 1}}
 							exit={{ opacity: 0}}
 							transition={{ duration: 0.05 }}
-							className="z-40 absolute left-1/2 top-[25%] -translate-x-1/2 shadow-lg bg-sv-light dark:bg-sv-dark pointer-events-auto corners overflow-hidden"
+							className="	absolute left-1/2 top-[25%] -translate-x-1/2 shadow-lg bg-sv-light dark:bg-sv-dark pointer-events-auto corners overflow-hidden"
 							style={{
 								minWidth: minWidth,
 								width: minWidth,

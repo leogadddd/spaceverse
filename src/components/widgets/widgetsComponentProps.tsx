@@ -8,6 +8,7 @@ export interface WidgetsContainerProps {
 	children: React.ReactNode;
 	defaultPosition?: { x: number; y: number };
 	settings?: React.ReactNode;
+	alwaysOpen?: boolean;
 }
 
 export interface WidgetsBarProps {
@@ -43,4 +44,5 @@ export interface WidgetContentComponentProps {
 	children: React.ReactNode;
 	settings: React.ReactNode;
 	onAnimationUpdate: () => void;
+	isAlwaysOpen: boolean;
 }

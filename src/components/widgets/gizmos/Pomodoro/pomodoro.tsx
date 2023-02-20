@@ -1,19 +1,19 @@
 import Widget from "../../widgetContainer"
 import { VscDebugRestart } from "react-icons/vsc"
 import { FC, PropsWithChildren, useContext, useEffect, useState } from "react"
-import { ModeSwitcherItemProps, PomodoroSettingsButtonProps, ShortBreakIndicatorItemProps, ShortBreakIndicatorProps, TimerAdderItemProps, TimerControlsOnStartProps, TimerControlsProps, TimerProps } from "./pomodoroProps"
+import { ModeSwitcherItemProps, PomodoroSettingsNumberInputProps, ShortBreakIndicatorItemProps, ShortBreakIndicatorProps, TimerAdderItemProps, TimerControlsOnStartProps, TimerControlsProps, TimerProps, TimerSettingsProps } from "./pomodoroProps"
 import { pomodoroAdderTime, PomodoroState } from "../../../../util/interfaces/state/pomodoroState"
 import { useDispatch, useSelector } from "react-redux"
 import { creators } from "../../../../lib"
 import { bindActionCreators } from "@reduxjs/toolkit"
 import { store } from "../../../../lib"
 import { pomodoroStates, pomodoroTimerStates } from "../../../../util/enums/pomodoro"
-import { GoGear } from 'react-icons/go';
 import { PomodoroContext } from "../../../../util/context/pomodoroContext"
 import DividerComponent from "../../../divider"
 import { AnimatePresence, motion } from "framer-motion"
 import { SettingsFieldState } from "../../../../util/interfaces"
 import { subscribersSettingsFields } from "../../../../util/enums/subscribersName"
+import { playSound } from "../../../../util/soundPlayer"
 
 export const Pomodoro = () => {
 
@@ -32,19 +32,26 @@ export const Pomodoro = () => {
 	const pomodoroState: PomodoroState = useSelector((state: any) => state.pomodoro)
 	const pomodoroContext = useContext(PomodoroContext)
 
+	const timerStartSound = document.getElementById("timerStartFx") as HTMLAudioElement
+	const timerStopSound = document.getElementById("timerStopFx") as HTMLAudioElement
+	const timerCompleteSound = document.getElementById("timerCompleteFx") as HTMLAudioElement
+
 	const [timerMinutes, setTimerMinutes] = useState<string>("00")
 	const [timerSeconds, setTimerSeconds] = useState<string>("00")
 
 	const onStart = () => {
 		if (pomodoroState.timerState === pomodoroTimerStates.STOP || pomodoroState.timerState === pomodoroTimerStates.PAUSE) {
+			playSound(timerStartSound)
 			setPomodoroTimerState(pomodoroTimerStates.START)
 			updateTimer()
 		} else {
+			playSound(timerStopSound)
 			setPomodoroTimerState(pomodoroTimerStates.PAUSE)
 		}
 	}
 
 	const onReset = () => {
+		if (pomodoroState.timerState !== pomodoroTimerStates.STOP) playSound(timerStopSound)
 		setPomodoroTimerState(pomodoroTimerStates.STOP)
 		pomodoroTimerReset()
 	}
@@ -57,6 +64,7 @@ export const Pomodoro = () => {
 
 		if (_pomodoroState[_pomodoroState.state] === 0) {
 			pomodoroTimerComplete()
+			playSound(timerCompleteSound)
 		}
 	}
 
@@ -144,7 +152,7 @@ export const Pomodoro = () => {
 		<Widget
 			title="Timer"
 			statusText={statusText()}
-			minWidth={370}
+			minWidth={400}
 			defaultPosition={{ x: 70, y: 40 }}
 			settings={<TimerSettings />}
 		>
@@ -167,17 +175,151 @@ export const Pomodoro = () => {
 	)
 }
 
-export const TimerSettings: FC = () => {
+export const TimerSettings: FC<TimerSettingsProps> = (props) => {
+
+	const dispatch = useDispatch()
+	const {
+		setPomodoroStateDefaultDuration,
+		setPomodoroMaxShortBreaks,
+		pomodoroTimerResetAll
+	} = bindActionCreators(creators, dispatch)
+	const pomodoroContext = useContext(PomodoroContext)
+	const pomodoroState: PomodoroState = useSelector((state: any) => state.pomodoro)
+
+
+	const [isValueChanged, setIsValueChanged] = useState(false)
+	const [pomodoroDefault, setPomodoroDefault] = useState(pomodoroState.pomodoroDefaultDuration)
+	const [shortBreakDefault, setShortBreakDefault] = useState(pomodoroState.shortBreakDefaultDuration)
+	const [longBreakDefault, setLongBreakDefault] = useState(pomodoroState.longBreakDefaultDuration)
+	const [pomodoroMaxShortBreak, setPomodoroMaxShortBreak] = useState(pomodoroState.maxShortBreaks)
+
+	const saveSettings = () => {
+		setPomodoroStateDefaultDuration({
+			type: pomodoroStates.POMODORO,
+			value: pomodoroDefault
+		})
+
+		setPomodoroStateDefaultDuration({
+			type: pomodoroStates.SHORT_BREAK,
+			value: shortBreakDefault
+		})
+
+		setPomodoroStateDefaultDuration({
+			type: pomodoroStates.LONG_BREAK,
+			value: longBreakDefault
+		})
+
+		setPomodoroMaxShortBreaks(pomodoroMaxShortBreak)
+
+		pomodoroTimerResetAll()
+
+		pomodoroContext.setCtx({
+			...pomodoroContext.ctx,
+			pomodoroDefault,
+			shortBreakDefault,
+			longBreakDefault,
+		})
+
+		setIsValueChanged(false)
+	}
+
+	useEffect(() => {
+		setIsValueChanged(false)
+
+		if (pomodoroDefault !== pomodoroState.pomodoroDefaultDuration) setIsValueChanged(true)
+		if (shortBreakDefault !== pomodoroState.shortBreakDefaultDuration) setIsValueChanged(true)
+		if (longBreakDefault !== pomodoroState.longBreakDefaultDuration) setIsValueChanged(true)
+		if (pomodoroMaxShortBreak !== pomodoroState.maxShortBreaks) setIsValueChanged(true)
+
+		if(pomodoroDefault < 1) setIsValueChanged(false)
+		if(shortBreakDefault < 1) setIsValueChanged(false)
+		if(longBreakDefault < 1) setIsValueChanged(false)
+		if(pomodoroMaxShortBreak < 1) setIsValueChanged(false)
+
+	}, [pomodoroDefault, shortBreakDefault, longBreakDefault, pomodoroMaxShortBreak])
+
 	return (
 		<div>
 			<DividerComponent />
 			<div className="flex flex-col gap-[3px] px-5 py-4">
-				<div className="flex items-center">
-					<h1 className="text-md text-sv-black dark:text-sv-white">
-						Settings
-					</h1>
+				<div className="flex flex-col gap-6 pb-3">
+					<div className="flex flex-col">
+						<h1 className="text-md text-sv-black dark:text-sv-white pb-2 font-semibold">
+							Default Durations (in minutes)
+						</h1>
+						<div className="flex items-center justify-between gap-3">
+							<SettingsNumberInput
+								title="Pomodoro"
+								value={pomodoroDefault}
+								onChange={(value) => setPomodoroDefault(value)}
+							/>
+							<SettingsNumberInput
+								title="Short Break"
+								value={shortBreakDefault}
+								onChange={(value) => setShortBreakDefault(value)}
+							/>
+							<SettingsNumberInput
+								title="Long Break"
+								value={longBreakDefault}
+								onChange={(value) => setLongBreakDefault(value)}
+							/>
+						</div>
+					</div>
+					<div>
+						<h1 className="text-md text-sv-black dark:text-sv-white pb-2 font-semibold">
+							Max Short Breaks
+						</h1>
+						<div className="flex items-center justify-between gap-3">
+							<SettingsNumberInput
+								title="Max Short Breaks"
+								value={pomodoroMaxShortBreak}
+								onChange={(value) => setPomodoroMaxShortBreak(value)}
+							/>
+						</div>
+					</div>
 				</div>
+				{
+					isValueChanged && (
+						<div className="flex gap-2 justify-between py-3 pb-0 pt-7">
+
+							<button onClick={saveSettings} className="bg-teal-500 dark:bg-teal-700 flex-1 corners py-2">
+								<h1 className="text-sm text-sv-black dark:text-sv-white opacity-75">
+									Save
+								</h1>
+							</button>
+
+						</div>
+					)
+				}
 			</div>
+		</div>
+	)
+}
+
+export const SettingsNumberInput: FC<PomodoroSettingsNumberInputProps> = (props) => {
+
+	const { title, value, onChange } = props
+
+	return (
+		<div className="flex flex-col gap-1">
+			<h1 className="text-sm text-sv-black dark:text-sv-white opacity-75">
+				{title}
+			</h1>
+			<input
+				className="text-sm text-sv-black dark:text-sv-white bg-transparent w-full p-2 py-1 px-3 corners ring-1 dark:ring-sv-light35 ring-sv-dark35"
+				type="number"
+				value={value}
+				onChange={(e) => {
+					if (e.target.value === "") onChange(0)
+					
+					if(e.target.value.startsWith("0") && e.target.value.length > 1) e.target.value = e.target.value.slice(1)
+					
+					const parsedValue = parseInt(e.target.value)
+					if (parsedValue >= 0) onChange(parsedValue)
+				}}
+				name="LongBreakDefaultDurationInput"
+				id="LongBreakDefaultDurationInput"
+			/>
 		</div>
 	)
 }
@@ -396,7 +538,10 @@ export const ShortBreakIndicatorItem: FC<ShortBreakIndicatorItemProps> = (props)
 	const { active } = props
 
 	return (
-		<div className={`flex-1 h-[10px] rounded-full transition-colors duration-500 ${active ? "bg-teal-500 dark:bg-teal-700" : "bg-sv-dark35 dark:bg-sv-light35"}`}></div>
+		<div
+			className={`flex-1 h-[10px] rounded-full transition-colors duration-500 ${active ? "bg-teal-500 dark:bg-teal-700" : "bg-sv-dark35 dark:bg-sv-light35"}`}>
+
+		</div>
 	)
 }
 

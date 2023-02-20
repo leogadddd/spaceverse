@@ -23,6 +23,7 @@
     "react-scripts": "5.0.1",
     "react-youtube": "9.0.1",
     "redux-thunk": "^2.4.2",
+    "spotify-web-api-node": "^5.0.2",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
@@ -49,5 +50,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/spotify-web-api-node": "^5.0.7"
   }
 }
