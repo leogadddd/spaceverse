@@ -21,6 +21,9 @@ export interface UniverseState {
 		pickedUniverse: TUniverse | null;
 		categoryIndex: number;
 		universeIndex: number;
+		settings: {
+			autoNext: boolean;
+		}
 	}
 }
 

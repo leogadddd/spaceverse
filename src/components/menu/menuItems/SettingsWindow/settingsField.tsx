@@ -51,7 +51,7 @@ const ToggleFieldComponent = (props: ToggleFieldComponentProps) => {
 	)
 }
 
-const ToggleComponent: FC<ToggleComponentProps> = (props) => {
+export const ToggleComponent: FC<ToggleComponentProps> = (props) => {
 
 	const { name, checked, onChange } = props
 

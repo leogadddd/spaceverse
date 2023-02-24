@@ -29,9 +29,15 @@ export type TWindowMenuItem = {
 	icon: React.ReactNode;
 	isOpen: boolean;
 	data: any | null;
+	hasNewContent: boolean;
 }
 
 export type TWindowMenuItemToggle = {
 	name: string;
 	isOpen: boolean;
+}
+
+export type TWindowMenuItemHasNewContent = {
+	name: string;
+	hasNewContent: boolean;
 }

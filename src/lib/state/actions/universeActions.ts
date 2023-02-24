@@ -41,5 +41,10 @@ interface universeActionSetPickedUniverse {
 	value: number;
 }
 
+interface universeActionSetManagerSettings {
+	type: UniverseActionTypes.SET_AUTO_NEXT;
+	value: boolean;
+}
 
-export type universeAction = universeActionSetUniverse | universeActionSetCategory | universeActionSetVolume | universeActionSetBoolean | universeActionSetCategories | universeActionSetUniverses | universeActionSetPickedCategory | universeActionSetPickedUniverse;
+
+export type universeAction = universeActionSetManagerSettings | universeActionSetUniverse | universeActionSetCategory | universeActionSetVolume | universeActionSetBoolean | universeActionSetCategories | universeActionSetUniverses | universeActionSetPickedCategory | universeActionSetPickedUniverse;

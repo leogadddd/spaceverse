@@ -1,14 +1,16 @@
-import { FC, useContext, useEffect, useState } from "react"
+import { FC, useContext, useEffect, useRef, useState } from "react"
 import { SpotifyPlaylistContext } from "../../../../util/context/spotifyPlaylistContext"
 import { getPlaylistIdFromUrl } from "../../../../util/urlParser"
 import Widget from "../../widgetContainer"
 import { FaTrashAlt } from "react-icons/fa"
 import { TrashButtonProps } from "./spotifyPlaylistPlayerProps"
+import { SlSocialSpotify } from "react-icons/sl"
 
 
 export const SpotifyPlaylistPlayer = () => {
 
 	const spotifyPlaylistContext = useContext(SpotifyPlaylistContext)
+	const spotifyIframeRef = useRef<HTMLIFrameElement>(null)
 	const defaultPlaylist = [
 		{
 			name: "Spaceverse",
@@ -22,7 +24,7 @@ export const SpotifyPlaylistPlayer = () => {
 		...spotifyPlaylistContext?.ctx.playlist
 	]
 
-	
+
 	const [spotifyPlaylistIndex, setSpotifyPlaylistIndex] = useState(
 		mixedPlaylist.length > 1
 			? spotifyPlaylistContext?.ctx.playlistIndex
@@ -112,8 +114,19 @@ export const SpotifyPlaylistPlayer = () => {
 		setSpotifyUrl(mixedPlaylist.length > 1 ? mixedPlaylist[mixedPlaylist.length - 2].urlId : mixedPlaylist[0].urlId)
 	}
 
+	const setVolume = () => {
+		const iframe = spotifyIframeRef.current;
+		iframe!.contentWindow?.postMessage(
+			{
+				type: "setVolume",
+				value: .5
+			},
+			"*"
+		);
+	}
+
 	return (
-		<Widget title="Music" minWidth={400} alwaysOpen defaultPosition={{ x: 30, y: 20 }}>
+		<Widget title="Music" label="Music" icon={SlSocialSpotify} minWidth={400} alwaysOpen defaultPosition={{ x: 30, y: 20 }}>
 			<div className="p-2 py-2 pb-1 flex justify-between items-center gap-2">
 				<select
 					className="h-[35px] px-3 flex-1 corners w-full bg-sv-dark10 dark:bg-sv-light10 text-sm text-sv-black dark:text-sv-white"
@@ -137,7 +150,7 @@ export const SpotifyPlaylistPlayer = () => {
 				</select>
 				{
 					spotifyPlaylistIndex > defaultPlaylist.length - 1 &&
-						<TrashButton onClick={handleDeleteSpotifyPlaylist} />
+					<TrashButton onClick={handleDeleteSpotifyPlaylist} />
 
 				}
 			</div>
@@ -146,6 +159,7 @@ export const SpotifyPlaylistPlayer = () => {
 					key="spotifyPlaylistPlayer"
 					title="Spotify Playlist Player"
 					id="spotifyPlaylistPlayer"
+					ref={spotifyIframeRef}
 					src={`https://open.spotify.com/embed/playlist/${spotifyUrl}?utm_source=oembed&theme=0`}
 					width="100%" height="375"
 					allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"

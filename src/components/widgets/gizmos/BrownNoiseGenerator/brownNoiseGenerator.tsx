@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import Widget from "../../widgetContainer"
 import { UniverseVolumeButton } from "../universeControls/universeControlsDynamic"
+import { CgLoadbarSound } from "react-icons/cg"
 
 export const BrownNoiseGenerator = () => {
 
@@ -107,7 +108,7 @@ export const BrownNoiseGenerator = () => {
 	}, [volume, gainNode])
 
 	return (
-		<Widget title="Brown Noise Generator" minWidth={300} defaultPosition={{ x: 70, y: 10 }}>
+		<Widget title="Brown Noise Generator" label="Noise" icon={CgLoadbarSound} iconSize={24} minWidth={300} defaultPosition={{ x: 70, y: 10 }}>
 			<div className="flex p-4 items-center gap-3 ">
 				<UniverseVolumeButton onToggleMute={handleMute} volume={volume} isMuted={isMuted} />
 				<input

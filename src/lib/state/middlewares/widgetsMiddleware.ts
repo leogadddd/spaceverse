@@ -1,4 +1,5 @@
 import { WidgetsActionTypes } from "../../../util/enums/widgetsActionTypes"
+import { convertPercentageToPixels, convertPixelToPercentage } from "../../../util/percentageDimensionConverter"
 import { WidgetsAction } from "../actions"
 
 export const localStorageWidgetsName = "widgetsContext"
@@ -8,17 +9,21 @@ export const widgetsMiddleware = (store: any) => (next: any) => (action: Widgets
 	const result = next(action)
 
 	const actionType = action.type
+	const storeState = store.getState()
 
 	switch (actionType) {
 		case WidgetsActionTypes.SUBSCRIBE_WIDGET:
-			let { id, name, position, isMinimized, isActive } = action.payload
+			let { id, name, position, isMinimized, isActive, size } = action.payload
 
 			let widget = {
 				id: id,
 				name: name,
-				position: position,
+				position: {
+					x: convertPixelToPercentage(position.x, storeState.widgets.WindowSizes.width - size.width),
+					y: convertPixelToPercentage(position.y, storeState.widgets.WindowSizes.height - size.height)
+				},
 				isMinimized: isMinimized,
-				isActive: isActive
+				isActive: isActive,
 			}
 
 			let widgetsContext = localStorage.getItem(localStorageWidgetsName)
@@ -30,15 +35,12 @@ export const widgetsMiddleware = (store: any) => (next: any) => (action: Widgets
 				if (widgetIndex === -1) {
 					widgetsContextArray.push(widget)
 				} else {
-					widgetsContextArray[widgetIndex] = {
-						id: id,
-						name: name,
-						position: widgetsContextArray[widgetIndex].position,
-						isMinimized: widgetsContextArray[widgetIndex].isMinimized,
-						isActive: widgetsContextArray[widgetIndex].isActive
-					}
+					widgetsContextArray[widgetIndex] = {...widget}
 
-					action.payload.position = widgetsContextArray[widgetIndex].position
+					action.payload.position = {
+						x: convertPercentageToPixels(widgetsContextArray[widgetIndex].position.x, storeState.widgets.WindowSizes.width - size.width),
+						y: convertPercentageToPixels(widgetsContextArray[widgetIndex].position.y, storeState.widgets.WindowSizes.height - size.height)
+					}
 					action.payload.isMinimized = widgetsContextArray[widgetIndex].isMinimized
 					action.payload.isActive = widgetsContextArray[widgetIndex].isActive
 				}
@@ -56,8 +58,8 @@ export const widgetsMiddleware = (store: any) => (next: any) => (action: Widgets
 				const widgetIndex2 = widgetsContextArray2.findIndex((widget: any) => widget.id === id2)
 				if (widgetIndex2 !== -1) {
 					widgetsContextArray2[widgetIndex2].position = {
-						x: x,
-						y: y
+						x: convertPixelToPercentage(x, storeState.widgets.WindowSizes.width - storeState.widgets.widgets[widgetIndex2].size.width),
+						y: convertPixelToPercentage(y, storeState.widgets.WindowSizes.height - storeState.widgets.widgets[widgetIndex2].size.height)
 					}
 					widgetsContext2 = JSON.stringify(widgetsContextArray2)
 					localStorage.setItem(localStorageWidgetsName, widgetsContext2)

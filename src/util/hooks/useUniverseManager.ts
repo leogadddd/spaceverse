@@ -7,14 +7,15 @@ import { query, collection, doc, onSnapshot, where } from "firebase/firestore"
 import { Category, categoryDatabaseName, universeDatabaseName } from "../../cms/util"
 import { UniverseState } from "../interfaces"
 import { UniverseContext } from "../context/universeContext"
-import { useNavigate } from "react-router"
+import { useSearchParams, useNavigate } from "react-router-dom"
 
 export const useUniverseManager = () => {
 
 	const universeState = useSelector((state: any) => state.universe)
-	const universeManagerState : UniverseState["manager"] = useSelector((state: any) => state.universe.manager)
+	const universeManagerState: UniverseState["manager"] = useSelector((state: any) => state.universe.manager)
 	const universeContext = useContext(UniverseContext)
-	
+
+	const [searchParams, setSearchParams] = useSearchParams();
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const {
@@ -61,7 +62,7 @@ export const useUniverseManager = () => {
 		const index = universeManagerState.universeIndex
 		const id = universeManagerState.universes[index]
 
-		if(!id) return
+		if (!id) return
 
 		const universeQuery = query(collection(db, universeDatabaseName), where("id", "==", id))
 		const universeUnSubscribe = onSnapshot(universeQuery, (querySnapshot) => {
@@ -84,6 +85,10 @@ export const useUniverseManager = () => {
 				universeCurrentUniverseIndex: index,
 				universeCurrentUniverse: universe
 			})
+
+			navigate({
+				search: `?univ=${universe.id}`,
+			})
 		})
 
 		return () => {
@@ -95,9 +100,9 @@ export const useUniverseManager = () => {
 		const categoriesQuery = query(collection(db, categoryDatabaseName))
 
 		const categoriesUnSubscribe = onSnapshot(categoriesQuery, (querySnapshot) => {
-			const categories: Category[] = [] 
+			const categories: Category[] = []
 			querySnapshot.docs.forEach((doc) => {
-				if(doc.data().universes.length === 0) return
+				if (doc.data().universes.length === 0) return
 
 				categories.push({
 					id: doc.data().id,
@@ -107,9 +112,42 @@ export const useUniverseManager = () => {
 				})
 			})
 
+
 			setUniverseCategories(categories)
-			setUniversePickedCategory(universeContext.ctx?.universeCurrentCategortIndex ?? 0)
-			setUniversePickedUniverse(universeContext.ctx?.universeCurrentUniverseIndex ?? 0)
+		
+			let universeIndex = 0
+			let categoryIndex = 0
+
+			if (searchParams.get("univ") === null) {
+
+				const randomCategory = categories[Math.floor(Math.random() * universeManagerState.categories.length)]
+				const randomUniverse = randomCategory.universes[Math.floor(Math.random() * randomCategory.universes.length)]
+
+				universeIndex = universeContext.ctx.universeCurrentUniverseIndex ?? randomCategory.universes.indexOf(randomUniverse)
+				categoryIndex = universeContext.ctx.universeCurrentCategortIndex ?? categories.indexOf(randomCategory)
+			} else {
+				const universeId = parseInt(searchParams.get("univ") as string)
+				universeContext.setCtx({
+					...universeContext.ctx,
+					universeCurrent: universeId,
+				})
+	
+				const category = categories.find((category) => category.universes.includes(universeId))
+
+				if (category) {
+					categoryIndex = categories.indexOf(category)
+					universeIndex = category.universes.indexOf(universeId)
+				} else {
+					const randomCategory = categories[Math.floor(Math.random() * universeManagerState.categories.length)]
+					const randomUniverse = randomCategory.universes[Math.floor(Math.random() * randomCategory.universes.length)]
+
+					universeIndex = universeContext.ctx.universeCurrentUniverseIndex ?? randomCategory.universes.indexOf(randomUniverse)
+					categoryIndex = universeContext.ctx.universeCurrentCategortIndex ?? categories.indexOf(randomCategory)
+				}
+			}
+
+			setUniversePickedCategory(categoryIndex ?? 0)
+			setUniversePickedUniverse(universeIndex ?? 0)
 		})
 
 

@@ -6,6 +6,7 @@ import { settingsFieldType } from "../../../../util/enums"
 import { subscribersSettingsFields } from "../../../../util/enums/subscribersName"
 import { SettingsFieldState } from "../../../../util/interfaces"
 import Widget from "../../widgetContainer"
+import { AiOutlineClockCircle } from "react-icons/ai"
 
 export const WorldClock = () => {
 
@@ -61,6 +62,8 @@ export const WorldClock = () => {
 	return (
 		<Widget
 			title="Clock"
+			icon={AiOutlineClockCircle}
+			label="Clock"
 			minWidth={200}
 			statusText={`${is24Hour ? time?.hours24 : time?.hours}:${time?.minutes} ${time?.ampm}`}
 			defaultPosition={{ x: 10, y: 20 }}

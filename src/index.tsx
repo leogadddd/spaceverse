@@ -19,20 +19,22 @@ const root = ReactDOM.createRoot(
 root.render(
 	<BrowserRouter>
 		<Provider store={store}>
-			<SpotifyPlaylistContextProvider>
-				<PomodoroContextProvider>
-					<UniverseContextProvider>
-						<ThemeProvider initialTheme>
-							<Routes>
-								<Route path="/" element={<App />} />
-								{
-									process.env.NODE_ENV === 'development' && <Route path="/cms" element={<Cms />} />
-								}
-							</Routes>
-						</ThemeProvider>
-					</UniverseContextProvider>
-				</PomodoroContextProvider>
-			</SpotifyPlaylistContextProvider>
+			<WidgetsContextProvider>
+				<SpotifyPlaylistContextProvider>
+					<PomodoroContextProvider>
+						<UniverseContextProvider>
+							<ThemeProvider initialTheme>
+								<Routes>
+									<Route path="/" element={<App />} />
+									{
+										process.env.NODE_ENV === 'development' && <Route path="/cms" element={<Cms />} />
+									}
+								</Routes>
+							</ThemeProvider>
+						</UniverseContextProvider>
+					</PomodoroContextProvider>
+				</SpotifyPlaylistContextProvider>
+			</WidgetsContextProvider>
 		</Provider>
 	</BrowserRouter>
 );

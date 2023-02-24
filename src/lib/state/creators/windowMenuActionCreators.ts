@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { WindowMenuActionTypes } from "../../../util/enums";
-import { TWindowMenuItem, TWindowMenuItemToggle } from "../../../util/types";
+import { TWindowMenuItem, TWindowMenuItemHasNewContent, TWindowMenuItemToggle } from "../../../util/types";
 import { windowMenuAction } from "../actions";
 
 export const toggleWindowMenu = (isOpen: boolean) => {
@@ -44,6 +44,15 @@ export const updateWindowMenuData = (data: any) => {
 		dispatch({
 			type: WindowMenuActionTypes.UPDATE_DATA,
 			payload: data,
+		});
+	}
+}
+
+export const toggleWindowMenuHasNewContent = (hasNewContent: TWindowMenuItemHasNewContent) => {
+	return (dispatch: Dispatch<windowMenuAction>) => {
+		dispatch({
+			type: WindowMenuActionTypes.HAS_NEW_CONTENT_TOGGLE,
+			payload: hasNewContent,
 		});
 	}
 }

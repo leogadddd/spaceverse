@@ -29,9 +29,9 @@ export const WidgetsComponent = () => {
 
 	return createPortal(
 		<>
-			<WorldClock />
 			<UniverseControlsDynamic />
 			<Pomodoro />
+			<WorldClock />
 			<SpotifyPlaylistPlayer />
 			<BrownNoiseGenerator />
 		</>

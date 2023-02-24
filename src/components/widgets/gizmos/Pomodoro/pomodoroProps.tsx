@@ -12,10 +12,6 @@ export interface TimerAdderItemProps {
 	value: number
 }
 
-export interface TimerSettingsProps {
-	closeSettings?: () => void
-}
-
 export interface TimerProps {
 	timerState: pomodoroTimerStates
 	timerMinutes: string

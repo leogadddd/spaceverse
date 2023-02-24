@@ -23,6 +23,9 @@ const initialState : UniverseState = {
 		pickedUniverse: null,
 		categoryIndex: 0,
 		universeIndex: 0,
+		settings: {
+			autoNext: false,
+		}
 	}
 }
 
@@ -91,6 +94,17 @@ export const universeReducer = (state = initialState, action: universeAction) =>
 					...state.manager,
 					universeIndex: action.value,
 					pickedUniverse: state.manager.universes[action.value]
+				}
+			}
+		case UniverseActionTypes.SET_AUTO_NEXT:
+			return {
+				...state,
+				manager: {
+					...state.manager,
+					settings: {
+						...state.manager.settings,
+						autoNext: action.value
+					}
 				}
 			}
 		default:

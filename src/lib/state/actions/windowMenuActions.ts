@@ -1,5 +1,5 @@
 import { WindowMenuActionTypes } from "../../../util/enums";
-import { TWindowMenuItem, TWindowMenuItemToggle } from "../../../util/types";
+import { TWindowMenuItem, TWindowMenuItemHasNewContent, TWindowMenuItemToggle } from "../../../util/types";
 
 interface windowMenuActionSetIsOpen {
 	type: WindowMenuActionTypes.TOGGLE_IS_OPEN;
@@ -26,4 +26,9 @@ interface windowMenuActionUpdateData {
 	payload: any;
 }
 
-export type windowMenuAction = windowMenuActionSetIsOpen | windowMenuActionSubscribeMenu | windowMenuActionUnsubscribeMenu | windowMenuActionToggleMenuItem | windowMenuActionUpdateData;
+interface windowMenuActionHasNewContentToggle {
+	type: WindowMenuActionTypes.HAS_NEW_CONTENT_TOGGLE;
+	payload: TWindowMenuItemHasNewContent
+}
+
+export type windowMenuAction = windowMenuActionHasNewContentToggle | windowMenuActionSetIsOpen | windowMenuActionSubscribeMenu | windowMenuActionUnsubscribeMenu | windowMenuActionToggleMenuItem | windowMenuActionUpdateData;

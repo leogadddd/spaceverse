@@ -57,6 +57,19 @@ export const windowMenuReducer = (state = initialState, action: windowMenuAction
 					return item;
 				})
 			}
+		case WindowMenuActionTypes.HAS_NEW_CONTENT_TOGGLE:
+			return {
+				...state,
+				menuItems: state.menuItems.map(item => {
+					if(item.name === action.payload.name) {
+						return {
+							...item,
+							hasNewContent: action.payload.hasNewContent
+						}
+					}
+					return item;
+				})
+			}
 		default:
 			return state;
 	}

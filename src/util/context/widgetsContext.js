@@ -22,12 +22,17 @@ export const WidgetsContext = React.createContext();
 export const WidgetsContextProvider = ({ children }) => {
 	const [ctx, setCtx] = React.useState(getInitialWidgets);
 
-	React.useEffect(() => {
-		localStorage.setItem(localStorageWidgetsName, JSON.stringify(ctx));
-	}, [ctx]);
+	// const rawSetWidgets = (rawWidgetsCtx) => {
+	// 	const stringifiedWidgetsCtx = JSON.stringify(rawWidgetsCtx);
+	// 	localStorage.setItem(localStorageWidgetsName, stringifiedWidgetsCtx);
+	// };
+
+	// React.useEffect(() => {
+	// 	rawSetWidgets(ctx);
+	// }, [ctx]);
 
 	return (
-		<WidgetsContext.Provider value={{ ctx, setCtx }}>
+		<WidgetsContext.Provider value={{ ctx }}>
 			{children}
 		</WidgetsContext.Provider>
 	);

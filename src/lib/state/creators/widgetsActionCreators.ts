@@ -50,3 +50,24 @@ export const setMinimizedWidget = (id: string, isMinimized: boolean) => {
 		}
 	}
 }
+
+export const setWindowSize = (width: number, height: number) => {
+	return {
+		type: WidgetsActionTypes.SET_WINDOW_SIZE,
+		payload: {
+			width,
+			height
+		}
+	}
+}
+
+export const setWidgetSize = (id: string, width: number, height: number) => {
+	return {
+		type: WidgetsActionTypes.SET_WIDGET_SIZE,
+		id,
+		payload: {
+			width,
+			height
+		}
+	}
+}

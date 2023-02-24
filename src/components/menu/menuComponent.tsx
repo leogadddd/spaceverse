@@ -6,7 +6,7 @@ export const MenuComponent = () => {
 
 	return (
 		<>
-			<Account />
+			{/* <Account /> */}
 			<SettingsMenu />
 			<WhatsNew />
 			{

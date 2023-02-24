@@ -1,9 +1,9 @@
 import React from 'react'
 
 const initialState = {
-	universeCurrentCategortIndex: 0,
+	universeCurrentCategortIndex: null,
 	universeCurrentCategory: null,
-	universeCurrentUniverseIndex: 0,
+	universeCurrentUniverseIndex: null,
 	universeCurrentUniverse: null,
 	universeCurrentVolume: 0,
 	universeIsMuted: false,

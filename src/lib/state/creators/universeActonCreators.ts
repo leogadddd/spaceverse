@@ -92,3 +92,12 @@ export const setUniversePickedUniverse = (pickedUniverse: number) => {
 		});
 	}
 }
+
+export const setUniverseAutoNext = (autoNext: boolean) => {
+	return (dispatch: Dispatch<universeAction>) => {
+		dispatch({
+			type: UniverseActionTypes.SET_AUTO_NEXT,
+			value: autoNext,
+		});
+	}
+}

@@ -5,30 +5,36 @@ import YouTube, { YouTubeProps } from "react-youtube"
 import { creators, store } from "../../lib";
 import { UniverseState } from "../../util/interfaces/state/universeState";
 import { generateKey } from "../../util/idGenerators";
+import useUniverseManager from "../../util/hooks/useUniverseManager";
 
 const UniversePlayer = () => {
 
 	const dispatch = useDispatch()
 	const { setUniverseLoading } = bindActionCreators(creators, dispatch)
+	const { NextUniverse } = useUniverseManager()
 	const universeState: UniverseState = useSelector((state: any) => state.universe)
+	const universeManagerState: UniverseState["manager"] = useSelector((state: any) => state.universe.manager)
 
 	const [isPlaying, setIsPlaying] = useState<boolean>(false)
 	const [target, setTarget] = useState<any>(null)
-	const [timer, setTimer] = useState<any>(null)
 	const [key, setKey] = useState<string>("")
 
 	const opts = {
 		height: "100%",
 		width: "100%",
+		host: "https://www.youtube-nocookie.com",
 		playerVars: {
 			mute: 0,
 			autoplay: 1,
 			controls: 0,
-			loop: 1,
+			loop: universeManagerState?.settings?.autoNext ? 0 : 1,
 			rel: 0,
-			modestBrand: 0,
+			modestBranding: 1,
+			iv_load_policy: 3,
+			showinfo: 0,
 			fs: 0,
-			playlist: universeState.sourceUrlValue
+			playlist: universeState.sourceUrlValue,
+			origin: window.location.origin,
 		}
 	}
 
@@ -75,10 +81,9 @@ const UniversePlayer = () => {
 	}
 
 	const onEnd: YouTubeProps["onEnd"] = (e) => {
-		// console.log('video has ended')
-		setIsPlaying(false)
+		if(universeManagerState?.settings?.autoNext)
+			NextUniverse()
 	}
-
 
 	useEffect(() => {
 		setKey(`universe-${generateKey()}`)
@@ -152,4 +157,6 @@ const UniversePlayer = () => {
 	)
 }
 
+
+//document.getElementById("Youtube-Video-Background").contentDocument.querySelectorAll(".ytp-ce-element").forEach((el) => el.remove());
 export default UniversePlayer

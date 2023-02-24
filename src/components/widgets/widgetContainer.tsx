@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, FC, useCallback } from 'react';
+import React, { useState, useEffect, useRef, FC, useCallback, useContext } from 'react';
 import Draggable from 'react-draggable';
 import useWindowSize from '../../util/hooks/useWindowSize';
 import { formatString4Class } from '../../util/stringformatter';
@@ -16,13 +16,16 @@ import { SettingsFieldState } from '../../util/interfaces';
 import { subscribersSettingsFields } from '../../util/enums/subscribersName';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import { creators } from '../../lib';
-import { Widget as WidgetState } from '../../util/interfaces/state/widgetsState';
+import { Widget as WidgetState, WidgetContextState } from '../../util/interfaces/state/widgetsState';
+import { WidgetsContext } from '../../util/context/widgetsContext';
 
 export const Widget: FC<WidgetsContainerProps> = (props) => {
 
-	const { title, statusText, minWidth, maxWidth, defaultPosition, alwaysOpen, settings, children } = props
-	
+	const { title, label, statusText, minWidth, maxWidth, defaultPosition, alwaysOpen, settings, icon, iconSize, children, defaultActive } = props
+
 	const widgetId = formatString4Class(title) + '-widget'
+
+	const widgetsContext = useContext(WidgetsContext)
 
 	const dispatch = useDispatch()
 	const {
@@ -30,8 +33,8 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 		unsubscribeWidget,
 		updateOrder,
 		updatePosition,
-		setActiveWidget,
 		setMinimizedWidget,
+		setWidgetSize,
 	} = bindActionCreators(creators, dispatch)
 
 	const settingsFieldState: SettingsFieldState | undefined = useSelector((state: any) => {
@@ -43,19 +46,34 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 		const widgets = state.widgets.widgets as WidgetState[]
 		return widgets.find((widget) => widget.id === widgetId)
 	})
-	
+
 	const self = useRef<HTMLDivElement>(null)
 
-	const [isMinimized, setIsMinimized] = useState(false)
-	const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+	const [isActive, setIsActive] = useState(
+		widgetsContext?.ctx.find((widget: WidgetContextState) => widget.id === widgetId) ? widgetsContext?.ctx.find((widget: WidgetContextState) => widget.id === widgetId)?.isActive : defaultActive || false
+	)
+	const [isMinimized, setIsMinimized] = useState(
+		widgetsContext?.ctx.find((widget: WidgetContextState) => widget.id === widgetId)?.isMinimized || false
+	)
+	const [isSettingsOpen, setIsSettingsOpen] = useState(
+		widgetsContext?.ctx.find((widget: WidgetContextState) => widget.id === widgetId)?.isSettingsOpen || false
+	)
 	const [windowSize, setWindowSize] = useState({
 		width: 0,
 		height: 0
 	})
 
 	const [position, setPosition] = useState({
-		x: defaultPosition ? convertPercentageToPixels(defaultPosition.x, window.innerWidth - windowSize.width) : 0,
-		y: defaultPosition ? convertPercentageToPixels(defaultPosition.y, window.innerHeight - windowSize.height) : 0
+		x: convertPercentageToPixels(
+			widgetsContext?.ctx.find((widget: WidgetContextState) => widget.id === widgetId)?.position?.x, window.innerWidth - windowSize.width
+		) || (
+				convertPercentageToPixels(defaultPosition?.x!, window.innerWidth - windowSize.width)
+			) || 0,
+		y: convertPercentageToPixels(
+			widgetsContext?.ctx.find((widget: WidgetContextState) => widget.id === widgetId)?.position?.y, window.innerHeight - windowSize.height
+		) || (
+				convertPercentageToPixels(defaultPosition?.y!, window.innerHeight - windowSize.height)
+			) || 0
 	})
 
 	const [width, height] = useWindowSize()
@@ -67,6 +85,11 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 			width: self.current.getBoundingClientRect().width,
 			height: self.current.getBoundingClientRect().height
 		})
+
+		setWidgetSize(widgetId,
+			self.current.getBoundingClientRect().width,
+			self.current.getBoundingClientRect().height
+		)
 	}
 
 	const updateWidgetPosition = (e: any, data: { x: number; y: number }) => {
@@ -92,10 +115,6 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 		setPosition({ x, y })
 	}
 
-	const handleDrag = useCallback((e: any, data: { x: number; y: number }) => {
-		updateWidgetPosition(e, data)
-	}, [])
-
 	const handleDragStop = useCallback((e: any, data: { x: number; y: number }) => {
 		updateWidgetPosition(e, data)
 		updatePosition(widgetId, data)
@@ -106,6 +125,7 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 			setIsSettingsOpen(false)
 
 		setIsMinimized(!isMinimized)
+		setMinimizedWidget(widgetId, !isMinimized)
 	}
 
 	const handleOpenSettings = () => {
@@ -128,9 +148,16 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 		subscribeWidget({
 			id: widgetId,
 			name: title,
+			label: label,
 			isMinimized: isMinimized,
 			position: position,
-			isActive: false
+			isActive: isActive,
+			icon: icon,
+			iconSize: iconSize,
+			size: {
+				width: windowSize.width,
+				height: windowSize.height
+			}
 		})
 
 		return () => {
@@ -139,12 +166,15 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 	}, [])
 
 	useEffect(() => {
+		setIsActive(widgetState?.isActive!)
+	}, [widgetState?.isActive])
+
+	useEffect(() => {
 		updateWindow()
 		updateWidgetPosition(null, position)
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isMinimized, isSettingsOpen, width, height])
-
+	}, [self, isMinimized, isSettingsOpen, width, height, widgetState?.isActive])
 	return (
 		<Draggable
 			position={position}
@@ -168,6 +198,9 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 					width: minWidth,
 					maxWidth: maxWidth,
 					zIndex: widgetState?.order,
+					opacity: isActive ? 1 : 0,
+					transition: settingsFieldState?.value ? 'opacity 0.1s ease-in-out' : 'none',
+					pointerEvents: isActive ? 'auto' : 'none',
 				}}
 			>
 				<WidgetBar
@@ -183,9 +216,10 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 					isMinimized={isMinimized}
 					isFancyMinimized={settingsFieldState?.value}
 					isSettingsOpen={isSettingsOpen}
-					settings={settings}
+					settings={settings!}
 					onAnimationUpdate={onAnimationUpdate}
 					isAlwaysOpen={alwaysOpen ? alwaysOpen : false}
+					onSettingsSave={handleOpenSettings}
 				>
 					{children}
 				</ContentComponent>
@@ -196,7 +230,11 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 
 const WidgetSettings: FC<WidgetSettingsProps> = (props) => {
 
-	const { settings, widgetId, isFancyMinimized, onAnimationUpdate } = props
+	const { settings: Settings, widgetId, isFancyMinimized, onAnimationUpdate, onSettingsSave } = props
+
+	const handleSaveSettings = () => {
+		onSettingsSave()
+	}
 
 	if (isFancyMinimized) {
 		return (
@@ -208,21 +246,21 @@ const WidgetSettings: FC<WidgetSettingsProps> = (props) => {
 				exit="initial"
 				onUpdate={onAnimationUpdate ? onAnimationUpdate : undefined}
 			>
-				{settings}
+				<Settings settingsSave={handleSaveSettings} widgetId={widgetId}  />
 			</motion.div>
 		)
 	}
 
 	return (
 		<div>
-			{settings}
+			<Settings settingsSave={handleSaveSettings} widgetId={widgetId} />
 		</div>
 	)
 }
 
 const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 
-	const { children, settings, widgetId, isMinimized, isSettingsOpen, isFancyMinimized, isAlwaysOpen, onAnimationUpdate } = props
+	const { children, settings, widgetId, isMinimized, isSettingsOpen, isFancyMinimized, isAlwaysOpen, onAnimationUpdate, onSettingsSave } = props
 
 	if (isFancyMinimized) {
 
@@ -245,7 +283,7 @@ const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 						{children}
 					</motion.div>
 					<AnimatePresence initial={false} mode="wait">
-						{isSettingsOpen && <WidgetSettings onAnimationUpdate={onAnimationUpdate} widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} />}
+						{isSettingsOpen && <WidgetSettings onAnimationUpdate={onAnimationUpdate} widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} onSettingsSave={onSettingsSave} />}
 					</AnimatePresence>
 				</>
 			)
@@ -272,7 +310,7 @@ const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 
 				</AnimatePresence>
 				<AnimatePresence initial={false} mode="wait">
-					{isSettingsOpen && <WidgetSettings onAnimationUpdate={onAnimationUpdate} widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} />}
+					{isSettingsOpen && <WidgetSettings onAnimationUpdate={onAnimationUpdate} widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} onSettingsSave={onSettingsSave} />}
 				</AnimatePresence>
 			</>
 		)
@@ -287,7 +325,7 @@ const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 					<DividerComponent />
 					{children}
 				</div>
-				{isSettingsOpen && <WidgetSettings widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} />}
+				{isSettingsOpen && <WidgetSettings widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} onSettingsSave={onSettingsSave} />}
 			</>
 		)
 	}
@@ -302,7 +340,7 @@ const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 					</div>
 				</div>
 			}
-			{isSettingsOpen && <WidgetSettings widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} />}
+			{isSettingsOpen && <WidgetSettings widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} onSettingsSave={onSettingsSave} />}
 		</>
 	)
 }
@@ -388,7 +426,7 @@ export const WidgetSettingsButton: FC<WidgetSettingsButtonProps> = (props) => {
 			initial='initial'
 			animate='animate'
 			exit='initial'
-			className='h-[40px] flex justify-end items-center w-7' onClick={openWidgetSettings}
+			className='h-[40px] flex justify-end items-center w-7 pointer-events-auto' onClick={openWidgetSettings}
 		>
 			<GoGear className="dark:text-sv-white text-sv-black" />
 		</motion.button>
@@ -400,7 +438,7 @@ export const WidgetMinimizerButton: FC<WidgetMinimizerProps> = (props) => {
 	const { isMinimized, setIsMinimized } = props
 
 	return (
-		<button className='h-[40px] flex justify-end items-center w-7' onClick={setIsMinimized}>
+		<button className='h-[40px] flex justify-end items-center w-7 pointer-events-auto' onClick={setIsMinimized}>
 			{isMinimized ?
 				<TbMaximize className="dark:text-sv-white text-sv-black" /> :
 				<TbMinimize className="dark:text-sv-white text-sv-black" />

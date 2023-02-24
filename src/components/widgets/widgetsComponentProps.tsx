@@ -1,14 +1,19 @@
 import { FC } from "react";
+import { IconType } from "react-icons/lib";
 
 export interface WidgetsContainerProps {
 	title: string;
+	label: string;
 	statusText?: string;
 	minWidth?: number;
 	maxWidth?: number;
 	children: React.ReactNode;
 	defaultPosition?: { x: number; y: number };
-	settings?: React.ReactNode;
+	defaultActive?: boolean;
+	settings?: FC<WidgetSettingsTemplateProps>;
 	alwaysOpen?: boolean;
+	icon?: IconType;
+	iconSize?: number;
 }
 
 export interface WidgetsBarProps {
@@ -22,9 +27,10 @@ export interface WidgetsBarProps {
 
 export interface WidgetSettingsProps {
 	widgetId: string;
-	settings: React.ReactNode;
+	settings: FC<WidgetSettingsTemplateProps>;
 	isFancyMinimized: boolean;
 	onAnimationUpdate?: () => void;
+	onSettingsSave: () => void;
 }
 
 export interface WidgetSettingsButtonProps {
@@ -42,7 +48,13 @@ export interface WidgetContentComponentProps {
 	isSettingsOpen: boolean;
 	isMinimized: boolean;
 	children: React.ReactNode;
-	settings: React.ReactNode;
-	onAnimationUpdate: () => void;
+	settings: FC<WidgetSettingsTemplateProps>;
 	isAlwaysOpen: boolean;
+	onAnimationUpdate: () => void;
+	onSettingsSave: () => void;
+}
+
+export interface WidgetSettingsTemplateProps {
+	widgetId: string;
+	settingsSave: () => void;
 }

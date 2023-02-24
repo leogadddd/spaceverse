@@ -1,7 +1,7 @@
 import Widget from "../../widgetContainer"
 import { VscDebugRestart } from "react-icons/vsc"
 import { FC, PropsWithChildren, useContext, useEffect, useState } from "react"
-import { ModeSwitcherItemProps, PomodoroSettingsNumberInputProps, ShortBreakIndicatorItemProps, ShortBreakIndicatorProps, TimerAdderItemProps, TimerControlsOnStartProps, TimerControlsProps, TimerProps, TimerSettingsProps } from "./pomodoroProps"
+import { ModeSwitcherItemProps, PomodoroSettingsNumberInputProps, ShortBreakIndicatorItemProps, ShortBreakIndicatorProps, TimerAdderItemProps, TimerControlsOnStartProps, TimerControlsProps, TimerProps } from "./pomodoroProps"
 import { pomodoroAdderTime, PomodoroState } from "../../../../util/interfaces/state/pomodoroState"
 import { useDispatch, useSelector } from "react-redux"
 import { creators } from "../../../../lib"
@@ -14,6 +14,8 @@ import { AnimatePresence, motion } from "framer-motion"
 import { SettingsFieldState } from "../../../../util/interfaces"
 import { subscribersSettingsFields } from "../../../../util/enums/subscribersName"
 import { playSound } from "../../../../util/soundPlayer"
+import { RxTimer } from "react-icons/rx"
+import { WidgetSettingsProps, WidgetSettingsTemplateProps } from "../../widgetsComponentProps"
 
 export const Pomodoro = () => {
 
@@ -151,10 +153,12 @@ export const Pomodoro = () => {
 	return (
 		<Widget
 			title="Timer"
+			label="Timer"
+			icon={RxTimer}
 			statusText={statusText()}
 			minWidth={400}
 			defaultPosition={{ x: 70, y: 40 }}
-			settings={<TimerSettings />}
+			settings={TimerSettings}
 		>
 			<div className="flex flex-col gap-[3px] px-5 py-4">
 				<ModeSwitcher />
@@ -175,13 +179,16 @@ export const Pomodoro = () => {
 	)
 }
 
-export const TimerSettings: FC<TimerSettingsProps> = (props) => {
+export const TimerSettings: FC<WidgetSettingsTemplateProps> = (props) => {
+
+	const { settingsSave } = props
 
 	const dispatch = useDispatch()
 	const {
 		setPomodoroStateDefaultDuration,
 		setPomodoroMaxShortBreaks,
-		pomodoroTimerResetAll
+		pomodoroTimerResetAll,
+
 	} = bindActionCreators(creators, dispatch)
 	const pomodoroContext = useContext(PomodoroContext)
 	const pomodoroState: PomodoroState = useSelector((state: any) => state.pomodoro)
@@ -221,6 +228,7 @@ export const TimerSettings: FC<TimerSettingsProps> = (props) => {
 		})
 
 		setIsValueChanged(false)
+		settingsSave()
 	}
 
 	useEffect(() => {
@@ -243,7 +251,7 @@ export const TimerSettings: FC<TimerSettingsProps> = (props) => {
 			<DividerComponent />
 			<div className="flex flex-col gap-[3px] px-5 py-4">
 				<div className="flex flex-col gap-6 pb-3">
-					<div className="flex flex-col">
+					<div className="	">
 						<h1 className="text-md text-sv-black dark:text-sv-white pb-2 font-semibold">
 							Default Durations (in minutes)
 						</h1>

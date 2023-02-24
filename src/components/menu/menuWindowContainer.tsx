@@ -11,7 +11,7 @@ import DividerComponent from "../divider"
 
 export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 
-	const { title, minWidth, maxWidth, minHeight, maxHeight, children, isDefaultOpen } = props
+	const { title, minWidth, maxWidth, minHeight, maxHeight, children, isDefaultOpen, hasNewContent } = props
 
 	const dispatch = useDispatch()
 	const {
@@ -36,7 +36,8 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 			name: title,
 			icon: "",
 			isOpen: isDefaultOpen || false,
-			data: null
+			data: null,
+			hasNewContent: hasNewContent || false
 		})
 
 		return () => { unsubscribeWindowMenu(title) }
@@ -51,9 +52,9 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 						<motion.div
 							onClick={toggleWindow}
 							initial={{ opacity: 0 }}
-							animate={{ opacity: .35 }}
+							animate={{ opacity: .15 }}
 							exit={{ opacity: 0 }}
-							className="absolute inset-0 bg-black opacity-25 pointer-events-auto"
+							className="absolute inset-0 bg-gray-800 pointer-events-auto"
 						>
 						</motion.div>
 						<motion.div
@@ -72,7 +73,7 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 							}}
 						>
 							<MenuWindowBar title={title} onClose={toggleWindow} />
-							<DividerComponent />
+							{/* <DividerComponent /> */}
 							{children}
 						</motion.div>
 					</>

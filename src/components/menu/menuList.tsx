@@ -15,13 +15,9 @@ export const MenuList: FC<MenuListProps> = (props) => {
 	const dispatch = useDispatch()
 	const { toggleWindowMenu } = bindActionCreators(creators, dispatch)
 	const windowMenuState: WindowMenuState = useSelector((state: any) => state.windowMenu)
-	const settingsFieldState: SettingsFieldState | undefined = useSelector((state: any) => {
-		const settingsField = state.settings.settingsFields as SettingsFieldState[]
-		return settingsField.find((field) => field.name === subscribersSettingsFields.navigationBar.navBarLocation.name)
-	})
 
 	const toggleIsOpen = () => {
-		toggleWindowMenu(!windowMenuState.isOpen)
+		toggleWindowMenu(false)
 	}
 
 	return (
@@ -31,7 +27,7 @@ export const MenuList: FC<MenuListProps> = (props) => {
 				initial={{ opacity: 0 }}
 				animate={{ opacity: .10 }}
 				exit={{ opacity: 0 }}
-				className="absolute inset-0 bg-black z-40 pointer-events-auto"
+				className="absolute inset-0 bg-gray-800 z-40 pointer-events-auto"
 			>
 			</motion.div>
 			<motion.div
@@ -46,7 +42,7 @@ export const MenuList: FC<MenuListProps> = (props) => {
 							windowMenuState?.menuItems.map((item: WindowMenuItemState) => {
 								return (
 									<div key={item.name + "-listItem"}>
-										<MenuListItem name={item.name} />
+										<MenuListItem name={item.name} hasNewContent={item.hasNewContent} />
 										<DividerComponent />
 									</div>
 								)
@@ -66,10 +62,10 @@ export const MenuList: FC<MenuListProps> = (props) => {
 
 const MenuListItem: FC<MenuListItemState> = (props) => {
 
-	const { name } = props
+	const { name, hasNewContent } = props
 
 	const dispatch = useDispatch()
-	const { toggleWindowMenuItem, toggleWindowMenu } = bindActionCreators(creators, dispatch)
+	const { toggleWindowMenuItem, toggleWindowMenu, toggleWindowMenuHasNewContent } = bindActionCreators(creators, dispatch)
 	const windowMenuItemState: WindowMenuItemState | undefined = useSelector((state: any) => {
 		const menuItems = state.windowMenu.menuItems as WindowMenuItemState[]
 		return menuItems.find((item) => item.name === name)
@@ -81,6 +77,10 @@ const MenuListItem: FC<MenuListItemState> = (props) => {
 			isOpen: !windowMenuItemState?.isOpen
 		})
 		toggleWindowMenu(false)
+		toggleWindowMenuHasNewContent({
+			name: name,
+			hasNewContent: false
+		})
 	}
 
 	return (
@@ -93,6 +93,18 @@ const MenuListItem: FC<MenuListItemState> = (props) => {
 				<h1 className="dark:text-sv-light text-sv-dark">
 					{name}
 				</h1>
+
+				{
+					hasNewContent && (
+						<div className="ml-2">
+							<div className="dark:bg-red-600 bg-red-600 rounded-full px-2 h-4">
+								<p className="text-xs text-center text-sv-light">
+									NEW
+								</p>
+							</div>
+						</div>
+					)
+				}
 			</button>
 		</li>
 	)

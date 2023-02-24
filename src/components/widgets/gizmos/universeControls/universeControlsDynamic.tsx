@@ -1,7 +1,7 @@
-import { useState, FC, useContext } from "react"
+import { useState, FC, useContext, useEffect } from "react"
 import Widget from "../../widgetContainer"
 import { ImVolumeMute2, ImVolumeHigh, ImVolumeMedium, ImVolumeLow } from "react-icons/im"
-import { UniverseFavoriteButtonProps, UniverseShareButtonProps, UniverseVolumeButtonProps } from "./universeControlsProps"
+import { UniverseCategoryPickerProps, UniverseFavoriteButtonProps, UniversePickerProps, UniverseShareButtonProps, UniverseVolumeButtonProps } from "./universeControlsProps"
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "@reduxjs/toolkit"
 import { creators } from "../../../../lib"
@@ -12,22 +12,113 @@ import { BsShareFill } from "react-icons/bs"
 import { MdOutlineFavoriteBorder, MdOutlineFavorite } from "react-icons/md"
 import { MdArrowRightAlt } from "react-icons/md"
 import useUniverseManager from "../../../../util/hooks/useUniverseManager";
-import { Category } from "../../../../cms/util";
-
+import { BsGrid1X2 } from "react-icons/bs"
+import { MdOutlinePanoramaPhotosphere } from "react-icons/md"
+import DividerComponent from "../../../divider";
+import { WidgetSettingsTemplateProps } from "../../widgetsComponentProps";
+import { ToggleComponent } from "../../../menu/menuItems/SettingsWindow/settingsField";
 
 export const UniverseControlsDynamic = () => {
 
 	const universeState: UniverseState = useSelector((state: any) => state.universe)
+	const { NextUniverse, PreviousUniverse, PickCategory, categories } = useUniverseManager()
 
 	return (
-		<Widget title="Universe" minWidth={350} maxWidth={360} defaultPosition={{ x: 10, y: 60 }}>
+		<Widget
+			title="Universe"
+			label="Verse"
+			icon={MdOutlinePanoramaPhotosphere}
+			minWidth={350}
+			maxWidth={360}
+			defaultPosition={{ x: 10, y: 60 }}
+			settings={UniverseSettings}
+			defaultActive
+		>
 			<div>
-				<UniverseCategoryPicker {...universeState} />
-				<UniversePickerControl {...universeState} />
+				<UniverseCategoryPicker
+					categories={categories}
+					PickCategory={PickCategory}
+				/>
+				<UniversePickerControl
+					NextUniverse={NextUniverse}
+					PreviousUniverse={PreviousUniverse}
+				/>
 				<UniverseInformation {...universeState} />
 				<UniverseVolumeControl {...universeState} />
 			</div>
 		</Widget>
+	)
+}
+
+export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
+
+	const { settingsSave, widgetId } = props
+
+	const dispatch = useDispatch()
+	const { setUniverseAutoNext } = bindActionCreators(creators, dispatch)
+	const universeManagerState: UniverseState["manager"] = useSelector((state: any) => state.universe.manager)
+
+	const [autoNextUniverse, setAutoNextUniverse] = useState(
+		universeManagerState?.settings?.autoNext || false
+	)
+	const [isValueChanged, setIsValueChanged] = useState(false)
+
+	const handleChange = () => {
+		setAutoNextUniverse(!autoNextUniverse)
+	}
+
+	const handleSave = () => {
+		setUniverseAutoNext(autoNextUniverse)
+		settingsSave()
+	}
+
+
+	useEffect(() => {
+		setIsValueChanged(false)
+
+		if (universeManagerState?.settings?.autoNext !== autoNextUniverse) setIsValueChanged(true)
+	}, [autoNextUniverse])
+
+
+
+	return (
+		<div>
+			<DividerComponent />
+			<div className="flex flex-col gap-[3px] px-5 py-4">
+				<div className="flex flex-col gap-6 pb-3">
+					<div>
+						<div className="flex justify-between items-center pb-2">
+							<h1 className="text-md text-sv-black dark:text-sv-white font-semibold">
+								Auto-Next Universe
+							</h1>
+							<ToggleComponent
+								name="autoNextUniverse"
+								checked={autoNextUniverse}
+								onChange={handleChange}
+							/>
+						</div>
+						<div>
+							<p className="text-sm text-sv-black dark:text-sv-white opacity-50">
+								Automatically play the next universe in the category when the current one ends. (will restart the current universe)
+							</p>
+						</div>
+					</div>
+					{
+						isValueChanged && (
+							<div className="flex gap-2 justify-between py-3 pb-0 pt-7">
+
+								<button onClick={handleSave} className="bg-teal-500 dark:bg-teal-700 flex-1 corners py-2">
+									<h1 className="text-sm text-sv-black dark:text-sv-white opacity-75">
+										Save
+									</h1>
+								</button>
+
+							</div>
+						)
+					}
+				</div>
+			</div>
+		</div>
 	)
 }
 
@@ -115,9 +206,9 @@ export const FavoriteButton: FC<UniverseFavoriteButtonProps> = (props) => {
 	)
 }
 
-export const UniversePickerControl = (universeState: UniverseState) => {
+export const UniversePickerControl: FC<UniversePickerProps> = (props) => {
 
-	const { NextUniverse, PreviousUniverse } = useUniverseManager()
+	const { NextUniverse, PreviousUniverse } = props
 
 	return (
 		<div className="px-5 py-4 flex items-center justify-center gap-3">
@@ -134,9 +225,9 @@ export const UniversePickerControl = (universeState: UniverseState) => {
 
 }
 
-export const UniverseCategoryPicker = (universeState: UniverseState) => {
+export const UniverseCategoryPicker: FC<UniverseCategoryPickerProps> = (props) => {
 
-	const { PickCategory, categories } = useUniverseManager()
+	const { PickCategory, categories } = props
 	const universeManagerState: UniverseState["manager"] = useSelector((state: any) => state.universe.manager)
 
 	return (

@@ -1,9 +1,9 @@
 export const subscribersSettingsFields = {
 	widgets: {
 		fancyMinimizer: {
-			name: 'fancyMinimizer',
-			label: 'Fancy Minimizer (BETA)',
-			tooltip: 'Makes minimizing widgets ✨FANCIER✨. (Laggy on some computers)',
+			name: 'fancyAnimations',
+			label: 'Fancy Animations (BETA)',
+			tooltip: 'make Spaceverse be more ✨FANCIER✨. (Laggy on some computers)',
 		}
 	},
 	features: {

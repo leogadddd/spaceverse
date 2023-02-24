@@ -41,4 +41,21 @@ interface widgetsActionSetMinimizedWidget {
 	};
 }
 
-export type WidgetsAction = widgetsActionSubscribeWidget | widgetsActionUnsubscribeWidget | widgetsActionUpdateLocation | widgetsActionUpdateOrder | widgetsActionSetActiveWidget | widgetsActionSetMinimizedWidget;
+interface widgetsActionSetWindowSize {
+	type: WidgetsActionTypes.SET_WINDOW_SIZE;
+	payload: {
+		width: number;
+		height: number;
+	}
+}
+
+interface widgetsActionSetWidgetSize {
+	type: WidgetsActionTypes.SET_WIDGET_SIZE;
+	payload: {
+		id: string;
+		width: number;
+		height: number;
+	}
+}
+
+export type WidgetsAction = widgetsActionSetWidgetSize | widgetsActionSetWindowSize | widgetsActionSubscribeWidget | widgetsActionUnsubscribeWidget | widgetsActionUpdateLocation | widgetsActionUpdateOrder | widgetsActionSetActiveWidget | widgetsActionSetMinimizedWidget;

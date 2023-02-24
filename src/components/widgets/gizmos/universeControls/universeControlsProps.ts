@@ -1,3 +1,5 @@
+import { TUniverseCategory } from "../../../../util/types";
+
 export type UniverseVolumeButtonProps = {
 	volume: number;
 	isMuted: boolean;
@@ -11,4 +13,14 @@ export type UniverseShareButtonProps = {
 export type UniverseFavoriteButtonProps = {
 	isFavorite: boolean;
 	onToggleFavorite: () => void;
+}
+
+export interface UniversePickerProps {
+	NextUniverse: () => void;
+	PreviousUniverse: () => void;
+}
+
+export interface UniverseCategoryPickerProps {
+	PickCategory: (category: number) => void;
+	categories: TUniverseCategory[];
 }
