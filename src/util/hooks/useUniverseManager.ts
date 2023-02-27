@@ -25,6 +25,7 @@ export const useUniverseManager = () => {
 		setUniversePickedUniverse,
 		setUniverseVolume,
 		setUniverseMute,
+		setUniverseAutoNext
 	} = bindActionCreators(creators, dispatch)
 
 	const PickCategory = (category: number) => {
@@ -56,6 +57,17 @@ export const useUniverseManager = () => {
 		} else {
 			setUniversePickedUniverse(universes.length - 1)
 		}
+	}
+
+	const SetAutoNextUniverse = (autoNext: boolean) => {
+		setUniverseAutoNext(autoNext)
+		universeContext.setCtx({
+			...universeContext.ctx,
+			settings: {
+				...universeContext.ctx.settings,
+				autoNext: autoNext,
+			}
+		})
 	}
 
 	const getUniverseFromDatabase = async () => {
@@ -161,6 +173,7 @@ export const useUniverseManager = () => {
 
 		setUniverseVolume(universeContext.ctx.universeCurrentVolume)
 		setUniverseMute(universeContext.ctx.universeIsMuted)
+		setUniverseAutoNext(universeContext.ctx.settings.autoNext)
 	}, [])
 
 	useEffect(() => {
@@ -176,6 +189,7 @@ export const useUniverseManager = () => {
 		NextUniverse,
 		PreviousUniverse,
 		PickCategory,
+		SetAutoNextUniverse
 	}
 }
 

@@ -16,6 +16,7 @@ const UniversePlayer = () => {
 	const universeManagerState: UniverseState["manager"] = useSelector((state: any) => state.universe.manager)
 
 	const [isPlaying, setIsPlaying] = useState<boolean>(false)
+	const [time, setTime] = useState<number>(0)
 	const [target, setTarget] = useState<any>(null)
 	const [key, setKey] = useState<string>("")
 
@@ -81,7 +82,7 @@ const UniversePlayer = () => {
 	}
 
 	const onEnd: YouTubeProps["onEnd"] = (e) => {
-		if(universeManagerState?.settings?.autoNext)
+		if (universeManagerState?.settings?.autoNext)
 			NextUniverse()
 	}
 

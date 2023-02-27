@@ -13,7 +13,7 @@ const getInitialTheme = () => {
         }
     }
 
-   return 'light' // light theme as the default;
+   return 'dark' // light theme as the default;
 };
 
 export const ThemeContext = React.createContext()
@@ -27,6 +27,11 @@ export const ThemeProvider = ({ initialTheme, children }) => {
 
         root.classList.remove(isDark ? 'light' : 'dark')
         root.classList.add(rawTheme)
+
+        // check if rawTheme is a type boolean
+        if (typeof rawTheme === 'boolean') {
+            rawTheme = rawTheme ? 'dark' : 'light'
+        }
 
         localStorage.setItem('color-theme', rawTheme)
     };

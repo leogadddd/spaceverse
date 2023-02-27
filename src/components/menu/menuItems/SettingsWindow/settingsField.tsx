@@ -62,7 +62,7 @@ export const ToggleComponent: FC<ToggleComponentProps> = (props) => {
 		onChange(!isChecked)
 	}
 
-	const backgroundColor = isChecked ? "bg-sv-dark75 dark:bg-sv-light90" : "bg-sv-light50 dark:bg-sv-black"
+	const backgroundColor = isChecked ? "bg-sv-accent dark:bg-accent" : "bg-sv-ring-light dark:bg-sv-ring-dark"
 	const thumbLocation = isChecked ? "translate-x-4" : "translate-x-0"
 
 	return (
@@ -74,7 +74,9 @@ export const ToggleComponent: FC<ToggleComponentProps> = (props) => {
 				className={`cursor-pointer h-3 w-8 ${backgroundColor} transition-colors corners relative pointer-events-auto shadow-inner`}
 			>
 				<div
-					className={`cursor-pointer h-5 w-5 ${thumbLocation} bg-teal-500 rounded-full absolute top-1/2 -translate-y-1/2 pointer-events-auto transition-transform`}
+					className={`cursor-pointer h-5 w-5 ${thumbLocation} bg-sv-accent rounded-full absolute top-1/2 -translate-y-1/2 pointer-events-auto transition-transform`}
+					// add a shadow with blur to the thumb
+					style={{ boxShadow: "0 0 0 2px rgba(0, 0, 0, 0.1)" }}
 				/>
 			</div>
 		</div>
@@ -103,11 +105,11 @@ const DropdownFieldComponent = (props: DropdownFieldComponentProps) => {
 					</h1>
 				</div>
 				<div>
-					<select value={selectedOption} onChange={handleChange} className="dark:bg-sv-black bg-sv-dark75 dark:text-sv-white text-sv-white rounded-md px-2 py-1 text-sm">
+					<select value={selectedOption} onChange={handleChange} className="bg-sv-ring-light dark:bg-sv-ring-dark dark:text-sv-light text-sv-dark rounded-md px-2 py-1 text-sm">
 						{
 							options.map((option, index) => {
 								return (
-									<option key={index} value={option.value}>{option.label}</option>
+									<option className="text-sv-black" key={index} value={option.value}>{option.label}</option>
 								)
 							})
 						}

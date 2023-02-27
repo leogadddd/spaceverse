@@ -12,6 +12,13 @@ import Cms from './Cms';
 import { SpotifyPlaylistContextProvider } from './util/context/spotifyPlaylistContext';
 import { WidgetsContextProvider } from './util/context/widgetsContext';
 
+const isOldVersion = localStorage.getItem('buildVersion') !== process.env.REACT_APP_buildVersion;
+
+if (isOldVersion) {
+	localStorage.clear();
+	localStorage.setItem('buildVersion', process.env.REACT_APP_buildVersion as string);
+}
+
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );

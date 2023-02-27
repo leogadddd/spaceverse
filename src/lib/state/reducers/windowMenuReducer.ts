@@ -7,7 +7,7 @@ const initialState : WindowMenuState = {
 	menuItems: [],
 }
 
-export const windowMenuReducer = (state = initialState, action: windowMenuAction) => {
+export const windowMenuReducer = (state = initialState, action: windowMenuAction): WindowMenuState => {
 	switch(action.type) {
 		case WindowMenuActionTypes.TOGGLE_IS_OPEN:
 			return {

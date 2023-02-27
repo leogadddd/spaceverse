@@ -2,6 +2,7 @@
   "name": "spaceverse-re",
   "version": "0.1.0",
   "private": true,
+  "license": "GNU Affero General Public License v3.0",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.14.1",

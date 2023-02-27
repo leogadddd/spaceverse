@@ -46,7 +46,7 @@ export const NavigationBarComponent = () => {
 		<NavigationLayout location={location}>
 			<div className="flex flex-row justify-start items-center gap-2">
 				<Logo />
-				<ThemeToggler />
+				{/* <ThemeToggler /> */}
 			</div>
 			<div className="flex flex-row justify-end items-center gap-2">
 				<BuyMeCoffee />

@@ -9,6 +9,9 @@ export const getPlaylistIdFromUrl = (url: string) => {
 	return playlistId
 }
 
+// https://open.spotify.com/album/1kCHru7uhxBUdzkm4gzRQc?si=prsxwrUkROOn0iyCZdbu0Q
+// https://open.spotify.com/playlist/6ReYAGR4R2vY3QZP9bAGt3?si=9701c7b956dc40ca
+
 export const getTypeAndUrlValue = (url: string) => {
 
 	// get which type of source it is

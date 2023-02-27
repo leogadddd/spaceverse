@@ -1,17 +1,19 @@
 import { MenuComponent } from './components/menu/menuComponent';
 import { NavigationBarComponent } from './components/navigationBar';
-import { ToolBar } from './components/toolbar';
+import { ToolBarComponent } from './components/toolbar';
 import { UniverseComponent } from './components/universe';
 import { WidgetsComponent } from './components/widgets';
+import { NotificationComponent } from './components/notification';
 
 const App = () => {
 	return (
 		<>
 			<UniverseComponent />
 			<NavigationBarComponent />
-			<ToolBar />
+			<ToolBarComponent />
 			<WidgetsComponent />
 			<MenuComponent />
+			<NotificationComponent />
 		</>
 	);
 }

@@ -11,11 +11,14 @@ import { pomodoroStates, pomodoroTimerStates } from "../../../../util/enums/pomo
 import { PomodoroContext } from "../../../../util/context/pomodoroContext"
 import DividerComponent from "../../../divider"
 import { AnimatePresence, motion } from "framer-motion"
-import { SettingsFieldState } from "../../../../util/interfaces"
+import { INotification, INotificationCreate, SettingsFieldState } from "../../../../util/interfaces"
 import { subscribersSettingsFields } from "../../../../util/enums/subscribersName"
 import { playSound } from "../../../../util/soundPlayer"
 import { RxTimer } from "react-icons/rx"
 import { WidgetSettingsProps, WidgetSettingsTemplateProps } from "../../widgetsComponentProps"
+import { Widget as WidgetState } from "../../../../util/interfaces/state/widgetsState"
+import { formatString4Class } from "../../../../util/stringformatter"
+import { NotificationType } from "../../../notification/notificationComponentProps"
 
 export const Pomodoro = () => {
 
@@ -30,7 +33,12 @@ export const Pomodoro = () => {
 		addPomodoroAdderTime,
 		removePomodoroAdderTime,
 		setPomodoroMaxShortBreaks,
+		setActiveWidget,
+		addNotification
 	} = bindActionCreators(creators, dispatch)
+
+	const widgetId = formatString4Class('Timer') + '-widget'
+
 	const pomodoroState: PomodoroState = useSelector((state: any) => state.pomodoro)
 	const pomodoroContext = useContext(PomodoroContext)
 
@@ -65,8 +73,17 @@ export const Pomodoro = () => {
 		pomodoroTimerTick()
 
 		if (_pomodoroState[_pomodoroState.state] === 0) {
+			setActiveWidget(widgetId, true)
 			pomodoroTimerComplete()
 			playSound(timerCompleteSound)
+
+			const notification: INotificationCreate = {
+				from: "Timer",
+				message: `Timer ${_pomodoroState.state} complete! ${_pomodoroState.state === pomodoroStates.POMODORO ? "Take a break!" : "Back to work!"}`,
+				type: NotificationType.Info,
+			}
+	
+			addNotification(notification, true)
 		}
 	}
 
@@ -188,7 +205,7 @@ export const TimerSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 		setPomodoroStateDefaultDuration,
 		setPomodoroMaxShortBreaks,
 		pomodoroTimerResetAll,
-
+		addNotification
 	} = bindActionCreators(creators, dispatch)
 	const pomodoroContext = useContext(PomodoroContext)
 	const pomodoroState: PomodoroState = useSelector((state: any) => state.pomodoro)
@@ -229,6 +246,14 @@ export const TimerSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 
 		setIsValueChanged(false)
 		settingsSave()
+
+		const notification: INotificationCreate = {
+			from: "Timer",
+			message: "Settings saved. Timer reset.",
+			type: NotificationType.Success,
+		}
+
+		addNotification(notification)
 	}
 
 	useEffect(() => {
@@ -290,8 +315,8 @@ export const TimerSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 					isValueChanged && (
 						<div className="flex gap-2 justify-between py-3 pb-0 pt-7">
 
-							<button onClick={saveSettings} className="bg-teal-500 dark:bg-teal-700 flex-1 corners py-2">
-								<h1 className="text-sm text-sv-black dark:text-sv-white opacity-75">
+							<button onClick={saveSettings} className="transition-all brightness-90 hover:brightness-110 bg-sv-accent dark:bg-sv-accent flex-1 corners py-2">
+								<h1 className="text-sm text-sv-black font-semibold">
 									Save
 								</h1>
 							</button>
@@ -366,15 +391,19 @@ export const Timer: FC<TimerProps> = (props) => {
 
 	return (
 		<div className="flex justify-between py-2 pb-0">
-			<div className="flex-1 inline-flex items-center">
+			<div className="flex-1 inline-flex items-center overflow-hidden">
 				<h1 className="text-6xl text-sv-black dark:text-sv-white">
-					{timerMinutes}
+					{
+						timerMinutes.toString().length > 2 ? timerMinutes.slice(0,2) + "..." : timerMinutes
+					}
 				</h1>
 				<h1 className="text-4xl text-sv-black dark:text-sv-white pb-2">
 					:
 				</h1>
 				<h1 className="text-6xl text-sv-black dark:text-sv-white">
-					{timerSeconds}
+					{
+						timerSeconds.toString().length > 2 ? timerSeconds.slice(0,2) + "..." : timerSeconds
+					}
 				</h1>
 			</div>
 			<div className="flex gap-3 items-center">
@@ -418,7 +447,7 @@ export const ModeSwitcher = () => {
 
 	return (
 		<div className="flex gap-2">
-			<div className="relative flex-1 flex gap-1 items-center justify-between ring-1 dark:ring-sv-light35 ring-sv-dark35 corners p-[3px]">
+			<div className="relative flex-1 flex gap-1 items-center justify-between ring-1 dark:ring-sv-input-dark ring-sv-input-light dark:bg-sv-input-dark bg-sv-input-light corners p-[4px] py-[3px]">
 				{
 					states().map((state, index) => {
 						return (
@@ -440,15 +469,15 @@ export const ModeSwitcherItem: FC<ModeSwitcherItemProps> = (props) => {
 
 	const { onClick, active, label } = props
 
-	const isActive = active ? "bg-teal-500 dark:bg-teal-700 hover:bg-teal-600 dark:hover:bg-teal-800" : "bg-transparent hover:dark:bg-sv-light10 hover:bg-sv-dark10"
+	const isActive = active ? "brightness-100 bg-sv-accent dark:bg-sv-accent hover:brightness-110 dark:hover:bg-sv-accent transition-all text-sv-white dark:text-sv-black font-semibold" : "bg-transparent transition-all text-sv-dark dark:text-sv-light hover:font-semibold"
 	// "bg-transparent hover:dark:bg-sv-light10 hover:bg-sv-dark10"
 
 	return (
 		<button
-			className={`flex-1 py-[2px] z-[20] ${isActive} corners transition-colors`}
+			className={`flex-1 py-[3px] z-[20] ${isActive} corners transition-colors`}
 			onClick={onClick}
 		>
-			<h1 className="text-sv-black dark:text-sv-white text-sm">
+			<h1 className="text-sm">
 				{label}
 			</h1>
 		</button>
@@ -507,7 +536,7 @@ export const ShortBreakIndicator: FC<ShortBreakIndicatorProps> = (props) => {
 	return (
 		<div className="flex items-center gap-2">
 			<div className="flex items-center justify-center pb-1">
-				<h1 className="text-sv-black dark:text-sv-white text-sm opacity-50">
+				<h1 className="dark:text-sv-ring-dark text-sv-ring-light text-sm">
 					Short Breaks:
 				</h1>
 			</div>
@@ -547,8 +576,7 @@ export const ShortBreakIndicatorItem: FC<ShortBreakIndicatorItemProps> = (props)
 
 	return (
 		<div
-			className={`flex-1 h-[10px] rounded-full transition-colors duration-500 ${active ? "bg-teal-500 dark:bg-teal-700" : "bg-sv-dark35 dark:bg-sv-light35"}`}>
-
+			className={`flex-1 h-[10px] rounded-full transition-colors duration-500 ${active ? "bg-sv-accent dark:bg-sv-accent" : "bg-sv-input-light dark:bg-sv-input-dark"}`}>
 		</div>
 	)
 }
@@ -558,12 +586,12 @@ export const StartButton: FC<TimerControlsOnStartProps> = (props) => {
 	const { onClick, state } = props
 
 	// const isRunningClass = isRunning ? "bg-red-500 dark:bg-red-700 hover:dark:bg-red-600 hover:bg-red-600" : "bg-transparent hover:dark:bg-sv-light10 hover:bg-sv-dark10"
-	const stateClass = state === pomodoroTimerStates.STOP ? "bg-transparent hover:dark:bg-sv-light10 hover:bg-sv-dark10 " :
-		state === pomodoroTimerStates.START ? "bg-green-500 dark:bg-green-700 hover:dark:bg-green-600 hover:bg-green-600" :
-			"bg-gray-500 dark:bg-gray-700 hover:dark:bg-gray-600 hover:bg-gray-600"
+	const stateClass = state === pomodoroTimerStates.STOP ? "bg-transparent hover:dark:bg-sv-light10 hover:bg-sv-dark10 ring-1 dark:ring-sv-ring-dark ring-sv-ring-light text-sv-black dark:text-sv-white" :
+		state === pomodoroTimerStates.START ? "bg-sv-accent dark:bg-sv-accent ring-1 dark:ring-sv-accent ring-sv-accent text-sv-white dark:text-sv-black" :
+			"bg-sv-pomodoro-red dark:bg-sv-pomodoro-red ring-1 dark:ring-sv-pomodoro-red ring-sv-pomodoro-red text-sv-black dark:text-sv-white"
 	return (
-		<button onClick={onClick} className={`${stateClass} w-20 text-sv-black dark:text-sv-white h-[40px] flex justify-center items-center ring-1 dark:ring-sv-light35 ring-sv-dark35 gap-1 corners flex-1 active:dark:opacity-50 active:opacity-50 transition-all`}>
-			<h1 className="text-sv-black dark:text-sv-white">
+		<button onClick={onClick} className={`${stateClass} w-20 h-[40px] flex justify-center items-center gap-1 corners flex-1 active:dark:opacity-50 active:opacity-50 transition-all`}>
+			<h1 className="font-semibold">
 				{state === pomodoroTimerStates.STOP ? "Start" : state === pomodoroTimerStates.START ? "Pause" : "Resume"}
 			</h1>
 		</button>
@@ -575,7 +603,7 @@ export const ResetButton: FC<TimerControlsProps> = (props) => {
 	const { onClick } = props
 
 	return (
-		<button onClick={onClick} className="px-3 h-[40px] w-[40px] flex justify-center items-center gap-1 ring-1 dark:ring-sv-light35 ring-sv-dark35 corners hover:dark:bg-sv-light10 hover:bg-sv-dark10 active:dark:opacity-50 active:opacity-50 transition-all">
+		<button onClick={onClick} className="px-3 h-[40px] w-[40px] flex justify-center items-center gap-1 ring-1 dark:ring-sv-ring-dark ring-sv-ring-light rounded-[50%] active:dark:opacity-50 active:opacity-50 transition-all">
 			<VscDebugRestart className="text-sv-black dark:text-sv-white " />
 		</button>
 	)

@@ -11,7 +11,7 @@ const initialState: WidgetsState = {
 	}
 }
 
-export const widgetsReducer = (state = initialState, action: WidgetsAction) => {
+export const widgetsReducer = (state = initialState, action: WidgetsAction): WidgetsState => {
 	switch (action.type) {
 		case WidgetsActionTypes.SUBSCRIBE_WIDGET:
 			if(state.widgets.find(widget => widget.id === action.payload.id)) return state;

@@ -17,6 +17,8 @@ import { MdOutlinePanoramaPhotosphere } from "react-icons/md"
 import DividerComponent from "../../../divider";
 import { WidgetSettingsTemplateProps } from "../../widgetsComponentProps";
 import { ToggleComponent } from "../../../menu/menuItems/SettingsWindow/settingsField";
+import { NotificationType } from "../../../notification/notificationComponentProps";
+import { INotificationCreate } from "../../../../util/interfaces";
 
 export const UniverseControlsDynamic = () => {
 
@@ -55,7 +57,10 @@ export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 	const { settingsSave, widgetId } = props
 
 	const dispatch = useDispatch()
-	const { setUniverseAutoNext } = bindActionCreators(creators, dispatch)
+	const {
+		addNotification
+	} = bindActionCreators(creators, dispatch)
+	const { SetAutoNextUniverse } = useUniverseManager()
 	const universeManagerState: UniverseState["manager"] = useSelector((state: any) => state.universe.manager)
 
 	const [autoNextUniverse, setAutoNextUniverse] = useState(
@@ -68,10 +73,17 @@ export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 	}
 
 	const handleSave = () => {
-		setUniverseAutoNext(autoNextUniverse)
+		SetAutoNextUniverse(autoNextUniverse)
 		settingsSave()
-	}
 
+		const notification: INotificationCreate = {
+			from: "Universe",
+			message: "Settings saved.",
+			type: NotificationType.Success,
+		}
+
+		addNotification(notification)
+	}
 
 	useEffect(() => {
 		setIsValueChanged(false)
@@ -84,8 +96,8 @@ export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 	return (
 		<div>
 			<DividerComponent />
-			<div className="flex flex-col gap-[3px] px-5 py-4">
-				<div className="flex flex-col gap-6 pb-3">
+			<div className="flex flex-col gap-[3px] px-5 py-3">
+				<div className="flex flex-col gap-6 pb-1">
 					<div>
 						<div className="flex justify-between items-center pb-2">
 							<h1 className="text-md text-sv-black dark:text-sv-white font-semibold">
@@ -105,10 +117,10 @@ export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 					</div>
 					{
 						isValueChanged && (
-							<div className="flex gap-2 justify-between py-3 pb-0 pt-7">
+							<div className="flex gap-2 justify-between py-3 pb-0 pt-4">
 
-								<button onClick={handleSave} className="bg-teal-500 dark:bg-teal-700 flex-1 corners py-2">
-									<h1 className="text-sm text-sv-black dark:text-sv-white opacity-75">
+								<button onClick={handleSave} className="transition-all brightness-90 hover:brightness-110 bg-sv-accent dark:bg-sv-accent flex-1 corners py-2">
+									<h1 className="text-sm text-sv-black font-semibold">
 										Save
 									</h1>
 								</button>
@@ -212,17 +224,16 @@ export const UniversePickerControl: FC<UniversePickerProps> = (props) => {
 
 	return (
 		<div className="px-5 py-4 flex items-center justify-center gap-3">
-			<button className='h-[40px] flex justify-center items-center gap-1 ring-1 dark:ring-sv-light35 ring-sv-dark35 corners flex-1 hover:dark:bg-sv-light10 hover:bg-sv-dark10 active:dark:opacity-50 active:opacity-50 transition-all' onClick={PreviousUniverse}>
+			<button className='h-[40px] flex justify-center items-center gap-2 ring-1 dark:ring-sv-input-dark ring-sv-input-light dark:bg-sv-input-dark bg-sv-input-light corners flex-1 hover:brightness-110 active:dark:opacity-50 active:opacity-50 transition-all' onClick={PreviousUniverse}>
 				<BiChevronLeft size={25} className="dark:text-sv-white text-sv-black" />
 				<h1 className="dark:text-sv-white text-sv-black mt-[2px]">Previous</h1>
 			</button>
-			<button className='h-[40px] flex justify-center items-center gap-1 ring-1 dark:ring-sv-light35 ring-sv-dark35 corners flex-1 hover:dark:bg-sv-light10 hover:bg-sv-dark10 active:dark:opacity-50 active:opacity-50 transition-all' onClick={NextUniverse}>
+			<button className='h-[40px] flex justify-center items-center gap-2 ring-1 dark:ring-sv-input-dark ring-sv-input-light dark:bg-sv-input-dark bg-sv-input-light corners flex-1 hover:brightness-110 active:dark:opacity-50 active:opacity-50 transition-all' onClick={NextUniverse}>
 				<h1 className="dark:text-sv-white text-sv-black mt-[2px]">Next</h1>
 				<BiChevronRight size={25} className="dark:text-sv-white text-sv-black" />
 			</button>
 		</div>
 	)
-
 }
 
 export const UniverseCategoryPicker: FC<UniverseCategoryPickerProps> = (props) => {
@@ -233,7 +244,7 @@ export const UniverseCategoryPicker: FC<UniverseCategoryPickerProps> = (props) =
 	return (
 		<div className="px-5 pt-4 flex items-center justify-center">
 			<select
-				className="ring-1 bg-transparent dark:ring-sv-light35 ring-sv-dark35 corners flex-1 h-[40px] relative flex overflow-hidden overflow-y-auto dark:text-sv-white text-sv-black px-4"
+				className="ring-1 dark:ring-sv-input-dark ring-sv-input-light dark:bg-sv-input-dark bg-sv-input-light hover:brightness-110 transition-all cursor-pointer corners flex-1 h-[40px] relative flex overflow-hidden overflow-y-auto dark:text-sv-white text-sv-black px-4"
 				onChange={(e) => PickCategory(parseInt(e.target.value))}
 				value={universeManagerState?.categoryIndex || ""}
 			>
@@ -300,7 +311,7 @@ export const UniverseVolumeControl = (universeState: UniverseState) => {
 				id="volume"
 				min="0"
 				max="100"
-				className='form-range appearance-none dark:accent-teal-300 accent-teal-800 w-full h-[2px] rounded-md p-0 focus:outline-none bg-sv-black dark:bg-sv-white focus:ring-0 focus:shadow-none '
+				className='form-range appearance-none dark:accent-sv-accent accent-sv-accent w-full h-[2px] rounded-md p-0 focus:outline-none bg-sv-black dark:bg-sv-white focus:ring-0 focus:shadow-none '
 				onChange={changeVolume}
 				value={volume}
 			/>
@@ -313,7 +324,7 @@ export const UniverseVolumeControl = (universeState: UniverseState) => {
 				>
 					{volume}
 				</p> :
-				<p className="text-red-500 w-8 text-right">
+				<p className="text-sv-pomodoro-red w-8 text-right font-semibold">
 					M
 				</p>}
 
@@ -326,7 +337,7 @@ export const UniverseVolumeButton: FC<UniverseVolumeButtonProps> = (props) => {
 	const { volume, onToggleMute } = props
 
 	const getIcon = () => {
-		if (props.isMuted) return <ImVolumeMute2 size={20} className="text-red-500" />
+		if (props.isMuted) return <ImVolumeMute2 size={20} className="text-sv-pomodoro-red" />
 
 		if (volume === 0) {
 			return <ImVolumeMute2 size={20} className="dark:text-sv-white text-sv-black" />

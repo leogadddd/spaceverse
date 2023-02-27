@@ -50,8 +50,8 @@ export const MenuList: FC<MenuListProps> = (props) => {
 						}
 					</ul>
 					<div className="h-[35px] flex flex-col-reverse p-2">
-						<h1 className="dark:text-sv-light35 text-sv-dark35 text-sm">
-							Build 0.0.1
+						<h1 className="dark:text-sv-ring-dark text-sv-ring-light text-sm">
+							Build {process.env.REACT_APP_buildVersion}
 						</h1>
 					</div>
 				</div>
@@ -87,7 +87,7 @@ const MenuListItem: FC<MenuListItemState> = (props) => {
 		<li key={name + "-listItem"} className="flex">
 			<button
 				onClick={toggleIsOpen}
-				className="flex-1 h-[40px] px-6 flex justify-start items-center hover:dark:bg-sv-light10 hover:bg-sv-dark10 pointer-events-auto transition-colors disabled:opacity-25"
+				className="flex-1 h-[40px] px-6 flex justify-start items-center hover:bg-sv-input-dark pointer-events-auto transition-colors disabled:opacity-25"
 				disabled={windowMenuItemState?.isOpen}
 			>
 				<h1 className="dark:text-sv-light text-sv-dark">

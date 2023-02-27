@@ -112,7 +112,7 @@ export const BrownNoiseGenerator = () => {
 			<div className="flex p-4 items-center gap-3 ">
 				<UniverseVolumeButton onToggleMute={handleMute} volume={volume} isMuted={isMuted} />
 				<input
-					className="form-range appearance-none dark:accent-teal-300 accent-teal-800 w-full h-[2px] rounded-md focus:outline-none bg-sv-black dark:bg-sv-white focus:ring-0 focus:shadow-none "
+					className="form-range appearance-none dark:accent-sv-accent accent-sv-accent w-full h-[2px] rounded-md focus:outline-none bg-sv-black dark:bg-sv-white focus:ring-0 focus:shadow-none "
 					type="range"
 					min="0"
 					max=".3"
@@ -130,7 +130,7 @@ export const BrownNoiseGenerator = () => {
 						>
 							{volumeText()}
 						</p> :
-						<p className="text-red-500 w-8 text-right">
+						<p className="text-sv-pomodoro-red w-8 text-right font-semibold">
 							M
 						</p>
 				}

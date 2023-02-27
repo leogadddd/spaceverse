@@ -17,7 +17,7 @@ const initialState: PomodoroState = {
 	adderTimes: []
 }
 
-export const pomodoroReducer = (state = initialState, action: pomodoroAction) => {
+export const pomodoroReducer = (state = initialState, action: pomodoroAction): PomodoroState => {
 	switch (action.type) {
 		case PomodoroActionTypes.SET_POMODORO_STATE:
 			return {

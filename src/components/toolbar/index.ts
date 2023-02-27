@@ -1,1 +1,1 @@
-export * from './toolBar';
+export * from './toolBarComponent';

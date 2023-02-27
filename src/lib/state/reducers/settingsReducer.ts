@@ -6,7 +6,7 @@ const initialState: SettingsState = {
 	settingsFields: []
 }
 
-export const settingsReducer = (state = initialState, action: settingsAction) => {
+export const settingsReducer = (state = initialState, action: settingsAction): SettingsState => {
 	switch (action.type) {
 		case SettingsActionTypes.SUBSCRIBE_SETTINGS_FILED:
 			return {

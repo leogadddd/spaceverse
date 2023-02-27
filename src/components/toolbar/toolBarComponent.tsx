@@ -1,15 +1,11 @@
 import { bindActionCreators } from "@reduxjs/toolkit"
-import { FC, PropsWithChildren, useContext } from "react"
+import { FC, PropsWithChildren } from "react"
 import { createPortal } from "react-dom"
-import { IconType } from "react-icons"
-import { useDispatch, useSelector, connect } from "react-redux"
-import { createContext } from "vm"
+import { useDispatch, useSelector } from "react-redux"
 import { creators } from "../../lib"
 import { WidgetsState, Widget } from "../../util/interfaces/state/widgetsState"
-import DividerComponent, { DividerComponent2 } from "../divider"
-import { ToolBarButtonProps } from "./toolBarProps"
 
-export const ToolBar = () => {
+export const ToolBarComponent = () => {
 
 	const widgetsState: WidgetsState = useSelector((state: any) => state.widgets)
 	const dispatch = useDispatch()
@@ -26,14 +22,14 @@ export const ToolBar = () => {
 						const { label, icon: Icon, id, isActive, iconSize } = widget
 
 						const isActiveStyle = isActive ? 
-						"text-teal-700 dark:text-teal-300 hover:font-semibold"
+						"text-sv-accent dark:text-sv-accent hover:font-semibold"
 						: "text-sv-black dark:text-sv-white hover:font-semibold" 
 
 						if (index === widgetsState.widgets.length - 1) {
 							return (
 								<button
-									key={id + "-toolbar-button"}
-									className={`w-full h-10 corners flex flex-col justify-center items-center gap-1 transition-all hover:font-semibold tracking-wide ${isActiveStyle}`}
+									key={id + `-toolbar-button-${index}`}
+									className={`hover:brightness-110 w-full h-10 corners flex flex-col justify-center items-center gap-1 transition-all hover:font-semibold tracking-wide ${isActiveStyle}`}
 									onClick={() => setActiveWidget(id, !isActive)}
 								>
 									{Icon && <Icon size={iconSize ?? 20} />}
@@ -47,8 +43,8 @@ export const ToolBar = () => {
 						return (
 							<>
 								<button
-									key={id + "-toolbar-button"}
-									className={`w-full h-10 corners flex flex-col justify-center items-center gap-1 transition-all hover:font-semibold tracking-wide ${isActiveStyle}`}
+									key={id + `-toolbar-button-${index}`}
+									className={`hover:brightness-110 w-full h-10 corners flex flex-col justify-center items-center gap-1 transition-all hover:font-semibold tracking-wide ${isActiveStyle}`}
 									onClick={() => setActiveWidget(id, !isActive)}
 								>
 									{Icon && <Icon size={iconSize ?? 20} />}
@@ -76,4 +72,4 @@ export const ToolBarLayout: FC<PropsWithChildren> = (props) => {
 		, document.getElementById("toolBarInterface") as HTMLDivElement)
 }
 
-export default ToolBar
+export default ToolBarComponent

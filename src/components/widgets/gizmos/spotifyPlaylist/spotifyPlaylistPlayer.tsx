@@ -5,9 +5,20 @@ import Widget from "../../widgetContainer"
 import { FaTrashAlt } from "react-icons/fa"
 import { TrashButtonProps } from "./spotifyPlaylistPlayerProps"
 import { SlSocialSpotify } from "react-icons/sl"
+import { SpotifyType } from "../../../../util/enums/spotifyType"
+import { useDispatch } from "react-redux"
+import { bindActionCreators } from "@reduxjs/toolkit"
+import { creators } from "../../../../lib"
+import { INotificationCreate } from "../../../../util/interfaces"
+import { NotificationType } from "../../../notification/notificationComponentProps"
 
 
 export const SpotifyPlaylistPlayer = () => {
+
+	const dispatch = useDispatch()
+	const {
+		addNotification
+	} = bindActionCreators(creators, dispatch)
 
 	const spotifyPlaylistContext = useContext(SpotifyPlaylistContext)
 	const spotifyIframeRef = useRef<HTMLIFrameElement>(null)
@@ -15,6 +26,7 @@ export const SpotifyPlaylistPlayer = () => {
 		{
 			name: "Spaceverse",
 			url: "https://open.spotify.com/playlist/3D6QaorzhJcUkKTgc8PSbd?si=c0682ac797124b46",
+			type: SpotifyType.playlist,
 			urlId: "3D6QaorzhJcUkKTgc8PSbd",
 		}
 	]
@@ -35,18 +47,48 @@ export const SpotifyPlaylistPlayer = () => {
 			? getPlaylistIdFromUrl(mixedPlaylist[spotifyPlaylistIndex].urlId)
 			: mixedPlaylist[0].urlId
 	)
+	const [spotifyType, setSpotifyType] = useState(
+		spotifyPlaylistContext?.ctx.playlist.length > 0
+			? mixedPlaylist[spotifyPlaylistIndex].type
+			: SpotifyType.playlist
+	)
+
 	const [spotifyName, setSpotifyName] = useState("")
 	const [spotifyUrlInput, setSpotifyUrlInput] = useState("")
+	const [spotifyTypeInput, setSpotifyTypeInput] = useState(SpotifyType.playlist)
 	const [spotifyUrlInputError, setSpotifyUrlInputError] = useState(true)
 	const [spotifyNameInputError, setSpotifyNameInputError] = useState(true)
 
-	const checkSpotifyUrl = (url: string) => {
-		const regex = new RegExp(/^(https:\/\/open\.spotify\.com\/playlist\/)([a-zA-Z0-9]+)(\?si=[a-zA-Z0-9]+)?$/)
-		return regex.test(url)
+	const isSpotifyUrl = (url: string): boolean => {
+		const playlistRegex = /^https?:\/\/open\.spotify\.com\/playlist\/[a-zA-Z0-9]+(\?.*)?$/;
+		const albumRegex = /^https?:\/\/open\.spotify\.com\/album\/[a-zA-Z0-9]+(\?.*)?$/;
+		const trackRegex = /^https?:\/\/open\.spotify\.com\/track\/[a-zA-Z0-9]+(\?.*)?$/;
+
+		return playlistRegex.test(url) || albumRegex.test(url) || trackRegex.test(url);
+	}
+
+	const getSpotifyType = (url: string) => {
+		const regex = new RegExp(/^(https:\/\/open\.spotify\.com\/(playlist|album|track)\/)([a-zA-Z0-9]+)(\?si=[a-zA-Z0-9]+)?$/)
+		const match = regex.exec(url)
+
+		if (match) {
+			switch (match[2]) {
+				case "playlist":
+					return SpotifyType.playlist
+				case "album":
+					return SpotifyType.album
+				case "track":
+					return SpotifyType.track
+				default:
+					return SpotifyType.playlist
+			}
+		} else {
+			return SpotifyType.playlist
+		}
 	}
 
 	const handleSaveSpotifyUrl = async () => {
-		if (checkSpotifyUrl(spotifyUrlInput) && spotifyName.length > 0) {
+		if (isSpotifyUrl(spotifyUrlInput) && spotifyName.length > 0) {
 			setSpotifyUrlInputError(true)
 			setSpotifyNameInputError(true)
 			setSpotifyUrlInput("")
@@ -58,13 +100,24 @@ export const SpotifyPlaylistPlayer = () => {
 				playlist: [...spotifyPlaylistContext.ctx.playlist, {
 					name: spotifyName,
 					url: spotifyUrlInput,
-					urlId: getPlaylistIdFromUrl(spotifyUrlInput)
+					urlId: getPlaylistIdFromUrl(spotifyUrlInput),
+					type: getSpotifyType(spotifyUrlInput)
 				}],
 				playlistIndex: spotifyPlaylistContext.ctx.playlist.length
 			})
 
 			setSpotifyUrl(getPlaylistIdFromUrl(spotifyUrlInput))
 			setSpotifyPlaylistIndex(spotifyPlaylistContext?.ctx.playlist.length)
+			setSpotifyType(getSpotifyType(spotifyUrlInput))
+
+			const notification: INotificationCreate = {
+				from: "Music",
+				message: `Added "${spotifyName}" to your playlist.`,
+				type: NotificationType.Success,
+			}
+
+			addNotification(notification)
+
 		} else {
 			setSpotifyUrlInputError(true)
 			setSpotifyNameInputError(true)
@@ -73,8 +126,13 @@ export const SpotifyPlaylistPlayer = () => {
 
 	const handleSpotifyUrlInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSpotifyUrlInput(e.target.value)
+		setSpotifyTypeInput(getSpotifyType(e.target.value))
 
-		if (checkSpotifyUrl(e.target.value)) {
+		const isSpotifyUrlResult = isSpotifyUrl(e.target.value)
+
+		console.log("isSpotifyUrl", isSpotifyUrlResult)
+
+		if (isSpotifyUrlResult) {
 			setSpotifyUrlInputError(false)
 		} else {
 			setSpotifyUrlInputError(true)
@@ -94,6 +152,7 @@ export const SpotifyPlaylistPlayer = () => {
 	const handleSpotifyPlaylistPicker = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setSpotifyUrl(e.target.value)
 		setSpotifyPlaylistIndex(e.target.selectedIndex)
+		setSpotifyType(mixedPlaylist[e.target.selectedIndex].type)
 
 		spotifyPlaylistContext?.setCtx({
 			...spotifyPlaylistContext.ctx,
@@ -112,24 +171,22 @@ export const SpotifyPlaylistPlayer = () => {
 
 		setSpotifyPlaylistIndex(mixedPlaylist.length > 1 ? mixedPlaylist.length - 2 : 0)
 		setSpotifyUrl(mixedPlaylist.length > 1 ? mixedPlaylist[mixedPlaylist.length - 2].urlId : mixedPlaylist[0].urlId)
-	}
+		setSpotifyType(mixedPlaylist.length > 1 ? mixedPlaylist[mixedPlaylist.length - 2].type : SpotifyType.playlist)
 
-	const setVolume = () => {
-		const iframe = spotifyIframeRef.current;
-		iframe!.contentWindow?.postMessage(
-			{
-				type: "setVolume",
-				value: .5
-			},
-			"*"
-		);
+		const notification: INotificationCreate = {
+			from: "Music",
+			message: `Removed "${mixedPlaylist[spotifyPlaylistIndex - defaultPlaylist.length].name}" from your playlist.`,
+			type: NotificationType.Success,
+		}
+
+		addNotification(notification)
 	}
 
 	return (
 		<Widget title="Music" label="Music" icon={SlSocialSpotify} minWidth={400} alwaysOpen defaultPosition={{ x: 30, y: 20 }}>
-			<div className="p-2 py-2 pb-1 flex justify-between items-center gap-2">
+			<div className="p-1 py-2 pb-1 flex justify-between items-center gap-2">
 				<select
-					className="h-[35px] px-3 flex-1 corners w-full bg-sv-dark10 dark:bg-sv-light10 text-sm text-sv-black dark:text-sv-white"
+					className="h-[35px] px-3 flex-1 corners w-full bg-sv-input-light dark:bg-sv-input-dark text-sm text-sv-black dark:text-sv-white"
 					name="SpotifyPlaylistPicker"
 					id="SpotifyPlaylistPicker"
 					onChange={handleSpotifyPlaylistPicker}
@@ -142,7 +199,7 @@ export const SpotifyPlaylistPlayer = () => {
 									className="text-sv-black"
 									key={index}
 									value={playlist.urlId}>
-									{playlist.name} Playlist
+									{playlist.name} {playlist.type === SpotifyType.playlist && (playlist.type)}
 								</option>
 							)
 						})
@@ -154,22 +211,26 @@ export const SpotifyPlaylistPlayer = () => {
 
 				}
 			</div>
-			<div className="p-1">
+			<div className="p-1 pt-0">
 				<iframe
 					key="spotifyPlaylistPlayer"
 					title="Spotify Playlist Player"
 					id="spotifyPlaylistPlayer"
 					ref={spotifyIframeRef}
-					src={`https://open.spotify.com/embed/playlist/${spotifyUrl}?utm_source=oembed&theme=0`}
-					width="100%" height="375"
+					src={`https://open.spotify.com/embed/${spotifyType}/${spotifyUrl}?utm_source=oembed&theme=1`}
+					width="100%" height={
+						spotifyType === SpotifyType.playlist ? "380" : spotifyType === SpotifyType.album ? "380" : "355"
+					}
 					allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
 					loading="lazy"
 				></iframe>
-				<div className="p-1 py-2 pb-1 flex justify-between items-center gap-2">
+			</div>
+			<div>
+				<div className="p-1 pt-0 flex justify-between items-center gap-2">
 					<input
-						className="h-[35px] px-3 flex-1 corners w-full bg-sv-dark10 dark:bg-sv-light10 text-sm text-sv-black dark:text-sv-white"
+						className="h-[35px] px-3 flex-1 corners w-full bg-sv-input-light dark:bg-sv-input-dark text-sm text-sv-black dark:text-sv-white"
 						type="url"
-						placeholder="Enter Spotify Playlist URL"
+						placeholder="Enter Spotify Playlist, Album, or Artist URL"
 						name="spotifyUrlInput"
 						id="spotifyUrlInput"
 						value={spotifyUrlInput}
@@ -182,9 +243,9 @@ export const SpotifyPlaylistPlayer = () => {
 							className="p-1 pb-1 flex justify-between items-center gap-2"
 						>
 							<input
-								className="h-[35px] px-3 flex-1 corners w-full bg-sv-dark10 dark:bg-sv-light10 text-sm text-sv-black dark:text-sv-white"
+								className="h-[35px] px-3 flex-1 corners w-full bg-sv-input-light dark:bg-sv-input-dark text-sm text-sv-black dark:text-sv-white"
 								type="text"
-								placeholder="Enter Spotify Playlist Name"
+								placeholder={`Enter Spotify ${spotifyTypeInput} Name`}
 								name="spotifyNameInput"
 								id="spotifyNameInput"
 								value={spotifyName}
@@ -194,7 +255,7 @@ export const SpotifyPlaylistPlayer = () => {
 								!spotifyNameInputError && (
 									<button
 										onClick={handleSaveSpotifyUrl}
-										className="h-[35px] corners bg-teal-500 dark:bg-teal-700 p-2 text-sv-black dark:text-sv-white px-4"
+										className="h-[35px] corners bg-sv-accent dark:bg-sv-accent brightness-90 hover:brightness-110 transition-all p-2 text-sv-black font-semibold px-4"
 									>
 										Save
 									</button>

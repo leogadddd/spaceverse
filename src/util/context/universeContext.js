@@ -7,6 +7,9 @@ const initialState = {
 	universeCurrentUniverse: null,
 	universeCurrentVolume: 0,
 	universeIsMuted: false,
+	settings: {
+		autoNext: false,
+	}
 }
 
 const localStorageName = 'universeContext';
