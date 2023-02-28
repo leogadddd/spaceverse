@@ -17,8 +17,10 @@ import { MdOutlinePanoramaPhotosphere } from "react-icons/md"
 import DividerComponent from "../../../divider";
 import { WidgetSettingsTemplateProps } from "../../widgetsComponentProps";
 import { ToggleComponent } from "../../../menu/menuItems/SettingsWindow/settingsField";
-import { NotificationType } from "../../../notification/notificationComponentProps";
+import { NotificationActionType, NotificationType } from "../../../notification/notificationComponentProps";
 import { INotificationCreate } from "../../../../util/interfaces";
+import { motion } from "framer-motion";
+import { NotificationActionTypes } from "../../../../util/enums";
 
 export const UniverseControlsDynamic = () => {
 
@@ -54,7 +56,7 @@ export const UniverseControlsDynamic = () => {
 
 export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 
-	const { settingsSave, widgetId } = props
+	const { settingsSave, widgetId, settingsSaveDisabled, setSettingsSaveDisabled } = props
 
 	const dispatch = useDispatch()
 	const {
@@ -66,7 +68,6 @@ export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 	const [autoNextUniverse, setAutoNextUniverse] = useState(
 		universeManagerState?.settings?.autoNext || false
 	)
-	const [isValueChanged, setIsValueChanged] = useState(false)
 
 	const handleChange = () => {
 		setAutoNextUniverse(!autoNextUniverse)
@@ -86,9 +87,9 @@ export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 	}
 
 	useEffect(() => {
-		setIsValueChanged(false)
+		setSettingsSaveDisabled(false)
 
-		if (universeManagerState?.settings?.autoNext !== autoNextUniverse) setIsValueChanged(true)
+		if (universeManagerState?.settings?.autoNext !== autoNextUniverse) setSettingsSaveDisabled(true)
 	}, [autoNextUniverse])
 
 
@@ -116,7 +117,7 @@ export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 						</div>
 					</div>
 					{
-						isValueChanged && (
+						settingsSaveDisabled && (
 							<div className="flex gap-2 justify-between py-3 pb-0 pt-4">
 
 								<button onClick={handleSave} className="transition-all brightness-90 hover:brightness-110 bg-sv-accent dark:bg-sv-accent flex-1 corners py-2">
@@ -137,7 +138,7 @@ export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 export const UniverseInformation = (universeState: UniverseState) => {
 
 	const dispatch = useDispatch()
-	const { setUniverseFavorite } = bindActionCreators(creators, dispatch)
+	const { setUniverseFavorite, addNotification } = bindActionCreators(creators, dispatch)
 	const universeManagerState: UniverseState["manager"] = useSelector((state: any) => state.universe.manager)
 
 	const toggleFavorite = () => {
@@ -145,12 +146,29 @@ export const UniverseInformation = (universeState: UniverseState) => {
 	}
 
 	const shareUniverse = () => {
-		// TODO: share universe
 
-		// get current url
 		const currentUrl = window.location.href
-		// const url = `https://soundverse.app/universe/${universeState.id}`
 		navigator.clipboard.writeText(currentUrl)
+
+		const openInNewTab = (url: string) => {
+			const newWindow = window.open(url, "_blank", "noopener,noreferrer")
+			if (newWindow) newWindow.opener = null
+		}
+
+		const notification: INotificationCreate = {
+			from: "Universe",
+			message: "Copied universe link to clipboard.",
+			type: NotificationType.Success,
+			actions: [
+				{
+					label: "Open",
+					callback: () => openInNewTab(currentUrl),
+					type: NotificationActionType.OnClick
+				}
+			]
+		}
+
+		addNotification(notification)
 	}
 
 	const title = () => {
@@ -199,9 +217,13 @@ export const ShareButton: FC<UniverseShareButtonProps> = (props) => {
 	const { onShare } = props
 
 	return (
-		<button className='flex justify-center items-center w-7' onClick={onShare}>
+		<motion.button
+			whileHover={{ scale: 1.1 }}
+			whileTap={{ scale: 0.9 }}
+			className='flex justify-center items-center w-7' onClick={onShare}
+		>
 			<BsShareFill className="dark:text-sv-white text-sv-black" />
-		</button>
+		</motion.button>
 	)
 }
 

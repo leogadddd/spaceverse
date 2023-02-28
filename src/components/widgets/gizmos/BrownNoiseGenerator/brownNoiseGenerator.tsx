@@ -5,6 +5,8 @@ import { CgLoadbarSound } from "react-icons/cg"
 
 export const BrownNoiseGenerator = () => {
 
+	const maxVolume = 0.4
+
 	const [audioContext, setAudioContext] = useState<AudioContext | null>(null)
 	const [source, setSource] = useState<AudioBufferSourceNode | null>(null)
 	const [gainNode, setGainNode] = useState<GainNode | null>(null)
@@ -99,8 +101,8 @@ export const BrownNoiseGenerator = () => {
 		return 1
 	}
 
-	const volumeText = () => {
-		return Math.round((volume - 0) * (100 - 0) / (.3 - 0) + 0);
+	const volumeText = (): number =>  {
+		return Math.round((volume - 0) * (100 - 0) / (maxVolume - 0) + 0);
 	}
 
 	useEffect(() => {
@@ -110,12 +112,12 @@ export const BrownNoiseGenerator = () => {
 	return (
 		<Widget title="Brown Noise Generator" label="Noise" icon={CgLoadbarSound} iconSize={24} minWidth={300} defaultPosition={{ x: 70, y: 10 }}>
 			<div className="flex p-4 items-center gap-3 ">
-				<UniverseVolumeButton onToggleMute={handleMute} volume={volume} isMuted={isMuted} />
+				<UniverseVolumeButton onToggleMute={handleMute} volume={volumeText()} isMuted={isMuted} />
 				<input
 					className="form-range appearance-none dark:accent-sv-accent accent-sv-accent w-full h-[2px] rounded-md focus:outline-none bg-sv-black dark:bg-sv-white focus:ring-0 focus:shadow-none "
 					type="range"
 					min="0"
-					max=".3"
+					max={maxVolume}
 					step="0.001"
 					value={volume}
 					onChange={handleVolumeChange}

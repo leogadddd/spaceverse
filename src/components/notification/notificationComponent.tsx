@@ -92,6 +92,19 @@ export const NotificationItem: FC<NotificationItemProps> = (props) => {
 		dispatch(removeNotification(id))
 	}
 
+	const handleOnClickAction = () => {
+		if (actions?.length! < 0) return
+
+		// find the action where the type is NotificationActionType.onClick
+		const action = actions?.find((action) => action.type === "onClick")
+
+		if (action) {
+			action.callback()
+		}
+
+		handleRemoveNotification()
+	}
+
 	useEffect(() => {
 		const tout = setInterval(() => {
 			setCreatedAtText(getTimeSince(createdAt))
@@ -113,8 +126,11 @@ export const NotificationItem: FC<NotificationItemProps> = (props) => {
 			layout
 		>
 
-			<div className="flex items-center justify-between gap-2 p-3 px-6 pr-2 ">
-				<div className="flex-1 w-[200px]">
+			<div className="flex items-center justify-between gap-2 p-2 px-3 pr-2 ">
+				<motion.div
+					className="flex-1 w-[200px] transition-colors hover:bg-sv-input-dark corners p-2 px-3"
+					onClick={handleOnClickAction}
+				>
 					<div className="flex items-center justify-between gap-2 opacity-50 pb-1">
 						<div className="flex items-center gap-2">
 							{Icon ? <Icon /> : (
@@ -133,7 +149,7 @@ export const NotificationItem: FC<NotificationItemProps> = (props) => {
 						</div>
 						<div className="flex items-center">
 							<span className="text-sv-dark dark:text-sv-white text-xs">
-								{getTimeSince(createdAt)}
+								{createdAtText}
 							</span>
 						</div>
 					</div>
@@ -146,7 +162,7 @@ export const NotificationItem: FC<NotificationItemProps> = (props) => {
 					>
 						{message}
 					</motion.p>
-				</div>
+				</motion.div>
 				<div>
 					<button onClick={handleRemoveNotification} className="p-3 transition-colors hover:bg-sv-input-dark pointer-events-auto corners">
 						<CgClose size={20} className="text-sv-dark dark:text-sv-white" />

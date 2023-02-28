@@ -198,7 +198,7 @@ export const Pomodoro = () => {
 
 export const TimerSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 
-	const { settingsSave } = props
+	const { settingsSave, settingsSaveDisabled, setSettingsSaveDisabled } = props
 
 	const dispatch = useDispatch()
 	const {
@@ -210,8 +210,6 @@ export const TimerSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 	const pomodoroContext = useContext(PomodoroContext)
 	const pomodoroState: PomodoroState = useSelector((state: any) => state.pomodoro)
 
-
-	const [isValueChanged, setIsValueChanged] = useState(false)
 	const [pomodoroDefault, setPomodoroDefault] = useState(pomodoroState.pomodoroDefaultDuration)
 	const [shortBreakDefault, setShortBreakDefault] = useState(pomodoroState.shortBreakDefaultDuration)
 	const [longBreakDefault, setLongBreakDefault] = useState(pomodoroState.longBreakDefaultDuration)
@@ -244,7 +242,7 @@ export const TimerSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 			longBreakDefault,
 		})
 
-		setIsValueChanged(false)
+		setSettingsSaveDisabled(false)
 		settingsSave()
 
 		const notification: INotificationCreate = {
@@ -257,17 +255,17 @@ export const TimerSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 	}
 
 	useEffect(() => {
-		setIsValueChanged(false)
+		setSettingsSaveDisabled(false)
 
-		if (pomodoroDefault !== pomodoroState.pomodoroDefaultDuration) setIsValueChanged(true)
-		if (shortBreakDefault !== pomodoroState.shortBreakDefaultDuration) setIsValueChanged(true)
-		if (longBreakDefault !== pomodoroState.longBreakDefaultDuration) setIsValueChanged(true)
-		if (pomodoroMaxShortBreak !== pomodoroState.maxShortBreaks) setIsValueChanged(true)
+		if (pomodoroDefault !== pomodoroState.pomodoroDefaultDuration) setSettingsSaveDisabled(true)
+		if (shortBreakDefault !== pomodoroState.shortBreakDefaultDuration) setSettingsSaveDisabled(true)
+		if (longBreakDefault !== pomodoroState.longBreakDefaultDuration) setSettingsSaveDisabled(true)
+		if (pomodoroMaxShortBreak !== pomodoroState.maxShortBreaks) setSettingsSaveDisabled(true)
 
-		if(pomodoroDefault < 1) setIsValueChanged(false)
-		if(shortBreakDefault < 1) setIsValueChanged(false)
-		if(longBreakDefault < 1) setIsValueChanged(false)
-		if(pomodoroMaxShortBreak < 1) setIsValueChanged(false)
+		if(pomodoroDefault < 1) setSettingsSaveDisabled(false)
+		if(shortBreakDefault < 1) setSettingsSaveDisabled(false)
+		if(longBreakDefault < 1) setSettingsSaveDisabled(false)
+		if(pomodoroMaxShortBreak < 1) setSettingsSaveDisabled(false)
 
 	}, [pomodoroDefault, shortBreakDefault, longBreakDefault, pomodoroMaxShortBreak])
 
@@ -312,7 +310,7 @@ export const TimerSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 					</div>
 				</div>
 				{
-					isValueChanged && (
+					settingsSaveDisabled && (
 						<div className="flex gap-2 justify-between py-3 pb-0 pt-7">
 
 							<button onClick={saveSettings} className="transition-all brightness-90 hover:brightness-110 bg-sv-accent dark:bg-sv-accent flex-1 corners py-2">

@@ -29,8 +29,10 @@ export interface WidgetSettingsProps {
 	widgetId: string;
 	settings: FC<WidgetSettingsTemplateProps>;
 	isFancyMinimized: boolean;
+	isSettingsSaveButtonDisabled: boolean;
 	onAnimationUpdate?: () => void;
 	onSettingsSave: () => void;
+	setSettingsSaveButtonDisabled: (disabled: boolean) => void;
 }
 
 export interface WidgetSettingsButtonProps {
@@ -46,15 +48,19 @@ export interface WidgetContentComponentProps {
 	widgetId: string;
 	isFancyMinimized: boolean;
 	isSettingsOpen: boolean;
+	isSettingsSaveButtonDisabled: boolean;
 	isMinimized: boolean;
 	children: React.ReactNode;
 	settings: FC<WidgetSettingsTemplateProps>;
 	isAlwaysOpen: boolean;
 	onAnimationUpdate: () => void;
 	onSettingsSave: () => void;
+	setSettingsSaveButtonDisabled: (disabled: boolean) => void;
 }
 
 export interface WidgetSettingsTemplateProps {
 	widgetId: string;
 	settingsSave: () => void;
+	settingsSaveDisabled: boolean;
+	setSettingsSaveDisabled: (disabled: boolean) => void;
 }

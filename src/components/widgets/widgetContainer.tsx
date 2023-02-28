@@ -58,6 +58,7 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 	const [isSettingsOpen, setIsSettingsOpen] = useState(
 		widgetsContext?.ctx.find((widget: WidgetContextState) => widget.id === widgetId)?.isSettingsOpen || false
 	)
+	const [isSettingsSaveButtonDisabled, setIsSettingsSaveButtonDisabled] = useState(true)
 	const [windowSize, setWindowSize] = useState({
 		width: 0,
 		height: 0
@@ -174,7 +175,7 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 		updateWidgetPosition(null, position)
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [self, isMinimized, isSettingsOpen, width, height, widgetState?.isActive])
+	}, [self, isMinimized, isSettingsOpen, isSettingsSaveButtonDisabled, width, height, widgetState?.isActive])
 	return (
 		<Draggable
 			position={position}
@@ -220,6 +221,8 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 					onAnimationUpdate={onAnimationUpdate}
 					isAlwaysOpen={alwaysOpen ? alwaysOpen : false}
 					onSettingsSave={handleOpenSettings}
+					isSettingsSaveButtonDisabled={isSettingsSaveButtonDisabled}
+					setSettingsSaveButtonDisabled={setIsSettingsSaveButtonDisabled}
 				>
 					{children}
 				</ContentComponent>
@@ -230,7 +233,7 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 
 const WidgetSettings: FC<WidgetSettingsProps> = (props) => {
 
-	const { settings: Settings, widgetId, isFancyMinimized, onAnimationUpdate, onSettingsSave } = props
+	const { settings: Settings, widgetId, isFancyMinimized, isSettingsSaveButtonDisabled, onAnimationUpdate, onSettingsSave, setSettingsSaveButtonDisabled } = props
 
 	const handleSaveSettings = () => {
 		onSettingsSave()
@@ -246,21 +249,21 @@ const WidgetSettings: FC<WidgetSettingsProps> = (props) => {
 				exit="initial"
 				onUpdate={onAnimationUpdate ? onAnimationUpdate : undefined}
 			>
-				<Settings settingsSave={handleSaveSettings} widgetId={widgetId}  />
+				<Settings settingsSave={handleSaveSettings} widgetId={widgetId} setSettingsSaveDisabled={setSettingsSaveButtonDisabled} settingsSaveDisabled={isSettingsSaveButtonDisabled} />
 			</motion.div>
 		)
 	}
 
 	return (
 		<div>
-			<Settings settingsSave={handleSaveSettings} widgetId={widgetId} />
+			<Settings settingsSave={handleSaveSettings} widgetId={widgetId} setSettingsSaveDisabled={setSettingsSaveButtonDisabled} settingsSaveDisabled={isSettingsSaveButtonDisabled} />
 		</div>
 	)
 }
 
 const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 
-	const { children, settings, widgetId, isMinimized, isSettingsOpen, isFancyMinimized, isAlwaysOpen, onAnimationUpdate, onSettingsSave } = props
+	const { children, settings, widgetId, isMinimized, isSettingsOpen, isFancyMinimized, isAlwaysOpen, isSettingsSaveButtonDisabled, onAnimationUpdate, onSettingsSave, setSettingsSaveButtonDisabled } = props
 
 	if (isFancyMinimized) {
 
@@ -283,7 +286,15 @@ const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 						{children}
 					</motion.div>
 					<AnimatePresence initial={false} mode="wait">
-						{isSettingsOpen && <WidgetSettings onAnimationUpdate={onAnimationUpdate} widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} onSettingsSave={onSettingsSave} />}
+						{isSettingsOpen && <WidgetSettings
+							onAnimationUpdate={onAnimationUpdate}
+							widgetId={widgetId}
+							isFancyMinimized={isFancyMinimized}
+							settings={settings}
+							onSettingsSave={onSettingsSave}
+							isSettingsSaveButtonDisabled={isSettingsSaveButtonDisabled}
+							setSettingsSaveButtonDisabled={setSettingsSaveButtonDisabled}
+						/>}
 					</AnimatePresence>
 				</>
 			)
@@ -310,7 +321,15 @@ const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 
 				</AnimatePresence>
 				<AnimatePresence initial={false} mode="wait">
-					{isSettingsOpen && <WidgetSettings onAnimationUpdate={onAnimationUpdate} widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} onSettingsSave={onSettingsSave} />}
+					{isSettingsOpen && <WidgetSettings
+						onAnimationUpdate={onAnimationUpdate}
+						widgetId={widgetId}
+						isFancyMinimized={isFancyMinimized}
+						settings={settings}
+						onSettingsSave={onSettingsSave}
+						isSettingsSaveButtonDisabled={isSettingsSaveButtonDisabled}
+						setSettingsSaveButtonDisabled={setSettingsSaveButtonDisabled}
+					/>}
 				</AnimatePresence>
 			</>
 		)
@@ -325,7 +344,14 @@ const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 					<DividerComponent />
 					{children}
 				</div>
-				{isSettingsOpen && <WidgetSettings widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} onSettingsSave={onSettingsSave} />}
+				{isSettingsOpen && <WidgetSettings
+					widgetId={widgetId}
+					isFancyMinimized={isFancyMinimized}
+					settings={settings}
+					onSettingsSave={onSettingsSave}
+					isSettingsSaveButtonDisabled={isSettingsSaveButtonDisabled}
+					setSettingsSaveButtonDisabled={setSettingsSaveButtonDisabled}
+				/>}
 			</>
 		)
 	}
@@ -340,7 +366,14 @@ const ContentComponent: FC<WidgetContentComponentProps> = (props) => {
 					</div>
 				</div>
 			}
-			{isSettingsOpen && <WidgetSettings widgetId={widgetId} isFancyMinimized={isFancyMinimized} settings={settings} onSettingsSave={onSettingsSave} />}
+			{isSettingsOpen && <WidgetSettings
+				widgetId={widgetId}
+				isFancyMinimized={isFancyMinimized}
+				settings={settings}
+				onSettingsSave={onSettingsSave}
+				isSettingsSaveButtonDisabled={isSettingsSaveButtonDisabled}
+				setSettingsSaveButtonDisabled={setSettingsSaveButtonDisabled}
+			/>}
 		</>
 	)
 }

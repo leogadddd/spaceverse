@@ -1,4 +1,4 @@
-import { NotificationType } from "../../../components/notification/notificationComponentProps"
+import { NotificationActionType, NotificationType } from "../../../components/notification/notificationComponentProps"
 
 export interface NotificationState {
 	notifications: INotification[],
@@ -29,4 +29,5 @@ export interface INotificationCreate  {
 export interface NotificationAction {
 	label: string
 	callback: () => void
+	type: NotificationActionType
 }
