@@ -7,8 +7,8 @@ export const MenuComponent = () => {
 	return (
 		<>
 			{/* <Account /> */}
-			<SettingsMenu />
 			<WhatsNew />
+			<SettingsMenu />
 			{
 				process.env.NODE_ENV === "development" && <DevTools />
 			}

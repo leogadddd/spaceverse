@@ -20,6 +20,7 @@ module.exports = {
 				"sv-input-light": "#0e11111A",
 				"sv-pomodoro-green": "#007F00",
 				"sv-pomodoro-red": "#C13D46",
+				"sv-whatsnew-li-dark": "#b4b7b9",
 				// "sv-light90": "#e2eafee6",
 				// "sv-dark90": "#0e1111e6",
 				// "sv-light75": "#e2eafebf",

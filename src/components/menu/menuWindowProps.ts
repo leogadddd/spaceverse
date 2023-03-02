@@ -6,7 +6,7 @@ export interface menuWindowContainerProps {
 	minHeight?: number;
 	maxHeight?: number;
 	isDefaultOpen?: boolean;
-	hasNewContent?: boolean;
+	hasNewContent?: number;
 }
 
 export interface menuWindowBarProps {
@@ -16,5 +16,5 @@ export interface menuWindowBarProps {
 
 export interface MenuListItemState {
 	name: string,
-	hasNewContent: boolean,
+	hasNewContent: number,
 }

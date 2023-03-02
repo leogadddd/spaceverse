@@ -25,9 +25,9 @@ export const MenuList: FC<MenuListProps> = (props) => {
 			<motion.div
 				onClick={toggleIsOpen}
 				initial={{ opacity: 0 }}
-				animate={{ opacity: .10 }}
+				animate={{ opacity: .05 }}
 				exit={{ opacity: 0 }}
-				className="absolute inset-0 bg-gray-800 z-40 pointer-events-auto"
+				className="absolute inset-0 bg-white z-40 pointer-events-auto"
 			>
 			</motion.div>
 			<motion.div
@@ -79,7 +79,7 @@ const MenuListItem: FC<MenuListItemState> = (props) => {
 		toggleWindowMenu(false)
 		toggleWindowMenuHasNewContent({
 			name: name,
-			hasNewContent: false
+			hasNewContent: 0
 		})
 	}
 
@@ -95,7 +95,7 @@ const MenuListItem: FC<MenuListItemState> = (props) => {
 				</h1>
 
 				{
-					hasNewContent && (
+					hasNewContent === 1 && (
 						<div className="ml-2">
 							<div className="dark:bg-red-600 bg-red-600 rounded-full px-2 h-4">
 								<p className="text-xs text-center text-sv-light">

@@ -29,7 +29,7 @@ export type TWindowMenuItem = {
 	icon: React.ReactNode;
 	isOpen: boolean;
 	data: any | null;
-	hasNewContent: boolean;
+	hasNewContent: number;
 }
 
 export type TWindowMenuItemToggle = {
@@ -39,5 +39,5 @@ export type TWindowMenuItemToggle = {
 
 export type TWindowMenuItemHasNewContent = {
 	name: string;
-	hasNewContent: boolean;
+	hasNewContent: number;
 }

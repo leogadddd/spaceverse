@@ -245,7 +245,7 @@ export const UniversePickerControl: FC<UniversePickerProps> = (props) => {
 	const { NextUniverse, PreviousUniverse } = props
 
 	return (
-		<div className="px-5 py-4 flex items-center justify-center gap-3">
+		<div className="px-5 py-4 pt-3 flex items-center justify-center gap-3">
 			<button className='h-[40px] flex justify-center items-center gap-2 ring-1 dark:ring-sv-input-dark ring-sv-input-light dark:bg-sv-input-dark bg-sv-input-light corners flex-1 hover:brightness-110 active:dark:opacity-50 active:opacity-50 transition-all' onClick={PreviousUniverse}>
 				<BiChevronLeft size={25} className="dark:text-sv-white text-sv-black" />
 				<h1 className="dark:text-sv-white text-sv-black mt-[2px]">Previous</h1>
@@ -266,7 +266,7 @@ export const UniverseCategoryPicker: FC<UniverseCategoryPickerProps> = (props) =
 	return (
 		<div className="px-5 pt-4 flex items-center justify-center">
 			<select
-				className="ring-1 dark:ring-sv-input-dark ring-sv-input-light dark:bg-sv-input-dark bg-sv-input-light hover:brightness-110 transition-all cursor-pointer corners flex-1 h-[40px] relative flex overflow-hidden overflow-y-auto dark:text-sv-white text-sv-black px-4"
+				className="ring-1 dark:ring-sv-input-dark ring-sv-input-light dark:bg-sv-input-dark bg-sv-input-light hover:brightness-110 active:dark:opacity-50 active:opacity-50 transition-all cursor-pointer corners flex-1 h-[40px] relative flex overflow-hidden overflow-y-auto dark:text-sv-white text-sv-black px-4"
 				onChange={(e) => PickCategory(parseInt(e.target.value))}
 				value={universeManagerState?.categoryIndex || ""}
 			>

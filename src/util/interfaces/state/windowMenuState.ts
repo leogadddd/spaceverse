@@ -8,5 +8,5 @@ export interface WindowMenuItemState {
 	icon: React.ReactNode;
 	isOpen: boolean;
 	data: any | null;
-	hasNewContent: boolean;
+	hasNewContent: number;
 }

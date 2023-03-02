@@ -58,7 +58,7 @@ export const Widget: FC<WidgetsContainerProps> = (props) => {
 	const [isSettingsOpen, setIsSettingsOpen] = useState(
 		widgetsContext?.ctx.find((widget: WidgetContextState) => widget.id === widgetId)?.isSettingsOpen || false
 	)
-	const [isSettingsSaveButtonDisabled, setIsSettingsSaveButtonDisabled] = useState(true)
+	const [isSettingsSaveButtonDisabled, setIsSettingsSaveButtonDisabled] = useState(false)
 	const [windowSize, setWindowSize] = useState({
 		width: 0,
 		height: 0

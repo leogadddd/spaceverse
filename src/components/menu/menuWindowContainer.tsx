@@ -37,7 +37,7 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 			icon: "",
 			isOpen: isDefaultOpen || false,
 			data: null,
-			hasNewContent: hasNewContent || false
+			hasNewContent: hasNewContent || 0
 		})
 
 		return () => { unsubscribeWindowMenu(title) }
@@ -52,9 +52,9 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 						<motion.div
 							onClick={toggleWindow}
 							initial={{ opacity: 0 }}
-							animate={{ opacity: .15 }}
+							animate={{ opacity: .10 }}
 							exit={{ opacity: 0 }}
-							className="absolute inset-0 bg-gray-800 pointer-events-auto"
+							className="absolute inset-0 bg-white pointer-events-auto"
 						>
 						</motion.div>
 						<motion.div
