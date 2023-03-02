@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import { store } from './lib/';
 import { ThemeProvider } from './util/context/themeContext';
 import { UniverseContextProvider } from './util/context/universeContext';
-import { BrowserRouter } from 'react-router-dom';
-import { Route, Routes } from 'react-router';
+import { BrowserRouter, redirect } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router';
 import { PomodoroContextProvider } from './util/context/pomodoroContext';
 import Cms from './Cms';
 import { SpotifyPlaylistContextProvider } from './util/context/spotifyPlaylistContext';
@@ -34,10 +34,11 @@ root.render(
 							<UniverseContextProvider>
 								<ThemeProvider initialTheme>
 									<Routes>
-										<Route path="/" element={<App />} />
+										<Route path="/app" element={<App />} />
 										{
 											process.env.NODE_ENV === 'development' && <Route path="/cms" element={<Cms />} />
 										}
+										<Route path="*" element={<Navigate to="/app" />} />
 									</Routes>
 								</ThemeProvider>
 							</UniverseContextProvider>
