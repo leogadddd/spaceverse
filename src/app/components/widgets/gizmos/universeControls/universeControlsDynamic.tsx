@@ -148,7 +148,13 @@ export const UniverseInformation = (universeState: UniverseState) => {
 	const shareUniverse = () => {
 
 		const currentUrl = window.location.href
-		navigator.clipboard.writeText(currentUrl)
+
+		// add univ id to url as search param
+		const url = new URL(currentUrl)
+		url.searchParams.set("univ", universeState.id!)
+
+		// copy to clipboard
+		navigator.clipboard.writeText(url.toString())
 
 		const openInNewTab = (url: string) => {
 			const newWindow = window.open(url, "_blank", "noopener,noreferrer")
@@ -162,7 +168,7 @@ export const UniverseInformation = (universeState: UniverseState) => {
 			actions: [
 				{
 					label: "Open",
-					callback: () => openInNewTab(currentUrl),
+					callback: () => openInNewTab(url.toString()),
 					type: NotificationActionType.OnClick
 				}
 			]

@@ -16,7 +16,6 @@ export const useUniverseManager = () => {
 	const universeContext = useContext(UniverseContext)
 
 	const [searchParams, setSearchParams] = useSearchParams();
-	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const {
 		setUniverse,
@@ -97,10 +96,6 @@ export const useUniverseManager = () => {
 				universeCurrentUniverseIndex: index,
 				universeCurrentUniverse: universe
 			})
-
-			navigate({
-				search: `?univ=${universe.id}`,
-			})
 		})
 
 		return () => {
@@ -126,7 +121,7 @@ export const useUniverseManager = () => {
 
 
 			setUniverseCategories(categories)
-		
+
 			let universeIndex = 0
 			let categoryIndex = 0
 
@@ -143,7 +138,7 @@ export const useUniverseManager = () => {
 					...universeContext.ctx,
 					universeCurrent: universeId,
 				})
-	
+
 				const category = categories.find((category) => category.universes.includes(universeId))
 
 				if (category) {
@@ -156,6 +151,9 @@ export const useUniverseManager = () => {
 					universeIndex = universeContext.ctx.universeCurrentUniverseIndex ?? randomCategory.universes.indexOf(randomUniverse)
 					categoryIndex = universeContext.ctx.universeCurrentCategortIndex ?? categories.indexOf(randomCategory)
 				}
+
+				// remove only the univ param
+				setSearchParams(new URLSearchParams(searchParams.toString().replace(/univ=[0-9]+/, "")))
 			}
 
 			setUniversePickedCategory(categoryIndex ?? 0)
