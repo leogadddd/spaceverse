@@ -97,7 +97,7 @@ const MenuListItem: FC<MenuListItemState> = (props) => {
 				{
 					hasNewContent === 1 && (
 						<div className="ml-2">
-							<div className="dark:bg-red-600 bg-red-600 rounded-full px-2 h-4">
+							<div className="dark:bg-sv-pomodoro-red bg-sv-pomodoro-red rounded-full px-2 h-4">
 								<p className="text-xs text-center text-sv-light">
 									NEW
 								</p>

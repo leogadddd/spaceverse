@@ -6,16 +6,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { creators } from "../../../lib";
 import { MenuList } from "../../menu/menuList";
+import { FC, useEffect, useState } from "react";
 
 export const Menu = () => {
 
 	const dispatch = useDispatch()
 	const { toggleWindowMenu } = bindActionCreators(creators, dispatch)
 	const windowMenuState: WindowMenuState = useSelector((state: any) => state.windowMenu)
+	const [hasNewContent, setHasNewContent] = useState<boolean>(false)
+
+	const checkIfHasNewContent = () => {
+		setHasNewContent(false)
+
+		windowMenuState.menuItems.forEach((item) => {
+			if (item.hasNewContent) {
+				return setHasNewContent(true)
+			}
+		})
+	}
 
 	const toggleIsOpen = () => {
 		toggleWindowMenu(!windowMenuState.isOpen)
 	}
+
+	useEffect(() => {
+		checkIfHasNewContent()
+	}, [windowMenuState.menuItems])
 
 	return (
 		<>
@@ -24,11 +40,13 @@ export const Menu = () => {
 				onClick={toggleIsOpen}
 				aria-label="Toggle theme"
 			>
-				{
-					windowMenuState.isOpen ?
-						<MenuBurgerCloseIcon />
-						: <MenuBurgerIcon />
-				}
+				<AnimatePresence mode="wait">
+					{
+						windowMenuState.isOpen ?
+							<MenuBurgerCloseIcon />
+							: <MenuBurgerIcon hasNewContent={hasNewContent} />
+					}
+				</AnimatePresence>
 			</button>
 			<AnimatePresence mode="wait">
 				{windowMenuState.isOpen &&
@@ -39,7 +57,10 @@ export const Menu = () => {
 	);
 }
 
-const MenuBurgerIcon = () => {
+const MenuBurgerIcon: FC<{ hasNewContent: boolean }> = (props) => {
+
+	const { hasNewContent } = props
+
 	return (
 		<motion.div
 			initial={{ rotate: -90 }}
@@ -47,6 +68,12 @@ const MenuBurgerIcon = () => {
 			exit={{ rotate: 90 }}
 		>
 			<TiThMenu className="dark:text-sv-white text-sv-black" />
+			<motion.div
+				className="w-3 h-3 bg-sv-pomodoro-red corners absolute right-2 top-2"
+				initial={{ opacity: 0 }}
+				animate={{ opacity: hasNewContent ? 1 : 0 }}
+				transition={{ duration: 0.2, delay: .7 }}
+			/>
 		</motion.div>
 	);
 };
