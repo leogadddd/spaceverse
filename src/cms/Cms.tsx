@@ -1,4 +1,4 @@
-import { CmsBackground, DatabaseWidgetComponent } from "./cms/components";
+import { CmsBackground, DatabaseWidgetComponent } from "./components";
 
 const Cms = () => {
 	return (

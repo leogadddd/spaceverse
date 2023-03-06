@@ -1,11 +1,11 @@
 import { FC, useState } from "react"
-import { DividerComponent2 } from "../../../components/divider"
+import { DividerComponent2 } from "../../../app/components/divider"
 import { DatabaseControlsButtonProps, DatabaseControlsProps, DatabaseFormProps, DatabaseListEmptyProps, DatabaseListItemControlsProps, DatabaseListItemDeleteProps, DatabaseListProps, DatabaseListRowProps, DatabaseWidgetFormFieldProps, DatabaseWidgetFormType, DatabaseWidgetTemplateProps } from "./databaseWidgetProps"
 import { FaTrashAlt } from "react-icons/fa"
 
 export const DatabaseWidgetTemplate: FC<DatabaseWidgetTemplateProps> = (props) => {
 
-	const { rows, fields, onAddRow, onUpdateRow, onRemoveRow } = props
+	const { rows, fields, onAddRow, onRemoveRow } = props
 	const [panel, setPanel] = useState(0)
 
 	const content = () => {

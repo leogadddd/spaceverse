@@ -1,10 +1,8 @@
-import { FC, useEffect, useState } from "react"
-import { DividerComponent2 } from "../../../../../components/divider"
+import { useState } from "react"
 import { Category, useCategoryDatabase } from "../../../../util"
 import DatabaseWidgetContainer from "../../databaseWidgetContainer"
 import { DatabaseWidgetFormType } from "../../databaseWidgetProps"
 import DatabaseWidgetTemplate from "../../databaseWidgetTemplate"
-import { CategoryFormAddControlsProps, CategoryFormAddInputsProps, CategoryFormAddProps, CategoryListControlsProps, CategoryListItemProps, CategoryListPanelProps, CategoryListProps } from "./categoryProps"
 
 export const CategoryDatabase = () => {
 

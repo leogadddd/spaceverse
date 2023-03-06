@@ -1,6 +1,6 @@
 import { collection, doc, onSnapshot, query, setDoc, deleteDoc } from "firebase/firestore"
 import { useEffect, useState } from "react"
-import { db } from "../../../firebase"
+import { db } from "../../../app/firebase"
 import { createCategoryProps } from "../../components/databaseWidgets/gizmos/category/categoryProps"
 import { generateId } from "../idGenerator"
 import { Category, createCategory } from "../interface"

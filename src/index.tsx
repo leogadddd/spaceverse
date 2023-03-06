@@ -1,17 +1,17 @@
-import App from './App';
-import './style/index.css';
+import App from './app/App';
+import "./style/index.css"
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { store } from './lib/';
-import { ThemeProvider } from './util/context/themeContext';
-import { UniverseContextProvider } from './util/context/universeContext';
-import { BrowserRouter, redirect } from 'react-router-dom';
+import { store } from './app/lib/';
+import { ThemeProvider } from './app/util/context/themeContext';
+import { UniverseContextProvider } from './app/util/context/universeContext';
+import { BrowserRouter } from 'react-router-dom';
 import { Navigate, Route, Routes } from 'react-router';
-import { PomodoroContextProvider } from './util/context/pomodoroContext';
-import Cms from './Cms';
-import { SpotifyPlaylistContextProvider } from './util/context/spotifyPlaylistContext';
-import { WidgetsContextProvider } from './util/context/widgetsContext';
-import { WhatsNewContextProvider } from './util/context/whatsnewContext';
+import { PomodoroContextProvider } from './app/util/context/pomodoroContext';
+import Cms from './cms/Cms';
+import { SpotifyPlaylistContextProvider } from './app/util/context/spotifyPlaylistContext';
+import { WidgetsContextProvider } from './app/util/context/widgetsContext';
+import { WhatsNewContextProvider } from './app/util/context/whatsnewContext';
 
 const isOldVersion = localStorage.getItem('buildVersion') !== process.env.REACT_APP_buildVersion;
 

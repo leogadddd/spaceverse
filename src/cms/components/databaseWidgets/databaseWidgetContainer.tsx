@@ -1,10 +1,10 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
-import DividerComponent from "../../../components/divider";
-import { WidgetMinimizerButton } from "../../../components/widgets";
-import useWindowSize from "../../../util/hooks/useWindowSize";
-import { convertPercentageToPixels } from "../../../util/percentageDimensionConverter";
-import { formatString4Class } from "../../../util/stringformatter";
+import DividerComponent from "../../../app/components/divider";
+import { WidgetMinimizerButton } from "../../../app/components/widgets";
+import useWindowSize from "../../../app/util/hooks/useWindowSize";
+import { convertPercentageToPixels } from "../../../app/util/percentageDimensionConverter";
+import { formatString4Class } from "../../../app/util/stringformatter";
 import { DatabaseWidgetBarProps, DatabaseWidgetContainerProps } from "./databaseWidgetProps";
 
 export const DatabaseWidgetContainer: FC<DatabaseWidgetContainerProps> = (props) => {
