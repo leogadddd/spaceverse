@@ -5,10 +5,10 @@ import UniverseLoadingScreen from "./UniverseLoadingScreen";
 export const UniverseComponent = () => {
 
 	return (
-		<>
+		<div>
 			<UniversePlayer />
 			<UniverseLoadingScreen />
-		</>
+		</div>
 	)
 }
 

@@ -12,6 +12,7 @@ import Cms from './cms/Cms';
 import { SpotifyPlaylistContextProvider } from './app/util/context/spotifyPlaylistContext';
 import { WidgetsContextProvider } from './app/util/context/widgetsContext';
 import { WhatsNewContextProvider } from './app/util/context/whatsnewContext';
+import Site from './website/site';
 
 const isOldVersion = localStorage.getItem('buildVersion') !== process.env.REACT_APP_buildVersion;
 
@@ -34,11 +35,12 @@ root.render(
 							<UniverseContextProvider>
 								<ThemeProvider initialTheme>
 									<Routes>
-										<Route path="/app" element={<App />} />
+										<Route path="/universe" element={<App />} />
+										<Route path="/" element = {<Site />} />
 										{
 											process.env.NODE_ENV === 'development' && <Route path="/cms" element={<Cms />} />
 										}
-										<Route path="*" element={<Navigate to="/app" />} />
+										{/* <Route path="*" element={<Navigate to="/universe" />} /> */}
 									</Routes>
 								</ThemeProvider>
 							</UniverseContextProvider>
