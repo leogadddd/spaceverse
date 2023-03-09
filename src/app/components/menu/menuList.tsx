@@ -8,7 +8,7 @@ import { subscribersSettingsFields } from "../../util/enums/subscribersName"
 import { SettingsFieldState, WindowMenuItemState, WindowMenuState } from "../../util/interfaces"
 import DividerComponent from "../divider"
 import { MenuListProps, NavigationLocation } from "../navigationBar/navigationBarProps"
-import { MenuListItemState } from "./menuWindowProps"
+import { MenuListItemLinkProps, MenuListItemState } from "./menuWindowProps"
 
 export const MenuList: FC<MenuListProps> = (props) => {
 
@@ -48,6 +48,8 @@ export const MenuList: FC<MenuListProps> = (props) => {
 								)
 							})
 						}
+						<MenuListItemLink name="Privacy" href="/privacy" />
+						<MenuListItemLink name="Terms" href="/terms" />
 					</ul>
 					<div className="h-[35px] flex flex-col-reverse p-2">
 						<h1 className="dark:text-sv-ring-dark text-sv-ring-light text-sm">
@@ -57,6 +59,29 @@ export const MenuList: FC<MenuListProps> = (props) => {
 				</div>
 			</motion.div>
 		</MenuListLayout >
+	)
+}
+
+const MenuListItemLink: FC<MenuListItemLinkProps> = (props) => {
+
+	const { name, href } = props
+
+	return (
+		<>
+			<li key={name + "-linkItem"} className="flex">
+				<a
+					href={href}
+					target="_blank"
+					rel="noreferrer"
+					className="flex-1 h-[40px] px-6 flex justify-start items-center hover:bg-sv-input-dark pointer-events-auto transition-colors disabled:opacity-25"
+				>
+					<h1 className="dark:text-sv-light text-sv-dark">
+						{name}
+					</h1>
+				</a>
+			</li>
+			<DividerComponent />
+		</>
 	)
 }
 

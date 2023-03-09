@@ -18,3 +18,8 @@ export interface MenuListItemState {
 	name: string,
 	hasNewContent: number,
 }
+
+export interface MenuListItemLinkProps {
+	href: string;
+	name: string;
+}
