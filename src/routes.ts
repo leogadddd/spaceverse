@@ -10,7 +10,7 @@ import ThanksPage from "./website/thanksPage";
 const routes: IRoutes[] = [
 	{
 		id: 'home',
-		path: '/',
+		path: '/universe',
 		component: App,
 	},
 	{

@@ -47,10 +47,14 @@ root.render(
 							<UniverseContextProvider>
 								<ThemeProvider initialTheme>
 									<Routes>
+										<Route path="/" element={
+											localStorage.getItem("isFirstVisit") === "true" ? <Navigate to={getSpecificRoute("home")?.path!} /> : <Navigate to={getSpecificRoute("website")?.path!} />
+										} />
 										{
 											// routes is an list contains an object which has the route path and path, component, and a check function to see if the route should be rendered but check first if check is undefined
 											routes.map((route: IRoutes) => {
-												const Component = route.component;
+												let Component = route.component;
+											
 												if (route.check) {
 													return route.check() && <Route key={route.path} path={route.path} element={<Component />} />;
 												}
