@@ -16,6 +16,7 @@ import Site from './website/site';
 import PageNotFound from './website/404';
 import TermsOfService from './website/termsOfService';
 import PrivacyPolicy from './website/privacyPolicy';
+import ThanksPage from './website/thanksPage';
 
 const isOldVersion = localStorage.getItem('buildVersion') !== process.env.REACT_APP_buildVersion;
 
@@ -42,6 +43,7 @@ root.render(
 										<Route path="/" element = {<Site />} />
 										<Route path="/terms" element={<TermsOfService />} />
 										<Route path="/privacy" element={<PrivacyPolicy />} />
+										<Route path="/thankyou" element={<ThanksPage />} />
 										{
 											process.env.NODE_ENV === 'development' && <Route path="/cms" element={<Cms />} />
 										}
