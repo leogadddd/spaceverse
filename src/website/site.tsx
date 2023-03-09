@@ -20,6 +20,10 @@ export const Site = () => {
 		});
 	}
 
+	useEffect(() => {
+		localStorage.setItem("isFirstVisit", "true");
+	}, [])
+
 	return createPortal(
 		<div className="overflow-hidden">
 			<Navigation />
