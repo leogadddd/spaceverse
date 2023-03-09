@@ -116,20 +116,30 @@ export const UniverseSettings: FC<WidgetSettingsTemplateProps> = (props) => {
 							</p>
 						</div>
 					</div>
-					{
-						settingsSaveDisabled && (
-							<div className="flex gap-2 justify-between py-3 pb-0 pt-4">
-
-								<button onClick={handleSave} className="transition-all brightness-90 hover:brightness-110 bg-sv-accent dark:bg-sv-accent flex-1 corners py-2">
-									<h1 className="text-sm text-sv-black font-semibold">
-										Save
-									</h1>
-								</button>
-
-							</div>
-						)
-					}
+					<div>
+						<a
+							href="https://tally.so/r/w2XraL"
+							target="_blank"
+							rel="noreferrer"
+							className="text-xs text-sv-black dark:text-sv-white opacity-50 hover:underline"
+						>
+							request a universe
+						</a>
+					</div>
 				</div>
+				{
+					settingsSaveDisabled && (
+						<div className="flex gap-2 justify-between py-3 pb-0 pt-4">
+
+							<button onClick={handleSave} className="transition-all brightness-90 hover:brightness-110 bg-sv-accent dark:bg-sv-accent flex-1 corners py-2">
+								<h1 className="text-sm text-sv-black font-semibold">
+									Save
+								</h1>
+							</button>
+
+						</div>
+					)
+				}
 			</div>
 		</div>
 	)
