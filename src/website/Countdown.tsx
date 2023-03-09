@@ -86,11 +86,30 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 		const tout = setInterval(() => {
 			setTime(calculateTimeLeft());
 
-			if (date < new Date().getTime()) {
+			if (date < new Date().getTime() && !isReleased) {
 				setIsReleased(true);
 				clearInterval(tout);
-				window.location.reload();
-				console.log("released");
+
+				const notification1: INotificationCreate = {
+					from: "Spaceverse",
+					message: "Universe is now released! 🚀",
+					type: NotificationType.Success,
+				}
+
+				const notification2: INotificationCreate = {
+					from: "Spaceverse",
+					message: "Reloading page...",
+					type: NotificationType.Info,
+				}
+
+				addNotification(notification1)
+				setTimeout(() =>
+					addNotification(notification2)
+					, 1000)
+
+				setTimeout(() => {
+					window.location.reload();
+				}, 2000)
 			}
 		}
 			, 1000);
@@ -102,7 +121,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 		<div className="overflow-hidden">
 			{/* <UniverseComponent /> */}
 			<NotificationComponent />
-			<Navigation />
+			<Navigation showOpenAppButton={isReleased} />
 			<div className="bg-spweb-darkup flex flex-col justify-center">
 				<WidthLayout>
 					<div className="min-h-[calc(100vh-60px)] max-w-[1000px] flex flex-col gap-6 justify-center items-center px-4 py-16">
@@ -126,38 +145,40 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 								) : null
 							}
 							{
-								<div className="flex gap-2 items-center">
-									<span className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-sv-accent">
-										{time.hours}
-									</span>
-									<span className="opacity-50">
-										{time.hours === 1 ? "hour" : "hours"}{
-											time.minutes !== 0 && time.seconds !== 0 ? "," : ""
-										}
-									</span>
-								</div>
+								(time.days !== 0 || time.hours !== 0) && (
+									<div className="flex gap-2 items-center">
+										<span className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-sv-accent">
+											{time.hours}
+										</span>
+										<span className="opacity-50">
+											{time.hours === 1 ? "hour" : "hours"},
+										</span>
+									</div>
+								)
 							}
 							{
-								<div className="flex gap-2 items-center">
-									<span className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-sv-accent">
-										{time.minutes}
-									</span>
-									<span className="opacity-50">
-										{time.minutes === 1 ? "minute" : "minutes"}{
-											time.seconds !== 0 ? "," : ""
-										}
-									</span>
-								</div>
+								(time.days !== 0 || time.hours !== 0 || time.minutes !== 0) && (
+									<div className="flex gap-2 items-center">
+										<span className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-sv-accent">
+											{time.minutes}
+										</span>
+										<span className="opacity-50">
+											{time.minutes === 1 ? "minute" : "minutes"},
+										</span>
+									</div>
+								)
 							}
 							{
-								<div className="flex gap-2 items-center">
-									<span className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-sv-accent">
-										{time.seconds}
-									</span>
-									<span className="opacity-50">
-										seconds
-									</span>
-								</div>
+								(time.days !== 0 || time.hours === 0 || time.minutes === 0 || time.seconds !== 0) && (
+									<div className="flex gap-2 items-center">
+										<span className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-sv-accent">
+											{time.seconds}
+										</span>
+										<span className="opacity-50">
+											seconds
+										</span>
+									</div>
+								)
 							}
 						</h1>
 						<div className="w-full max-w-[500px] h-[1px] bg-sv-white opacity-30" />
@@ -199,6 +220,9 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 								</div>
 							</div>
 						</div>
+						<p className="text-sv-white text-sm text-center max-w-[400px] opacity-75">
+							The old one is still available at <a href="https://old.spvr.app" target="_blank" rel="noreferrer" className="text-sv-accent hover:underline">old.spvr.app</a>
+						</p>
 					</div>
 				</WidthLayout>
 			</div>
