@@ -5,17 +5,11 @@ import DividerComponent from "../../../app/components/divider";
 import { WidthLayout } from "../layouts/widthLayout"
 import { ImageProps, LandingPageProps } from "./landingPageProps"
 import { MdOutlinePanoramaPhotosphere } from "react-icons/md"
+import { getSpecificRoute } from "../../../routes";
 
 export const LandingPage: FC<LandingPageProps> = (props) => {
 
 	const { scrollIntoView } = props;
-
-	const navigate = useNavigate();
-
-	const handleOpenApp = () => {
-		console.log('open app')
-		navigate('/universe')
-	}
 
 	return (
 		<div className="relative">
@@ -34,8 +28,9 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 							</p>
 							<div className="flex flex-col items-center lg:items-start gap-6 lg:justify-start py-4 sm:pt-8 lg:pt-16">
 								<a
-									href="/universe"
+									href={getSpecificRoute('home')?.path}
 									target="_blank"
+									rel="noreferrer"
 									className="text-sv-black text-lg font-semibold pointer-events-auto w-max bg-sv-accent brightness-95 hover:brightness-110 transition-all p-8 py-3 rounded-[16px]"
 								>
 									Open In The Browser

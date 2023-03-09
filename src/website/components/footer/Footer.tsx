@@ -1,5 +1,6 @@
 import { FC } from "react"
 import DividerComponent from "../../../app/components/divider"
+import { getSpecificRoute } from "../../../routes"
 import { WidthLayout } from "../layouts/widthLayout"
 import { FooterLinkProps } from "./FooterProps"
 
@@ -19,8 +20,8 @@ export const Footer = () => {
 								<ul className="flex flex-col gap-2">
 									{/* <FooterLink title="About" href="#" /> */}
 									{/* <FooterLink title="Contact" href="#" /> */}
-									<FooterLink title="Privacy Policy" href="/privacy" />
-									<FooterLink title="Terms of Service" href="/terms" />
+									<FooterLink title="Privacy Policy" href={getSpecificRoute('privacy')?.path || ""} />
+									<FooterLink title="Terms of Service" href={getSpecificRoute('terms')?.path || ""} />
 									{/* <FooterLink title="Blog" href="#" /> */}
 								</ul>
 							</div>

@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import { FC, PropsWithChildren, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { useDispatch, useSelector } from "react-redux"
+import { getSpecificRoute } from "../../../routes"
 import { creators } from "../../lib"
 import { subscribersSettingsFields } from "../../util/enums/subscribersName"
 import { SettingsFieldState, WindowMenuItemState, WindowMenuState } from "../../util/interfaces"
@@ -48,8 +49,8 @@ export const MenuList: FC<MenuListProps> = (props) => {
 								)
 							})
 						}
-						<MenuListItemLink name="Privacy" href="/privacy" />
-						<MenuListItemLink name="Terms" href="/terms" />
+						<MenuListItemLink name="Privacy" href={getSpecificRoute('privacy')?.path || ""} />
+						<MenuListItemLink name="Terms" href={getSpecificRoute('terms')?.path || ""} />
 					</ul>
 					<div className="h-[35px] flex flex-col-reverse p-2">
 						<h1 className="dark:text-sv-ring-dark text-sv-ring-light text-sm">

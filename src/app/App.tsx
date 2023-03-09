@@ -7,11 +7,6 @@ import { NotificationComponent } from './components/notification';
 import { useEffect } from 'react';
 
 const App = () => {
-
-	useEffect(() => {
-		localStorage.setItem('isNotTheFirstTimeContext', 'true') 
-	}, [])
-
 	return (
 		<>
 			<UniverseComponent />

@@ -4,6 +4,7 @@ import { WidthLayout } from "./components/layouts/widthLayout"
 import { Navigation } from "./components/navigation"
 import { useSearchParams } from "react-router-dom"
 import { ThanksPageMessage } from "./util/enum/thanksType"
+import { getSpecificRoute } from "../routes"
 
 export const ThanksPage = () => {
 
@@ -51,7 +52,7 @@ export const ThanksPage = () => {
 							{ThanksMessage()}
 						</p>
 						<div className="flex flex-col items-center gap-4">
-							<a href="/" className="text-sv-black text-lg font-semibold pointer-events-auto w-max bg-sv-accent brightness-95 hover:brightness-110 transition-all p-8 py-3 rounded-[16px]">
+							<a href={getSpecificRoute('website')?.path} className="text-sv-black text-lg font-semibold pointer-events-auto w-max bg-sv-accent brightness-95 hover:brightness-110 transition-all p-8 py-3 rounded-[16px]">
 								Go Home
 							</a>
 							{/* <a href="/contact" className="text-sv-black text-lg font-semibold pointer-events-auto w-max bg-sv-accent brightness-95 hover:brightness-110 transition-all p-8 py-3 rounded-[16px]">
