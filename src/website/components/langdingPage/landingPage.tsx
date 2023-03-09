@@ -17,7 +17,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 				<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.05] pointer-events-none">
 					<MdOutlinePanoramaPhotosphere size={1000} />
 				</div>
-				<div className="pt-16 pb-36 lg:pt-0 lg:pb-36 lg:h-[calc(100vh-5rem)] flex flex-col justify-center ">
+				<div className="pt-16 pb-36 lg:py-36 lg:h-[calc(100vh-5rem)] flex flex-col justify-center">
 					<div className="px-4 lg:px-16 flex flex-col lg:flex-row gap-4 sm:gap-8 items-center lg:justify-between">
 						<div className="flex flex-col gap-6 flex-1">
 							<h1 className="font-bold text-4xl sm:text-6xl lg:text-5xl xl:text-7xl text-white text-center lg:text-left font-barlow-condensed tracking-wider">
