@@ -337,7 +337,7 @@ export const SettingsNumberInput: FC<PomodoroSettingsNumberInputProps> = (props)
 				{title}
 			</h1>
 			<input
-				className="text-sm text-sv-black dark:text-sv-white bg-transparent w-full p-2 py-1 px-3 corners ring-1 dark:ring-sv-light35 ring-sv-dark35"
+				className="text-sm text-sv-black dark:text-sv-white bg-transparent w-full p-2 py-1 px-3 corners ring-1 dark:ring-sv-ring-dark ring-sv-ring-light"
 				type="number"
 				value={value}
 				onChange={(e) => {
