@@ -18,6 +18,13 @@ import TermsOfService from './website/termsOfService';
 import PrivacyPolicy from './website/privacyPolicy';
 import ThanksPage from './website/thanksPage';
 import routes, { getSpecificRoute } from './routes';
+import CountdownTimer from './website/Countdown';
+
+// march 13, 2023
+const DateToBeReleased = new Date(2023, 2, 13, 10, 0).getTime();
+const Today = new Date().getTime();
+
+const isReleased = DateToBeReleased < Today;
 
 const isOldVersion = localStorage.getItem('buildVersion') !== process.env.REACT_APP_buildVersion;
 
@@ -35,6 +42,7 @@ export interface IRoutes {
 	path: string;
 	component: any;
 	check?: () => boolean;
+	redirect?: string;
 }
 
 root.render(
@@ -47,29 +55,37 @@ root.render(
 							<UniverseContextProvider>
 								<ThemeProvider initialTheme>
 									<Routes>
-										<Route path="/" element={
-											localStorage.getItem("isFirstVisit") === "true" ? <Navigate to={getSpecificRoute("home")?.path!} /> : <Navigate to={getSpecificRoute("website")?.path!} />
-										} />
 										{
-											// routes is an list contains an object which has the route path and path, component, and a check function to see if the route should be rendered but check first if check is undefined
-											routes.map((route: IRoutes) => {
-												let Component = route.component;
-											
-												if (route.check) {
-													return route.check() && <Route key={route.path} path={route.path} element={<Component />} />;
-												}
-												return <Route key={route.path} path={route.path} element={<Component />} />;
-											})
+											isReleased ? (
+												<>
+													<Route path="/" element={
+														localStorage.getItem("isFirstVisit") === "true" ? <Navigate to={getSpecificRoute("home")?.path!} /> : <Navigate to={getSpecificRoute("website")?.path!} />
+													} />
+													{
+														// routes is an list contains an object which has the route path and path, component, and a check function to see if the route should be rendered but check first if check is undefined
+														routes.map((route: IRoutes) => {
+															let Component = route.component;
+
+															if (route.redirect) {
+																return <Route key={route.path} path={route.path} element={<Navigate to={route.redirect} />} />;
+															} else if (typeof Component === "object" && route.check) {
+																let Component1 = Component[0];
+																let Component2 = Component[1];
+																return <Route key={route.path} path={route.path} element={route.check() ? <Component1 /> : <Component2 />} />;
+															} else if (route.check) {
+																return route.check() && <Route key={route.path} path={route.path} element={<Component />} />;
+															}
+															return <Route key={route.path} path={route.path} element={<Component />} />;
+														})
+													}
+												</>
+											) : (
+												<>
+													<Route path="/release" element={<CountdownTimer date={DateToBeReleased} />} />
+													<Route path="*" element={<Navigate to="/release" />} />
+												</>
+											)
 										}
-										{/* <Route path={getSpecificRoute("home")?.path} element={<App />} />
-										<Route path={getSpecificRoute("website")?.path}  element={<Site />} />
-										<Route path={getSpecificRoute("terms")?.path}  element={<TermsOfService />} />
-										<Route path={getSpecificRoute("priacy")?.path}  element={<PrivacyPolicy />} />
-										<Route path={getSpecificRoute("thankyou")?.path}  element={<ThanksPage />} />
-										{
-											process.env.NODE_ENV === 'development' && <Route path="/cms" element={<Cms />} />
-										}
-										<Route path={getSpecificRoute("404")?.path} element={<PageNotFound />} /> */}
 									</Routes>
 								</ThemeProvider>
 							</UniverseContextProvider>

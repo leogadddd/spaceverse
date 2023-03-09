@@ -6,12 +6,18 @@ import PrivacyPolicy from "./website/privacyPolicy";
 import Site from "./website/site";
 import TermsOfService from "./website/termsOfService";
 import ThanksPage from "./website/thanksPage";
+import { isMobile } from "react-device-detect";
+import NoMobile from "./website/NoMobile";
+import { Navigate } from "react-router";
 
 const routes: IRoutes[] = [
 	{
 		id: 'home',
 		path: '/universe',
-		component: App,
+		component: [NoMobile, App],
+		check: () => {
+			return isMobile;
+		}
 	},
 	{
 		id: 'website',
@@ -37,6 +43,12 @@ const routes: IRoutes[] = [
 		id: 'thankyou',
 		path: '/thankyou',
 		component: ThanksPage,
+	},
+	{
+		id: 'release',
+		path: '/release',
+		component: null,
+		redirect: '/'
 	},
 	{
 		id: 'cms',

@@ -13,6 +13,9 @@ export const PageNotFound = () => {
 				<WidthLayout>
 					<div className="h-[calc(100vh-60px)] flex flex-col justify-center items-center">
 						<div className="flex flex-col items-center gap-16">
+							<h1 className="text-8xl font-bold text-sv-white text-center">
+								⛔
+							</h1>
 							<div className="flex flex-col items-center gap-6">
 								<h1 className="text-sv-white text-xl font-semibold text-center">
 									Looks like you're lost in space.
