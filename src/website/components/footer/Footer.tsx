@@ -31,7 +31,7 @@ export const Footer = () => {
 								<ul className="flex flex-col gap-2">
 									<FooterLink title="Request a Universe" href="https://tally.so/r/w2XraL" newTab />
 									<FooterLink title="Request a Feature" href="https://tally.so/r/wAz820" newTab/>
-									<FooterLink title="Report A Bug" href="https://tally.so/r/3EK0Pq" />
+									<FooterLink title="Report A Bug" href="https://tally.so/r/3EK0Pq" newTab/>
 									{/* <FooterLink title="FAQ" href="#" /> */}
 									
 								</ul>
