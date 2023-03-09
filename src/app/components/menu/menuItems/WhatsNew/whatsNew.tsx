@@ -71,12 +71,10 @@ export const WhatsNew = () => {
 						{process.env.REACT_APP_buildName}
 					</h2>
 				</div>
-
 				<Markdown
 					children={markdown}
 					options={{ overrides: overrides }}
 				/>
-
 			</div>
 		</MenuWindow>
 	)
