@@ -11,7 +11,7 @@ export const FeaturesComponent: FC<FeaturesComponentProps> = (props) => {
 
 	return (
 		<div className="corners">
-			<div ref={self} className={`py-16 lg:py-40 lg:h-screen overflow-visible flex flex-col-reverse ${isReverse ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-4 lg:gap-8 px-4 lg:px-40 overflow-hidden`}>
+			<div ref={self} className={`py-16 lg:py-40 lg:h-2/3 overflow-visible flex flex-col-reverse ${isReverse ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-4 lg:gap-8 px-4 lg:px-40 overflow-hidden`}>
 				<div className={`flex-1 flex flex-col gap-4 items-center ${isReverse ? "lg:items-start" : "lg:items-end"}`}>
 					<TitleComponent />
 					<DescriptionComponent />
