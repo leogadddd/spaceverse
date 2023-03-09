@@ -4,13 +4,6 @@ import { WidthLayout } from "../layouts/widthLayout"
 
 export const Navigation = () => {
 
-	const navigate = useNavigate();
-
-	const handleOpenApp = () => {
-		console.log('open app')
-		navigate('/universe')
-	}
-
 	return (
 		<div className="bg-spweb-dark">
 			<WidthLayout>
@@ -23,17 +16,20 @@ export const Navigation = () => {
 					<div className="flex-1">
 						<ul className="flex justify-end">
 							<li>
-								<button onClick={handleOpenApp} className="pointer-events-auto bg-sv-accent brightness-95 hover:brightness-110 transition-all p-5 py-2 rounded-[16px]">
-									<h1 className="text-sv-black text-sm font-semibold">
-										Open App
-									</h1>
-								</button>
+								<a
+									href="/universe"
+									target="_blank"
+									rel="noreferrer"
+									className="text-sv-black text-sm font-semibold pointer-events-auto bg-sv-accent brightness-95 hover:brightness-110 transition-all p-5 py-2 rounded-[16px]"
+								>
+									Open App
+								</a>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</WidthLayout>
-			<DividerComponent/>
+			<DividerComponent />
 		</div>
 	)
 }

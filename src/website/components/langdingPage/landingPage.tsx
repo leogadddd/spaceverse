@@ -29,18 +29,19 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 								Embrace a more productive workday by creating a universe that inspires and empowers you
 							</p>
 							<div className="flex flex-col items-center lg:items-start gap-6 lg:justify-start py-4 sm:pt-8 lg:pt-16">
-								<button onClick={handleOpenApp} className="pointer-events-auto w-max bg-sv-accent brightness-95 hover:brightness-110 transition-all p-8 py-3 rounded-[16px]">
-									<h1 className="text-sv-black text-lg font-semibold">
-										{/* a good way to say open the app in the browser */}
-										Open In The Browser
-									</h1>
-								</button>
+								<a
+									href="/universe"
+									target="_blank"
+									className="text-sv-black text-lg font-semibold pointer-events-auto w-max bg-sv-accent brightness-95 hover:brightness-110 transition-all p-8 py-3 rounded-[16px]"
+								>
+									Open In The Browser
+								</a>
 
-								<button onClick={scrollIntoView} className="pointer-events-auto ring-2 ring-sv-white w-max p-8 py-3 rounded-[16px] opacity-50 hover:opacity-100 transition-opacity">
-									<h1 className="text-sv-white text-lg font-semibold">
-										{/* a good way to say open the app in the browser */}
-										Learn More
-									</h1>
+								<button
+									onClick={scrollIntoView}
+									className="text-sv-white text-lg font-semibold pointer-events-auto ring-2 ring-sv-white w-max p-8 py-3 rounded-[16px] opacity-50 hover:opacity-100 transition-opacity"
+								>
+									Learn More
 								</button>
 							</div>
 						</div>
