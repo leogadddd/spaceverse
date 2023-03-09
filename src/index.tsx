@@ -20,9 +20,20 @@ import ThanksPage from './website/thanksPage';
 
 const isOldVersion = localStorage.getItem('buildVersion') !== process.env.REACT_APP_buildVersion;
 
+
 if (isOldVersion) {
 	localStorage.clear();
 	localStorage.setItem('buildVersion', process.env.REACT_APP_buildVersion as string);
+}
+
+const isNotTheFirstTime = localStorage.getItem('isNotTheFirstTimeContext') === 'true';
+
+if (isNotTheFirstTime) {
+	// check if the user is on the universe page
+	if (!window.location.pathname.includes('/universe')) {
+		// if so, redirect to the home page
+		window.location.href = '/universe';
+	}
 }
 
 const root = ReactDOM.createRoot(
@@ -40,14 +51,14 @@ root.render(
 								<ThemeProvider initialTheme>
 									<Routes>
 										<Route path="/universe" element={<App />} />
-										<Route path="/" element = {<Site />} />
+										<Route path="/" element={<Site />} />
 										<Route path="/terms" element={<TermsOfService />} />
 										<Route path="/privacy" element={<PrivacyPolicy />} />
 										<Route path="/thankyou" element={<ThanksPage />} />
 										{
 											process.env.NODE_ENV === 'development' && <Route path="/cms" element={<Cms />} />
 										}
-										<Route path="*" element={<PageNotFound/>} />
+										<Route path="*" element={<PageNotFound />} />
 									</Routes>
 								</ThemeProvider>
 							</UniverseContextProvider>
