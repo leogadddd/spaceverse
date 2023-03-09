@@ -180,7 +180,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 								<div className="flex flex-row justify-center gap-4 pt-4">
 									<motion.a
 										whileHover={{ scale: 1.1 }}
-										href={"https://www.facebook.com"}
+										href={"https://www.facebook.com/spaceverseApp"}
 										target="_blank"
 										rel="noreferrer"
 									>
@@ -188,7 +188,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 									</motion.a>
 									<motion.a
 										whileHover={{ scale: 1.1 }}
-										href="https://www.instagram.com/"
+										href="https://www.instagram.com/spaceverseApp/"
 										target="_blank"
 										rel="noreferrer"
 									>
