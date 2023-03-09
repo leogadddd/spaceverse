@@ -13,6 +13,7 @@ import { NotificationActionType, NotificationType } from "../app/components/noti
 import { useDispatch } from "react-redux";
 import { creators } from "../app/lib";
 import { bindActionCreators } from "@reduxjs/toolkit";
+import { UniverseComponent } from "../app/components/universe";
 
 export interface ICountdownTimerProps {
 	date: number;
@@ -99,13 +100,14 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 
 	return createPortal(
 		<div className="overflow-hidden">
+			{/* <UniverseComponent /> */}
 			<NotificationComponent />
 			<Navigation />
 			<div className="bg-spweb-darkup flex flex-col justify-center">
 				<WidthLayout>
 					<div className="min-h-[calc(100vh-60px)] max-w-[1000px] flex flex-col gap-6 justify-center items-center px-4 py-16">
-						<h1 className="text-8xl font-bold text-sv-white text-center py-3">
-							🚀
+						<h1 className="text-8xl font-bold text-sv-white text-center py-3 pointer-events-none">
+							<img src="/rocket.gif" width={150} alt="🚀" />
 						</h1>
 						<h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl tracking-wider font-semibold text-sv-white text-center">
 							LAUNCHING IN
