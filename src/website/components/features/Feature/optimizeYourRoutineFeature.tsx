@@ -5,6 +5,7 @@ import { FeatureImage, FeaturesComponent } from "../featuresComponent"
 import { DescriptionProps, ImageProps, TitleProps } from "../featuresComponentProps"
 import { LandingPageImageProps } from "../../langdingPage/landingPageProps"
 import { useInView } from "react-hook-inview"
+import { RxTimer } from "react-icons/rx"
 
 export const OptimizeYourRoutineFeature = () => {
 
@@ -13,6 +14,7 @@ export const OptimizeYourRoutineFeature = () => {
 			title={TitleComponent}
 			description={DescriptionComponent}
 			image={ImageComponent}
+			backgroundIcon={RxTimer}
 		/>
 	)
 }

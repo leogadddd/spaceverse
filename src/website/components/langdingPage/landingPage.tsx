@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import DividerComponent from "../../../app/components/divider";
 import { WidthLayout } from "../layouts/widthLayout"
 import { ImageProps, LandingPageProps } from "./landingPageProps"
+import { MdOutlinePanoramaPhotosphere } from "react-icons/md"
 
 export const LandingPage: FC<LandingPageProps> = (props) => {
 
@@ -17,8 +18,11 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 	}
 
 	return (
-		<div className="">
+		<div className="relative">
 			<WidthLayout>
+				<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.05]">
+					<MdOutlinePanoramaPhotosphere size={1000} />
+				</div>
 				<div className="pt-16 pb-36 lg:pt-0 lg:pb-36 lg:h-[calc(100vh-5rem)] flex flex-col justify-center ">
 					<div className="px-4 lg:px-16 flex flex-col lg:flex-row gap-4 sm:gap-8 items-center lg:justify-between">
 						<div className="flex flex-col gap-6 flex-1">

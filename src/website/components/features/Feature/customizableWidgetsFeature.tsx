@@ -5,6 +5,7 @@ import { FeatureImage, FeaturesComponent } from "../featuresComponent"
 import { DescriptionProps, ImageProps, TitleProps } from "../featuresComponentProps"
 import { LandingPageImageProps } from "../../langdingPage/landingPageProps"
 import { useInView } from "react-hook-inview"
+import { CgLoadbarSound } from "react-icons/cg"
 
 export const CustomizableWidgetsFeature = () => {
 
@@ -13,6 +14,7 @@ export const CustomizableWidgetsFeature = () => {
 			title={TitleComponent}
 			description={DescriptionComponent}
 			image={ImageComponent}
+			backgroundIcon={CgLoadbarSound}
 			isReverse
 		/>
 	)

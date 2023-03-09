@@ -1,4 +1,5 @@
 import { FC } from "react"
+import { IconType } from "react-icons/lib"
 
 export interface FeaturesComponentProps {
 	title: FC<TitleProps>
@@ -6,6 +7,7 @@ export interface FeaturesComponentProps {
 	image: FC<TitleProps>
 	isReverse?: boolean
 	self?: React.ForwardedRef<HTMLDivElement>
+	backgroundIcon?: IconType
 }
 
 export interface FeaturesProps {

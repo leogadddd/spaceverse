@@ -12,7 +12,6 @@ import { BsShareFill } from "react-icons/bs"
 import { MdOutlineFavoriteBorder, MdOutlineFavorite } from "react-icons/md"
 import { MdArrowRightAlt } from "react-icons/md"
 import useUniverseManager from "../../../../util/hooks/useUniverseManager";
-import { BsGrid1X2 } from "react-icons/bs"
 import { MdOutlinePanoramaPhotosphere } from "react-icons/md"
 import DividerComponent from "../../../divider";
 import { WidgetSettingsTemplateProps } from "../../widgetsComponentProps";

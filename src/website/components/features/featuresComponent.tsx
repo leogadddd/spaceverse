@@ -7,10 +7,13 @@ import { FeaturesComponentProps } from "./featuresComponentProps";
 
 export const FeaturesComponent: FC<FeaturesComponentProps> = (props) => {
 
-	const { title: TitleComponent, description: DescriptionComponent, image: ImageComponent, isReverse, self } = props;
+	const { backgroundIcon: BackgroundIcon, title: TitleComponent, description: DescriptionComponent, image: ImageComponent, isReverse, self } = props;
 
 	return (
-		<div className="corners">
+		<div className="corners relative">
+			<div className={`absolute ${isReverse ? "-bottom-2/4 left-80" : "-bottom-2/4 -right-80"} -translate-x-1/2 -translate-y-1/2 opacity-10`}>
+					{ BackgroundIcon && <BackgroundIcon size={500} />}
+				</div>
 			<div ref={self} className={`py-16 lg:py-40 lg:h-2/3 overflow-visible flex flex-col-reverse ${isReverse ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-4 lg:gap-8 px-4 lg:px-40 overflow-hidden`}>
 				<div className={`flex-1 flex flex-col gap-4 items-center ${isReverse ? "lg:items-start" : "lg:items-end"}`}>
 					<TitleComponent />

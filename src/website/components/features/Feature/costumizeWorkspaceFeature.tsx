@@ -5,6 +5,7 @@ import { FeatureImage, FeaturesComponent } from "../featuresComponent"
 import { DescriptionProps, FeaturesProps, ImageProps, TitleProps } from "../featuresComponentProps"
 import { LandingPageImageProps } from "../../langdingPage/landingPageProps"
 import { useInView } from "react-hook-inview"
+import { TbMaximize } from 'react-icons/tb';
 
 export const CustomizeWorkspaceFeature: FC<FeaturesProps> = (props) => {
 
@@ -16,6 +17,7 @@ export const CustomizeWorkspaceFeature: FC<FeaturesProps> = (props) => {
 			description={DescriptionComponent}
 			image={ImageComponent}
 			self={self}
+			backgroundIcon={TbMaximize}
 		/>
 	)
 }
