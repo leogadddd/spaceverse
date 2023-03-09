@@ -13,6 +13,9 @@ import { SpotifyPlaylistContextProvider } from './app/util/context/spotifyPlayli
 import { WidgetsContextProvider } from './app/util/context/widgetsContext';
 import { WhatsNewContextProvider } from './app/util/context/whatsnewContext';
 import Site from './website/site';
+import PageNotFound from './website/404';
+import TermsOfService from './website/termsOfService';
+import PrivacyPolicy from './website/privacyPolicy';
 
 const isOldVersion = localStorage.getItem('buildVersion') !== process.env.REACT_APP_buildVersion;
 
@@ -37,10 +40,12 @@ root.render(
 									<Routes>
 										<Route path="/universe" element={<App />} />
 										<Route path="/" element = {<Site />} />
+										<Route path="/terms" element={<TermsOfService />} />
+										<Route path="/privacy" element={<PrivacyPolicy />} />
 										{
 											process.env.NODE_ENV === 'development' && <Route path="/cms" element={<Cms />} />
 										}
-										{/* <Route path="*" element={<Navigate to="/universe" />} /> */}
+										<Route path="*" element={<PageNotFound/>} />
 									</Routes>
 								</ThemeProvider>
 							</UniverseContextProvider>

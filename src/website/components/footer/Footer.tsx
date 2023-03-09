@@ -17,10 +17,11 @@ export const Footer = () => {
 									Spaceverse
 								</h1>
 								<ul className="flex flex-col gap-2">
-									<FooterLink title="About" href="#" />
-									<FooterLink title="Contact" href="#" />
-									<FooterLink title="FAQ" href="#" />
-									<FooterLink title="Blog" href="#" />
+									{/* <FooterLink title="About" href="#" /> */}
+									{/* <FooterLink title="Contact" href="#" /> */}
+									<FooterLink title="Privacy Policy" href="/privacy" />
+									<FooterLink title="Terms of Service" href="/terms" />
+									{/* <FooterLink title="Blog" href="#" /> */}
 								</ul>
 							</div>
 							<div className="flex flex-col justify-start gap-3 w-full lg:px-8">
@@ -28,11 +29,11 @@ export const Footer = () => {
 									Useful Links
 								</h1>
 								<ul className="flex flex-col gap-2">
-									<FooterLink title="Request a Universe" href="https://tally.so/r/w2XraL" />
-									<FooterLink title="Request a Feature" href="https://tally.so/r/wAz820" />
-									<FooterLink title="Report A Bug" href="#" />
-									<FooterLink title="Privacy Policy" href="#" />
-									<FooterLink title="Terms Of Service" href="#" />
+									<FooterLink title="Request a Universe" href="https://tally.so/r/w2XraL" newTab />
+									<FooterLink title="Request a Feature" href="https://tally.so/r/wAz820" newTab/>
+									<FooterLink title="Report A Bug" href="https://tally.so/r/3EK0Pq" />
+									{/* <FooterLink title="FAQ" href="#" /> */}
+									
 								</ul>
 							</div>
 						</div>
@@ -50,13 +51,13 @@ export const Footer = () => {
 
 export const FooterLink: FC<FooterLinkProps> = (props) => {
 
-	const { title, href } = props
+	const { title, href, newTab } = props
 
 	return (
 		<li className="w-max text-sv-light text-xs font-light hover:underline">
 			<a 
 			href={href}
-			target="_blank"
+			target={newTab ? "_blank" : "_self"}
 			rel="noreferrer"
 			>{title}</a>
 		</li>

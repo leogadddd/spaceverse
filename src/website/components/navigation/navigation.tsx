@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router"
 import DividerComponent from "../../../app/components/divider";
-import { WidthLayout } from "../layouts/widthLayout"
+import { WidthLayout } from "../layouts/widthLayout";
 
 export const Navigation = () => {
 
@@ -9,9 +9,9 @@ export const Navigation = () => {
 			<WidthLayout>
 				<div className="h-20 flex justify-between items-center px-6">
 					<div className="flex-1">
-						<h1 className="text-sv-white font-koulen text-[1.5rem] tracking-widest">
+						<a href="/" className="text-sv-white font-koulen text-[1.5rem] tracking-widest">
 							SPACEVERSE
-						</h1>
+						</a>
 					</div>
 					<div className="flex-1">
 						<ul className="flex justify-end">
