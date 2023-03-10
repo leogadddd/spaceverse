@@ -56,7 +56,7 @@ root.render(
 								<ThemeProvider initialTheme>
 									<Routes>
 										{
-											isReleased ? (
+											process.env.NODE_ENV === 'development' || isReleased ? (
 												<>
 													<Route path="/" element={
 														localStorage.getItem("isFirstVisit") === "true" ? <Navigate to={getSpecificRoute("home")?.path!} /> : <Navigate to={getSpecificRoute("website")?.path!} />
