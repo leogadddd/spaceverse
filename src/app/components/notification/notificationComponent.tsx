@@ -51,7 +51,7 @@ export const NotificationComponent = () => {
 
 	return (
 		<NotificationContainerLayout>
-			<div className="absolute left-1/2 -translate-x-1/2 p-2 flex flex-col">
+			<div className="fixed left-1/2 -translate-x-1/2 p-2 flex flex-col">
 				<AnimatePresence mode="sync">
 					{
 						last3Notifications.map((notification: INotification) => {

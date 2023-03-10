@@ -245,11 +245,11 @@ export const DatabaseListItemDelete: FC<DatabaseListItemDeleteProps> = (props) =
 
 export const DatabaseControlsButton: FC<DatabaseControlsButtonProps> = (props) => {
 
-	const { text, onClick } = props
+	const { text, onClick, isPrimary = false } = props
 
 	return (
-		<button onClick={onClick} className="flex-1 bg-spcms-darkup corners p-2 px-4 transition-colors hover:bg-spcms-darkupup">
-			<h1 className="text-sv-white">
+		<button onClick={onClick} className={`flex-1 corners p-2 px-4 ${isPrimary ? "bg-sv-accent brightness-90 hover:brightness-110 transition-all" : "bg-spcms-darkup hover:bg-spcms-darkupup transition-colors"}`}>
+			<h1 className={`${isPrimary ? "text-sv-black" : "text-sv-white"}`}>
 				{text}
 			</h1>
 		</button>
@@ -269,6 +269,7 @@ export const DatabaseControls: FC<DatabaseControlsProps> = (props) => {
 							<DatabaseControlsButton
 								text="Add"
 								onClick={() => onSwitchPanel(1)}
+								isPrimary
 							/>
 						</div>
 					</>
@@ -285,6 +286,7 @@ export const DatabaseControls: FC<DatabaseControlsProps> = (props) => {
 						<div>
 							<DatabaseControlsButton
 								text="Save"
+								isPrimary
 								onClick={() => {
 									onSaveRow!()
 									onSwitchPanel(0)

@@ -19,7 +19,7 @@ export const DatabaseWidgetsInterfaceDesign = () => {
 
 	return (
 		<>
-			<div className="absolute inset-7 top-14 ring-1 dark:ring-sv-light35 ring-sv-dark35 corners opacity-50" />
+			<div className="absolute inset-7 top-14 ring-1 dark:ring-sv-light35 ring-sv-ring-dark corners opacity-50" />
 		</>
 	)
 }

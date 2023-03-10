@@ -27,9 +27,9 @@ module.exports = {
 
 				// SpCMS
 
-				"spcms-dark": "#171c1c",
-				"spcms-darkup": "#202727",
-				"spcms-darkupup": "#293131",
+				"spcms-dark": "#10181F",
+				"spcms-darkup": "#e2eafe1A",
+				"spcms-darkupup": "#192530",
 
 				// SpWeb
 

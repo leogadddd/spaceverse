@@ -46,7 +46,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 		navigator.clipboard.writeText(str.toString())
 		const notification: INotificationCreate = {
 			from: "Universe",
-			message: "Copied universe link to clipboard.",
+			message: "Copied share link to clipboard.",
 			type: NotificationType.Success,
 			actions: [
 				{
@@ -175,7 +175,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 											{time.seconds}
 										</span>
 										<span className="opacity-50">
-											seconds
+											{time.seconds === 1 ? "second" : "seconds"}
 										</span>
 									</div>
 								)

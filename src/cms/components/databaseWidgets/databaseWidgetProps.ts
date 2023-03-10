@@ -77,6 +77,7 @@ export interface DatabaseControlsProps {
 export interface DatabaseControlsButtonProps {
 	text: string;
 	onClick: (props: any ) => void;
+	isPrimary?: boolean;
 }
 
 export interface DatabaseListItemControlsProps {
