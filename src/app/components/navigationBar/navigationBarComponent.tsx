@@ -7,6 +7,7 @@ import { settingsFieldType } from "../../util/enums"
 import { subscribersSettingsFields } from "../../util/enums/subscribersName"
 import { SettingsFieldState } from "../../util/interfaces"
 import { Logo, Menu, ThemeToggler, BuyMeCoffee } from "./components"
+import ImmediateToolbar from "./components/immediateToolbar"
 import { NavigationBarLayoutProps, NavigationLocation } from "./navigationBarProps"
 
 export const NavigationBarComponent = () => {
@@ -50,6 +51,7 @@ export const NavigationBarComponent = () => {
 			</div>
 			<div className="flex flex-row justify-end items-center gap-2">
 				<BuyMeCoffee />
+				<ImmediateToolbar />
 				<Menu />
 			</div>
 		</NavigationLayout>

@@ -5,6 +5,7 @@ import settingsReducer from "./settingsReducer";
 import pomodoroReducer from "./pomodoroReducer";
 import widgetsReducer from "./widgetsReducer";
 import notificationReducer from "./notificiationReducer";
+import systemSettingsReducer from "./systemSettings";
 
 export const reducers = combineReducers({
 	universe: universeReducer,
@@ -12,7 +13,8 @@ export const reducers = combineReducers({
 	settings: settingsReducer,
 	pomodoro: pomodoroReducer,
 	widgets: widgetsReducer,
-	notification: notificationReducer
+	notification: notificationReducer,
+	systemSettings: systemSettingsReducer,
 });
 
 export default reducers;

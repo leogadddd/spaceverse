@@ -300,7 +300,7 @@ export const UniverseCategoryPicker: FC<UniverseCategoryPickerProps> = (props) =
 export const UniverseVolumeControl = (universeState: UniverseState) => {
 
 	const dispatch = useDispatch()
-	const { setUniverseVolume, setUniverseMute } = bindActionCreators(creators, dispatch)
+	const { setUniverseVolume, setUniverseMute, updateSystemSettings } = bindActionCreators(creators, dispatch)
 	const universeContext = useContext(UniverseContext)
 
 	const [volume, setVolume] = useState<number>(
@@ -326,7 +326,6 @@ export const UniverseVolumeControl = (universeState: UniverseState) => {
 			...universeContext.ctx,
 			universeIsMuted: !isMuted
 		})
-
 		if (isMuted === true) {
 			setVolume(universeState.volume)
 		} else {
@@ -338,6 +337,16 @@ export const UniverseVolumeControl = (universeState: UniverseState) => {
 		if (volume <= 0) return 0.5
 		return 1
 	}
+
+	useEffect(() => {
+		setIsMuted(universeState.isMuted!)
+
+		if (universeState.isMuted === true) {
+			setVolume(0)
+		} else {
+			setVolume(universeState.volume!)
+		}
+	}, [universeState.isMuted])
 
 	return (
 		<div className="px-5 py-4 flex items-center gap-2">

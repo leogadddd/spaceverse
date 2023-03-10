@@ -22,6 +22,7 @@ export const Footer = () => {
 									{/* <FooterLink title="Contact" href="#" /> */}
 									<FooterLink title="Privacy Policy" href={getSpecificRoute('privacy')?.path || ""} />
 									<FooterLink title="Terms of Service" href={getSpecificRoute('terms')?.path || ""} />
+									<FooterLink title="Resources" href={getSpecificRoute('resource')?.path || ""} />
 									{/* <FooterLink title="Blog" href="#" /> */}
 								</ul>
 							</div>

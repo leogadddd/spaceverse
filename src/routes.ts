@@ -9,6 +9,7 @@ import ThanksPage from "./website/thanksPage";
 import { isMobile } from "react-device-detect";
 import NoMobile from "./website/NoMobile";
 import { Navigate } from "react-router";
+import Resources from "./website/resources";
 
 const routes: IRoutes[] = [
 	{
@@ -49,6 +50,11 @@ const routes: IRoutes[] = [
 		path: '/release',
 		component: null,
 		redirect: '/'
+	},
+	{
+		id: 'resource',
+		path: '/resource',
+		component: Resources,
 	},
 	{
 		id: 'cms',
