@@ -62,6 +62,13 @@ root.render(
 														localStorage.getItem("isFirstVisit") === "true" ? <Navigate to={getSpecificRoute("home")?.path!} /> : <Navigate to={getSpecificRoute("website")?.path!} />
 													} />
 													{
+														process.env.NODE_ENV === 'development' && (
+															<>
+																<Route path="/release" element={<CountdownTimer date={DateToBeReleased} />} />
+															</>
+														)
+													}
+													{
 														// routes is an list contains an object which has the route path and path, component, and a check function to see if the route should be rendered but check first if check is undefined
 														routes.map((route: IRoutes) => {
 															let Component = route.component;
