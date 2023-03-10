@@ -33,6 +33,7 @@ export const Footer = () => {
 									<FooterLink title="Request a Universe" href="https://tally.so/r/w2XraL" newTab />
 									<FooterLink title="Request a Feature" href="https://tally.so/r/wAz820" newTab/>
 									<FooterLink title="Report A Bug" href="https://tally.so/r/3EK0Pq" newTab/>
+									<FooterLink title="Content Removal" href="https://tally.so/r/wdEPoA" newTab/>
 									{/* <FooterLink title="FAQ" href="#" /> */}
 									
 								</ul>
