@@ -131,7 +131,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 						<h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl tracking-wider font-semibold text-sv-white text-center">
 							LAUNCHING IN
 						</h1>
-						<h1 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-regular text-sv-white text-center justify-center inline-flex gap-2 flex-wrap">
+						<h1 className="text-1xl md:text-2xl lg:text-3xl xl:text-4xl font-regular text-sv-white text-center justify-center inline-flex gap-2 flex-wrap">
 							{
 								time.days !== 0 ? (
 									<div className="flex gap-2 items-center">
