@@ -167,7 +167,7 @@ const UniversePlayer: FC<UniversePlayerProps> = (props) => {
 
 	useEffect(() => {
 		centerFrame()
-	}, [width])
+	}, [width, height])
 
 
 	if (!universeState.sourceUrlValue) return null
