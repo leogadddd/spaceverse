@@ -11,6 +11,10 @@ export interface NavigationProps {
 export const Navigation: FC<NavigationProps> = (props) => {
 
 	const { showOpenAppButton = true } = props
+	
+	const isFinishSurvey = localStorage.getItem('finishedSurvey') === 'true'
+
+	const path = isFinishSurvey ? getSpecificRoute('home')?.path : getSpecificRoute('welcome')?.path
 
 	return (
 		<div className="bg-spweb-dark">
@@ -27,7 +31,7 @@ export const Navigation: FC<NavigationProps> = (props) => {
 								showOpenAppButton ? (
 									<li>
 										<a
-											href={getSpecificRoute('home')?.path}
+											href={path}
 											target="_blank"
 											rel="noreferrer"
 											className="text-sv-black text-sm font-semibold pointer-events-auto bg-sv-accent brightness-95 hover:brightness-110 transition-all p-5 py-2 rounded-[16px]"

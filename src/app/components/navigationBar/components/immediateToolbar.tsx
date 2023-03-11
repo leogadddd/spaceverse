@@ -7,6 +7,7 @@ import { creators } from "../../../lib"
 import { UniverseState } from "../../../util/interfaces"
 import { RiFullscreenExitFill, RiFullscreenFill } from "react-icons/ri"
 import { ISystemSettingsItemState, SystemSettingsState } from "../../../util/interfaces/state/systemSettinsState"
+import useWindowSize from "../../../util/hooks/useWindowSize"
 
 
 export const ImmediateToolbar = () => {
@@ -31,23 +32,38 @@ export const ImmediateToolbar = () => {
 
 export const FullScreenButton = () => {
 
+
 	const [isFullScreen, setIsFullScreen] = useState(false)
 
+	const isFullscreen = (): boolean => {
+		return !!(document.fullscreenElement || (document as any).webkitFullscreenElement || (document as any).mozFullScreenElement || (document as any).msFullscreenElement);
+	}
+
 	const toggleFullScreen = () => {
-		if (!isFullScreen) {
-			document.documentElement.requestFullscreen()
+		const element = document.documentElement;
+		if (isFullscreen()) {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			} else if ((document as any).webkitExitFullscreen) {
+				(document as any).webkitExitFullscreen();
+			} else if ((document as any).mozCancelFullScreen) {
+				(document as any).mozCancelFullScreen();
+			} else if ((document as any).msExitFullscreen) {
+				(document as any).msExitFullscreen();
+			}
 		} else {
-			document.exitFullscreen()
+			if (element.requestFullscreen) {
+				element.requestFullscreen();
+			} else if ((element as any).webkitRequestFullscreen) {
+				(element as any).webkitRequestFullscreen((Element as any).ALLOW_KEYBOARD_INPUT);
+			} else if ((element as any).mozRequestFullScreen) {
+				(element as any).mozRequestFullScreen();
+			} else if ((element as any).msRequestFullscreen) {
+				(element as any).msRequestFullscreen();
+			}
 		}
 		setIsFullScreen(!isFullScreen)
 	}
-
-	useEffect(() => {
-		document.addEventListener("fullscreenchange", () => {
-			setIsFullScreen(document.fullscreenElement !== null)
-		})
-	}, [])
-
 
 	return (
 		<ToolItem
@@ -90,7 +106,7 @@ export const MuteButton = () => {
 	}, [])
 
 	useEffect(() => {
-		if(!universeState.isMuted) {
+		if (!universeState.isMuted) {
 			setIsMuted(universeState.isMuted!)
 			updateSystemSettings({
 				id: id,

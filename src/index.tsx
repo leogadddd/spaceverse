@@ -56,18 +56,18 @@ root.render(
 								<ThemeProvider initialTheme>
 									<Routes>
 										{
-											process.env.NODE_ENV === 'development' || isReleased ? (
+											isReleased ? (
 												<>
 													<Route path="/" element={
-														localStorage.getItem("isFirstVisit") === "true" ? <Navigate to={getSpecificRoute("home")?.path!} /> : <Navigate to={getSpecificRoute("website")?.path!} />
+														localStorage.getItem("isFirstVisit") !== "true" ? <Navigate to={getSpecificRoute("website")?.path!} /> : localStorage.getItem("isFinishSurvey") !== "true" ? <Navigate to={getSpecificRoute("welcome")?.path!} /> : <Navigate to={getSpecificRoute("home")?.path!} />
 													} />
-													{
-														process.env.NODE_ENV === 'development' && (
+													{/* {
+														(process.env.NODE_ENV === 'development' && isReleased) && (
 															<>
 																<Route path="/release" element={<CountdownTimer date={DateToBeReleased} />} />
 															</>
 														)
-													}
+													} */}
 													{
 														// routes is an list contains an object which has the route path and path, component, and a check function to see if the route should be rendered but check first if check is undefined
 														routes.map((route: IRoutes) => {

@@ -51,7 +51,7 @@ export const NotificationComponent = () => {
 
 	return (
 		<NotificationContainerLayout>
-			<div className="fixed left-1/2 -translate-x-1/2 p-2 flex flex-col">
+			<div className="fixed left-1/2 -translate-x-1/2 p-2 flex flex-col pointer-events-none">
 				<AnimatePresence mode="sync">
 					{
 						last3Notifications.map((notification: INotification) => {
@@ -178,7 +178,7 @@ export const NotificationContainerLayout: FC<PropsWithChildren> = (props) => {
 	const { children } = props
 
 	return createPortal(
-		<div>
+		<div className="pointer-events-none">
 			{children}
 		</div>
 		, document.getElementById("notificationsInterface") as HTMLElement)

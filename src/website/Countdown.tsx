@@ -22,7 +22,6 @@ export interface ICountdownTimerProps {
 export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 
 	const { date } = props;
-	const navigate = useNavigate();
 
 	const dispatch = useDispatch()
 	const { addNotification } = bindActionCreators(creators, dispatch)
@@ -108,6 +107,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 					, 1000)
 
 				setTimeout(() => {
+					localStorage.clear();
 					window.location.reload();
 				}, 2000)
 			}
@@ -139,7 +139,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 											{time.days}
 										</span>
 										<span className="opacity-50">
-											{time.days === 1 ? "day" : "days"},
+											{time.days < 1 ? "day" : "days"},
 										</span>
 									</div>
 								) : null
@@ -151,7 +151,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 											{time.hours}
 										</span>
 										<span className="opacity-50">
-											{time.hours === 1 ? "hour" : "hours"},
+											{time.hours < 1 ? "hour" : "hours"},
 										</span>
 									</div>
 								)
@@ -163,7 +163,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 											{time.minutes}
 										</span>
 										<span className="opacity-50">
-											{time.minutes === 1 ? "minute" : "minutes"},
+											{time.minutes < 1 ? "minute" : "minutes"},
 										</span>
 									</div>
 								)
@@ -175,7 +175,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 											{time.seconds}
 										</span>
 										<span className="opacity-50">
-											{time.seconds === 1 ? "second" : "seconds"}
+											{time.seconds < 1 ? "second" : "seconds"}
 										</span>
 									</div>
 								)
@@ -196,7 +196,7 @@ export const CountdownTimer: FC<ICountdownTimerProps> = (props) => {
 									<h1 className="text-sv-white text-center p-2 pl-4 flex-1 flex justify-start items-center pointer-events-auto select-text">
 										https://spvr.app
 									</h1>
-									<button onClick={() => CopyToClipboard("https://spvr.app")} className="w-[75px] bg-sv-dark flex justify-center items-center hover:brightness-110 transition-all corners">
+									<button onClick={() => CopyToClipboard("https://spvr.app")} className="cursor-pointer pointer-events-auto w-[75px] bg-sv-dark flex justify-center items-center hover:brightness-110 transition-all corners">
 										<HiLink className="text-sv-white text-2xl m-2" />
 									</button>
 								</div>

@@ -8,11 +8,13 @@ import { menuWindowBarProps, menuWindowContainerProps } from "./menuWindowProps"
 import { CgClose } from "react-icons/cg";
 import { AnimatePresence, motion } from "framer-motion"
 import DividerComponent from "../divider"
+import useWindowSize from "../../util/hooks/useWindowSize"
 
 export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 
 	const { title, minWidth, maxWidth, minHeight, maxHeight, children, isDefaultOpen, hasNewContent } = props
 
+	const [width, height] = useWindowSize()
 	const dispatch = useDispatch()
 	const {
 		subscribeWindowMenu,
@@ -43,6 +45,8 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 		return () => { unsubscribeWindowMenu(title) }
 	}, [])
 
+	const StyleWidth = width < 768 ? "w-[calc(100%-14px)]" : null
+
 	return createPortal(
 		<>
 			<AnimatePresence mode="wait">
@@ -62,14 +66,18 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 							transition={{ duration: 0.05 }}
+							className={`${StyleWidth} absolute left-1/2 top-[25%] -translate-x-1/2 shadow-lg bg-sv-light dark:bg-sv-dark pointer-events-auto corners overflow-hidden`}
+							style={{
+								width: width > 768 ? minWidth : "calc(100%-14px)",
+								minWidth: width > 768 ? minWidth : "calc(100%-14px)",
+								maxWidth: width > 768 ? maxWidth : "calc(100%-14px)",
+								minHeight: minHeight,
+								maxHeight: maxHeight
+							}}
 						>
-							<motion.div
-								className={`w-[calc(100%-14px)] lg:min-w-[${maxWidth}] absolute left-1/2 top-[25%] -translate-x-1/2 shadow-lg bg-sv-light dark:bg-sv-dark pointer-events-auto corners overflow-hidden`}
-							>
-								<MenuWindowBar title={title} onClose={toggleWindow} />
-								{/* <DividerComponent /> */}
-								{children}
-							</motion.div>
+							<MenuWindowBar title={title} onClose={toggleWindow} />
+							{/* <DividerComponent /> */}
+							{children}
 						</motion.div>
 					</>
 				}
