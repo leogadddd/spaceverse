@@ -149,8 +149,8 @@ const UniversePlayer: FC<UniversePlayerProps> = (props) => {
 	// this is a workaround for a bug in the bug that i can't figure out
 	useEffect(() => {
 		if (!universeState.isLoading) return
-
-		const tout = setTimeout(() => {
+		
+		const tout = setInterval(() => {
 			const universeState: UniverseState = store.getState().universe
 
 			if (!universeState.isLoading) return
@@ -191,7 +191,7 @@ const UniversePlayer: FC<UniversePlayerProps> = (props) => {
 	// )
 
 	return (
-		<div key={key} className="absolute w-screen h-screen lg:pt-[56.25%] video-background bg-black z-0">
+		<div key={key} className="absolute w-screen h-[122%] lg:pt-[56.25%] video-background bg-black z-0">
 			<YouTube
 				key={universeState.sourceUrlValue}
 				videoId={BypassUniverse ? BypassUniverse.value : universeState.sourceUrlValue}

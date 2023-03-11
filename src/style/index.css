@@ -111,19 +111,19 @@ option {
     top: -30px !important; /* Hide the video title */
 }
 
-/* @media (min-aspect-ratio: 16/9) {
+@media (min-aspect-ratio: 16/9) {
 	.video-background{
 		height: 300%;
 		top: -100%;
 	}
-} */
+}
 
 @media (max-aspect-ratio: 16/9) {
 	.video-background iframe {
 		width: 177.78vh !important;
 		height: 120% !important;
 		/* add padding bottom */
-		top: -10%;
+		top: -19.08%;
 		/* center it */
 		/* left: -38.89% !important; */
 	}
@@ -137,6 +137,8 @@ option {
 
 	/* fix the full screen the left very left */
 	.video-background iframe {
+		height: 120% !important;
 		left: 0 !important;
+		top: -10% !important;
 	}
 }
