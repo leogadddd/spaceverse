@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "@reduxjs/toolkit"
 import YouTube, { YouTubeProps } from "react-youtube"
@@ -6,9 +6,14 @@ import { creators, store } from "../../lib";
 import { UniverseState } from "../../util/interfaces/state/universeState";
 import { generateKey } from "../../util/idGenerators";
 import useUniverseManager from "../../util/hooks/useUniverseManager";
+import { UniversePlayerProps } from "./universeProps";
+import useWindowSize from "../../util/hooks/useWindowSize";
 
-const UniversePlayer = () => {
+const UniversePlayer: FC<UniversePlayerProps> = (props) => {
 
+	const { universe: BypassUniverse } = props;
+
+	const [width, height] = useWindowSize();
 	const dispatch = useDispatch()
 	const { setUniverseLoading } = bindActionCreators(creators, dispatch)
 	const { NextUniverse } = useUniverseManager()
@@ -19,6 +24,8 @@ const UniversePlayer = () => {
 	const [time, setTime] = useState<number>(0)
 	const [target, setTarget] = useState<any>(null)
 	const [key, setKey] = useState<string>("")
+	
+	const [left, setLeft] = useState<number>(0)
 
 	const opts = {
 		height: "100%",
@@ -34,7 +41,7 @@ const UniversePlayer = () => {
 			iv_load_policy: 3,
 			showinfo: 0,
 			fs: 0,
-			playlist: universeState.sourceUrlValue,
+			playlist: BypassUniverse? BypassUniverse.value : universeState.sourceUrlValue,
 			origin: window.location.origin,
 		}
 	}
@@ -137,13 +144,43 @@ const UniversePlayer = () => {
 		}
 	}, [universeState.isLoading, universeState.sourceUrlValue])
 
+	useEffect(() => {
+		// calculate left offset for the iframe to center it
+		const iframe = document.getElementById("Youtube-Video-Background")
+		if (!iframe) return
+
+		const iframeWidth = iframe.clientWidth
+		const leftOffset = (window.innerWidth - iframeWidth) / 2
+		
+		iframe.style.left = `${leftOffset}px`
+	}, [width])
+
+
 	if (!universeState.sourceUrlValue) return null
 
+	// return (
+	// 	<div key={key} className="fixed top-0 left-0 w-full h-full overflow-hidden bg-sv-dark universe-container">
+	// 		<YouTube
+	// 			key={universeState.sourceUrlValue}
+	// 			videoId={BypassUniverse ? BypassUniverse.value : universeState.sourceUrlValue}
+	// 			opts={opts}
+	// 			className={'video-background'}
+	// 			id={'Youtube-Video-Background'}
+	// 			iframeClassName={"pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-screen h-screen object-contain z-0"}
+	// 			onPlay={onPlay}
+	// 			onReady={onReady}
+	// 			onEnd={onEnd}
+	// 			onStateChange={onStateChange}
+	// 			onError={onError}
+	// 		/>
+	// 	</div>
+	// )
+
 	return (
-		<div key={key} className="absolute w-screen h-screen pb-0 lg:pb-[56.25%] video-background z-0">
+		<div key={key} className="absolute w-screen h-screen lg:pt-[56.25%] video-background bg-black z-0">
 			<YouTube
 				key={universeState.sourceUrlValue}
-				videoId={universeState.sourceUrlValue}
+				videoId={BypassUniverse ? BypassUniverse.value : universeState.sourceUrlValue}
 				opts={opts}
 				className={'video-background'}
 				id={'Youtube-Video-Background'}
