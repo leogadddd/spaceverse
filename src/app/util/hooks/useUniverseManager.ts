@@ -8,6 +8,7 @@ import { Category, categoryDatabaseName, universeDatabaseName } from "../../../c
 import { UniverseState } from "../interfaces"
 import { UniverseContext } from "../context/universeContext"
 import { useSearchParams, useNavigate } from "react-router-dom"
+import { widgetContentVariants } from "../constant"
 
 export const useUniverseManager = () => {
 
@@ -145,6 +146,7 @@ export const useUniverseManager = () => {
 					categoryIndex = categories.indexOf(category)
 					universeIndex = category.universes.indexOf(universeId)
 				} else {
+
 					const randomCategory = categories[Math.floor(Math.random() * universeManagerState.categories.length)]
 					const randomUniverse = randomCategory.universes[Math.floor(Math.random() * randomCategory.universes.length)]
 

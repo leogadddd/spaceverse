@@ -8,3 +8,15 @@ export type UniverseType = {
 export interface UniverseProps {
 	isLoading?: boolean | null;
 }
+
+export interface UniverseComponentProps {
+	universe?: UniverseType;
+}
+
+export interface UniversePlayerProps {
+	universe?: UniverseType;
+}
+
+export interface UniverseLoadingProps {
+	isByPass?: boolean;
+}

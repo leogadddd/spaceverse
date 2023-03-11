@@ -8,17 +8,22 @@ import TermsOfService from "./website/termsOfService";
 import ThanksPage from "./website/thanksPage";
 import { isMobile } from "react-device-detect";
 import NoMobile from "./website/NoMobile";
-import { Navigate } from "react-router";
 import Resources from "./website/resources";
+import { Welcome } from "./app/Welcome";
 
 const routes: IRoutes[] = [
 	{
 		id: 'home',
 		path: '/universe',
-		component: [NoMobile, App],
+		component: [App, App],
 		check: () => {
 			return isMobile;
 		}
+	},
+	{
+		id: 'welcome',
+		path: '/welcome',
+		component: Welcome
 	},
 	{
 		id: 'website',

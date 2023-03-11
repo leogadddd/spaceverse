@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FC } from 'react'
 import { motion as m, AnimatePresence } from 'framer-motion'
 import { universeLoadingContainerVariants } from '../../util/constant'
 import { UniverseState } from '../../util/interfaces/state/universeState'
 import { useSelector } from 'react-redux'
+import { UniverseLoadingProps } from './universeProps'
 
-const UniverseLoadingScreen = () => {
+const UniverseLoadingScreen: FC<UniverseLoadingProps> = (props) => {
+
+	const { isByPass } = props
 
 	const universeState: UniverseState = useSelector((state: any) => state.universe)
 
@@ -26,7 +29,7 @@ const UniverseLoadingScreen = () => {
 					initial="animate"
 					animate={isUniverseLoading ? "animate" : "initial"}
 					exit="initial"
-					className="flex justify-center items-center flex-col absolute left-0 right-0 top-0 bottom-0 z-0 dark:bg-sv-white bg-sv-dark"
+					className={`flex justify-center items-center flex-col absolute left-0 right-0 top-0 bottom-0 z-0 ${isByPass ? "bg-sv-black" : "dark:bg-sv-white bg-sv-dark"}`}
 				>
 					<m.div
 						variants={universeLoadingContainerVariants}
@@ -35,12 +38,17 @@ const UniverseLoadingScreen = () => {
 						exit="initial"
 						className="flex justify-center items-center flex-col"
 					>
-						<h1 className="text-4xl font-bold text-sv-white dark:text-sv-black">
-							Your Universe
-						</h1>
-						<IsLoadingAnimation />
+						{
+							!isByPass && <>
+								<h1 className="text-4xl font-bold text-sv-white dark:text-sv-black">
+									Your Universe
+								</h1>
+								<IsLoadingAnimation />
+							</>
+						}
+
 					</m.div>
-					
+
 				</m.div>
 			}
 		</AnimatePresence>
