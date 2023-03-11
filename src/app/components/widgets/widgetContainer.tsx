@@ -417,7 +417,7 @@ export const WidgetBar: FC<WidgetsBarProps> = (props) => {
 						</AnimatePresence> */}
 					</div>
 				</div>
-				<div className='flex justify-center items-center'>
+				<div className='flex justify-center items-center pointer-events-auto'>
 					<AnimatePresence mode="wait">
 						{
 							hasSettings &&
@@ -452,17 +452,21 @@ export const WidgetSettingsButton: FC<WidgetSettingsButtonProps> = (props) => {
 	const { openWidgetSettings } = props
 
 	return (
-		<motion.button
+		<motion.div
 			key='openSettings-button'
 			id='opensettings-button'
 			variants={widgetOpenSettingsButton}
 			initial='initial'
 			animate='animate'
 			exit='initial'
-			className='h-[40px] flex justify-end items-center w-7 pointer-events-auto' onClick={openWidgetSettings}
 		>
-			<GoGear className="dark:text-sv-white text-sv-black" />
-		</motion.button>
+			<button
+
+				className='h-[40px] flex justify-end items-center w-7 pointer-events-auto' onClick={openWidgetSettings}
+			>
+				<GoGear className="dark:text-sv-white text-sv-black" />
+			</button>
+		</motion.div>
 	)
 }
 
@@ -471,7 +475,7 @@ export const WidgetMinimizerButton: FC<WidgetMinimizerProps> = (props) => {
 	const { isMinimized, setIsMinimized } = props
 
 	return (
-		<button className='h-[40px] flex justify-end items-center w-7 pointer-events-auto' onClick={setIsMinimized}>
+		<button className='h-[40px] flex justify-end items-center w-7 pointer-events-auto cursor-pointer' onClick={setIsMinimized}>
 			{isMinimized ?
 				<TbMaximize className="dark:text-sv-white text-sv-black" /> :
 				<TbMinimize className="dark:text-sv-white text-sv-black" />

@@ -17,7 +17,7 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 	const {
 		subscribeWindowMenu,
 		unsubscribeWindowMenu,
-		toggleWindowMenuItem	
+		toggleWindowMenuItem
 	} = bindActionCreators(creators, dispatch)
 	const windowMenuItemState: WindowMenuItemState | undefined = useSelector((state: any) => {
 		const menuItems = state.windowMenu.menuItems as WindowMenuItemState[]
@@ -59,22 +59,17 @@ export const MenuWindow: FC<menuWindowContainerProps> = (props) => {
 						</motion.div>
 						<motion.div
 							initial={{ opacity: 0 }}
-							animate={{ opacity: 1}}
-							exit={{ opacity: 0}}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
 							transition={{ duration: 0.05 }}
-							className="	absolute left-1/2 top-[25%] -translate-x-1/2 shadow-lg bg-sv-light dark:bg-sv-dark pointer-events-auto corners overflow-hidden"
-							style={{
-								minWidth: minWidth,
-								width: minWidth,
-								maxWidth: maxWidth,
-								minHeight: minHeight,
-								height: minHeight,
-								maxHeight: maxHeight
-							}}
 						>
-							<MenuWindowBar title={title} onClose={toggleWindow} />
-							{/* <DividerComponent /> */}
-							{children}
+							<motion.div
+								className={`w-[calc(100%-14px)] lg:min-w-[${maxWidth}] absolute left-1/2 top-[25%] -translate-x-1/2 shadow-lg bg-sv-light dark:bg-sv-dark pointer-events-auto corners overflow-hidden`}
+							>
+								<MenuWindowBar title={title} onClose={toggleWindow} />
+								{/* <DividerComponent /> */}
+								{children}
+							</motion.div>
 						</motion.div>
 					</>
 				}

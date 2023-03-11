@@ -14,8 +14,8 @@ export const NoMobile = () => {
 						<h1 className="text-8xl font-bold text-sv-white text-center">
 						📵
 						</h1>
-						<h1 className="text-4xl font-bold text-sv-white text-center">Spaceverse is not optimized for mobile</h1>
-						<p className="text-xl text-sv-white text-center">Please use a desktop or laptop to view this website</p>
+						<h1 className="text-4xl font-bold text-sv-white text-center">Spaceverse is not optimized for mobile yet</h1>
+						<p className="text-xl text-sv-white text-center">Please use a desktop or laptop to use Spaceverse.</p>
 					</div>
 				</WidthLayout>
 			</div>

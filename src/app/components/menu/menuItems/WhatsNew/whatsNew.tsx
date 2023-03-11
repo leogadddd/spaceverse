@@ -11,7 +11,7 @@ const markdown = `
 
 - Added **Settings menu**. You can now change settings such as location of the navigation bar, and some other things.
 - Added Widget Settings for the **Universe Widget**. You can Turn on the *Auto-Next Feature*.
-- Added Widget Settings for the **Timer Widget**. You can now change the *default timer duration* and *Max Short Breaks*.
+- Added Widget Settings for the **Timer Widget**. You can now change the *default timer duration* and *Max Short Breaks*.<br>
 <warning>(You can access these settings by tapping the gear icon on the top-right corner of every widgets)</warning>
 - Added **Noise Widget**. You can now listen to some *brown noises* while you work. <br>
 <warning>(More noises will be added in the future)</warning>

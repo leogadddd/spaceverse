@@ -232,13 +232,17 @@ export const ShareButton: FC<UniverseShareButtonProps> = (props) => {
 	const { onShare } = props
 
 	return (
-		<motion.button
-			whileHover={{ scale: 1.1 }}
-			whileTap={{ scale: 0.9 }}
-			className='flex justify-center items-center w-7' onClick={onShare}
+		<button
+			className='pointer-events-auto flex justify-center items-center w-7' onClick={onShare}
 		>
+			{/* <motion.div
+				whileHover={{ scale: 1.1 }}
+				whileTap={{ scale: 0.9 }}
+			> */}
 			<BsShareFill className="dark:text-sv-white text-sv-black" />
-		</motion.button>
+
+			{/* </motion.div> */}
+		</button>
 	)
 }
 

@@ -46,6 +46,17 @@ const UniversePlayer: FC<UniversePlayerProps> = (props) => {
 		}
 	}
 
+	const centerFrame = () => {
+		// calculate left offset for the iframe to center it
+		const iframe = document.getElementById("Youtube-Video-Background")
+		if (!iframe) return
+
+		const iframeWidth = iframe.clientWidth
+		const leftOffset = (window.innerWidth - iframeWidth) / 2
+		
+		iframe.style.left = `${leftOffset}px`
+	}
+
 	const onPlay: YouTubeProps["onPlay"] = (e) => {
 		setUniverseLoading(false)
 	}
@@ -56,6 +67,7 @@ const UniversePlayer: FC<UniversePlayerProps> = (props) => {
 		if (universeState.startTime != null && universeState.startTime > 0)
 			e.target.seekTo(universeState.startTime)
 		e.target.setVolume(universeState.volume)
+		centerFrame()
 	}
 
 	const onError: YouTubeProps["onError"] = (e) => {
@@ -93,8 +105,17 @@ const UniversePlayer: FC<UniversePlayerProps> = (props) => {
 			NextUniverse()
 	}
 
+	const ifPausedPlay = () => {
+		if (!isPlaying) {
+			target.playVideo()
+			setIsPlaying(true)
+		}
+	}
+
+
 	useEffect(() => {
 		setKey(`universe-${generateKey()}`)
+		centerFrame()
 	}, [])
 
 	// reset target when sourceUrlValue changes
@@ -145,14 +166,7 @@ const UniversePlayer: FC<UniversePlayerProps> = (props) => {
 	}, [universeState.isLoading, universeState.sourceUrlValue])
 
 	useEffect(() => {
-		// calculate left offset for the iframe to center it
-		const iframe = document.getElementById("Youtube-Video-Background")
-		if (!iframe) return
-
-		const iframeWidth = iframe.clientWidth
-		const leftOffset = (window.innerWidth - iframeWidth) / 2
-		
-		iframe.style.left = `${leftOffset}px`
+		centerFrame()
 	}, [width])
 
 
