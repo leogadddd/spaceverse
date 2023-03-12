@@ -83,7 +83,7 @@ export const DatabaseFormFields: FC<DatabaseWidgetFormFieldProps> = (props) => {
 						onChange={(e) => onChange(e.target.value)}
 					>
 						{options?.map((option, index) => (
-							<option key={index} value={option.value}>{option.label}</option>
+							<option key={index} value={option.value} className="text-sv-black">{option.label}</option>
 						))}
 					</select>
 				</>

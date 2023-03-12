@@ -57,8 +57,8 @@ const routes: IRoutes[] = [
 		redirect: '/'
 	},
 	{
-		id: 'resource',
-		path: '/resource',
+		id: 'resources',
+		path: '/resources',
 		component: Resources,
 	},
 	{

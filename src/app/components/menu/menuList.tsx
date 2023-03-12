@@ -49,6 +49,7 @@ export const MenuList: FC<MenuListProps> = (props) => {
 								)
 							})
 						}
+						<MenuListItemLink name="Resources" href={getSpecificRoute('resources')?.path || ""} />
 						<MenuListItemLink name="Privacy" href={getSpecificRoute('privacy')?.path || ""} />
 						<MenuListItemLink name="Terms" href={getSpecificRoute('terms')?.path || ""} />
 					</ul>

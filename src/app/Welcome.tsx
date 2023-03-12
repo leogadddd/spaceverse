@@ -35,7 +35,7 @@ export const Welcome = () => {
 		}
 	}
 
-	const layers = [null, FirstPage, SecondPage, ThirdPage]
+	const layers = [ZeroPage, FirstPage, SecondPage, ThirdPage]
 
 	const getLayer = () => {
 		const Layer = layers[currentLayer] as FC<PageProps>
@@ -74,6 +74,21 @@ export const Welcome = () => {
 
 export interface PageProps {
 	onNext: () => void
+}
+
+export const ZeroPage: FC<PageProps> = (props) => {
+
+	const { onNext } = props
+
+	return (
+		<AnimationLayer>
+			<div className="h-full flex justify-center items-center">
+				<h1 className="flex flex-col lg:flex-row justify-center items-center gap-5 text-sv-light">
+					<span className="text-1xl tracking-wide">loading...</span>
+				</h1>
+			</div>
+		</AnimationLayer>
+		)
 }
 
 export const FirstPage: FC<PageProps> = (props) => {

@@ -1,5 +1,6 @@
 import { FC } from "react"
 import DividerComponent from "../../../app/components/divider"
+import { outsideLinks } from "../../../outsideLinks"
 import { getSpecificRoute } from "../../../routes"
 import { WidthLayout } from "../layouts/widthLayout"
 import { FooterLinkProps } from "./FooterProps"
@@ -22,7 +23,7 @@ export const Footer = () => {
 									{/* <FooterLink title="Contact" href="#" /> */}
 									<FooterLink title="Privacy Policy" href={getSpecificRoute('privacy')?.path || ""} />
 									<FooterLink title="Terms of Service" href={getSpecificRoute('terms')?.path || ""} />
-									<FooterLink title="Resources" href={getSpecificRoute('resource')?.path || ""} />
+									<FooterLink title="Resources" href={getSpecificRoute('resources')?.path || ""} />
 									{/* <FooterLink title="Blog" href="#" /> */}
 								</ul>
 							</div>
@@ -31,12 +32,28 @@ export const Footer = () => {
 									Useful Links
 								</h1>
 								<ul className="flex flex-col gap-2">
-									<FooterLink title="Request a Universe" href="https://tally.so/r/w2XraL" newTab />
-									<FooterLink title="Request a Feature" href="https://tally.so/r/wAz820" newTab/>
-									<FooterLink title="Report A Bug" href="https://tally.so/r/3EK0Pq" newTab/>
-									<FooterLink title="Content Removal" href="https://tally.so/r/wdEPoA" newTab/>
+									<FooterLink
+										title="Request a Universe"
+										href={outsideLinks.requestUniverse}
+										newTab
+									/>
+									<FooterLink
+										title="Request a Feature"
+										href={outsideLinks.requestFeature}
+										newTab
+									/>
+									<FooterLink
+										title="Report A Bug"
+										href={outsideLinks.reportBug}
+										newTab
+									/>
+									<FooterLink
+										title="Content Removal"
+										href={outsideLinks.contentRemoval}
+										newTab
+									/>
 									{/* <FooterLink title="FAQ" href="#" /> */}
-									
+
 								</ul>
 							</div>
 						</div>
@@ -58,10 +75,10 @@ export const FooterLink: FC<FooterLinkProps> = (props) => {
 
 	return (
 		<li className="w-max text-sv-light text-xs font-light hover:underline">
-			<a 
-			href={href}
-			target={newTab ? "_blank" : "_self"}
-			rel="noreferrer"
+			<a
+				href={href}
+				target={newTab ? "_blank" : "_self"}
+				rel="noreferrer"
 			>{title}</a>
 		</li>
 	)
