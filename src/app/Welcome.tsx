@@ -178,6 +178,7 @@ export const SecondPage: FC<PageProps> = (props) => {
 									<option value="0-10">0-10</option>
 									<option value="11-20">11-20</option>
 									<option value="21-27">21-27</option>
+									<option value="28-35">28 and above</option>
 								</select>
 							</div>
 							<div className="flex flex-col gap-1">
