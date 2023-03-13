@@ -15,7 +15,7 @@ const routes: IRoutes[] = [
 	{
 		id: 'home',
 		path: '/universe',
-		component: [App, App],
+		component: [NoMobile, App],
 		check: () => {
 			return isMobile;
 		}
