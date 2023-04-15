@@ -6,8 +6,9 @@ import { Navigation } from "./components/navigation"
 import { CustomizableWidgetsFeature, CustomizeWorkspaceFeature, OptimizeYourRoutineFeature } from "./components/features"
 import { useEffect, useRef } from "react"
 import { SocialsComponent } from "./components/Socials"
+import { ProtectedRoute } from "../protectedRoute"
 
-export const Site = () => {
+const Site = () => {
 
 	const ref = useRef<HTMLDivElement>(null);
 	const scrollRef = useRef<HTMLDivElement>(null);

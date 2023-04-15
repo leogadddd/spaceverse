@@ -72,6 +72,8 @@ export const Welcome = () => {
 	)
 }
 
+export default Welcome
+
 export interface PageProps {
 	onNext: () => void
 }

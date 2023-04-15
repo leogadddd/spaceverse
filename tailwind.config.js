@@ -25,6 +25,9 @@ module.exports = {
 				"sv-pomodoro-red": "#C13D46",
 				"sv-whatsnew-li-dark": "#b4b7b9",
 
+				"sv-error-black": "#ce636a",
+				"sv-error-dark": "#872b31",
+
 				// SpCMS
 
 				"spcms-dark": "#10181F",
