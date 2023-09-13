@@ -13,7 +13,7 @@ export const LandingPage: FC<LandingPageProps> = (props) => {
 
 	const isFinishSurvey = localStorage.getItem('finishedSurvey') === 'true'
 
-	const path = isFinishSurvey ? getSpecificRoute('home')?.path : getSpecificRoute('welcome')?.path
+	const path = getSpecificRoute('home')?.path
 
 	return (
 		<div className="relative">

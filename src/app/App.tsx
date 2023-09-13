@@ -10,12 +10,12 @@ import { useNavigate } from 'react-router';
 
 const App = () => {
 
-	const navigate = useNavigate()
-	const isFinishSurvey = localStorage.getItem('finishedSurvey') === 'true'
+	// const navigate = useNavigate()
+	// const isFinishSurvey = localStorage.getItem('finishedSurvey') === 'true'
 
-	useEffect(() => {
-		!isFinishSurvey && navigate(getSpecificRoute('welcome')?.path!)
-	}, [])
+	// useEffect(() => {
+	// 	!isFinishSurvey && navigate(getSpecificRoute('welcome')?.path!)
+	// }, [])
 	
 	return (
 		<>

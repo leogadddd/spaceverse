@@ -59,7 +59,7 @@ root.render(
 											process.env.NODE_ENV === 'development' || isReleased ? (
 												<>
 													<Route path="/" element={
-														localStorage.getItem("isFirstVisit") !== "true" ? <Navigate to={getSpecificRoute("website")?.path!} /> : localStorage.getItem("isFinishSurvey") !== "true" ? <Navigate to={getSpecificRoute("welcome")?.path!} /> : <Navigate to={getSpecificRoute("home")?.path!} />
+														localStorage.getItem("isFirstVisit") !== "true" ? <Navigate to={getSpecificRoute("website")?.path!} /> : <Navigate to={getSpecificRoute("home")?.path!} />
 													} />
 													{/* {
 														(process.env.NODE_ENV === 'development' && isReleased) && (
